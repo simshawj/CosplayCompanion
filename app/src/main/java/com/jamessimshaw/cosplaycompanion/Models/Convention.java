@@ -6,7 +6,8 @@ import android.graphics.Bitmap;
  * Created by james on 9/25/15.
  */
 public class Convention {
-    private String mName, mDescription;
+    private String mName;
+    private String mDescription;
     private Bitmap mLogo;
     private int id;
 
