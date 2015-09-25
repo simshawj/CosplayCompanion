@@ -1,7 +1,9 @@
-package com.jamessimshaw.cosplaycompanion;
+package com.jamessimshaw.cosplaycompanion.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.jamessimshaw.cosplaycompanion.R;
 
 
 public class LoginActivity extends Activity {
