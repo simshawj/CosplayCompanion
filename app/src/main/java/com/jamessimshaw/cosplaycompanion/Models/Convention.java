@@ -33,4 +33,12 @@ public class Convention {
     public void setLogo(Bitmap logo) {
         mLogo = logo;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
