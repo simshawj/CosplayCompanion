@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 public class Convention {
     private String mName, mDescription;
     private Bitmap mLogo;
+    private int id;
 
     public String getDescription() {
         return mDescription;
