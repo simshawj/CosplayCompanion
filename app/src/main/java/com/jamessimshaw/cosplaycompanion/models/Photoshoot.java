@@ -1,4 +1,4 @@
-package com.jamessimshaw.cosplaycompanion.Models;
+package com.jamessimshaw.cosplaycompanion.models;
 
 import java.util.Date;
 

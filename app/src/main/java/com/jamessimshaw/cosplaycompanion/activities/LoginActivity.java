@@ -1,4 +1,4 @@
-package com.jamessimshaw.cosplaycompanion.Activities;
+package com.jamessimshaw.cosplaycompanion.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
