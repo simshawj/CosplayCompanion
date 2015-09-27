@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "cosplay_companion.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public static final String TABLE_CONVENTIONS = "conventions";
     public static final String TABLE_CONVENTION_YEARS = "convention_years";
@@ -37,7 +37,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String CONVENTION_YEARS_CREATE = "create table " +
             TABLE_CONVENTION_YEARS + " (" + BaseColumns._ID +
             " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_DATE +
-            " TEXT NOT NULL," + COLUMN_DAYS +
+            " INTEGER NOT NULL," + COLUMN_DAYS +
             " INTEGER NOT NULL," + COLUMN_CONVENTION +
             " INTEGER NOT NULL," +
             " FORIEGN KEY(" + COLUMN_CONVENTION + ") REFERENCES " + TABLE_CONVENTIONS +
@@ -47,7 +47,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             TABLE_PHOTOSHOOTS + " (" + BaseColumns._ID +
             " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_SERIES +
             " TEXT NOT NULL, " + COLUMN_START +
-            " TEXT NOT NULL, " + COLUMN_LOCATION +
+            " INTEGER NOT NULL, " + COLUMN_LOCATION +
             " TEXT NOT NULL, " + COLUMN_DESCRIPTION +
             " TEXT, " + COLUMN_CONVENTION_YEAR +
             " INTEGER NOT NULL, " +
@@ -67,6 +67,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        // Since this is for development only, old data does not matter
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PHOTOSHOOTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONVENTION_YEARS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONVENTIONS);
+        onCreate(db);
     }
 }
