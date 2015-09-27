@@ -9,7 +9,7 @@ public class Convention {
     private String mName;
     private String mDescription;
     private Bitmap mLogo;
-    private int id;
+    private long id;
 
     public String getDescription() {
         return mDescription;
@@ -35,11 +35,11 @@ public class Convention {
         mLogo = logo;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }

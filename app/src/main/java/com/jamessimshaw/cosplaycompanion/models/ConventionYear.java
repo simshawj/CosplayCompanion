@@ -8,8 +8,8 @@ import java.util.Date;
 public class ConventionYear {
     private Date mDate;
     private int mDays;
-    private int mId;
-    private int mConventionId;
+    private long mId;
+    private long mConventionId;
 
     public Date getDate() {
         return mDate;
@@ -27,19 +27,19 @@ public class ConventionYear {
         mDays = days;
     }
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         mId = id;
     }
 
-    public int getConventionId() {
+    public long getConventionId() {
         return mConventionId;
     }
 
-    public void setConventionId(int conventionId) {
+    public void setConventionId(long conventionId) {
         mConventionId = conventionId;
     }
 }

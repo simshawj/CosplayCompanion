@@ -10,8 +10,8 @@ public class Photoshoot {
     private Date mStart;
     private String mLocation;
     private String mDescription;
-    private int mId;
-    private int mConventionYearId;
+    private long mId;
+    private long mConventionYearId;
 
     public String getSeries() {
         return mSeries;
@@ -45,19 +45,19 @@ public class Photoshoot {
         mDescription = description;
     }
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         mId = id;
     }
 
-    public int getConventionYearId() {
+    public long getConventionYearId() {
         return mConventionYearId;
     }
 
-    public void setConventionYearId(int conventionYearId) {
+    public void setConventionYearId(long conventionYearId) {
         mConventionYearId = conventionYearId;
     }
 }
