@@ -13,6 +13,16 @@ public class Photoshoot {
     private long mId;
     private long mConventionYearId;
 
+    public Photoshoot(long id, String series, Date start, String location, String description,
+                      long conventionYearId) {
+        mSeries = series;
+        mStart = start;
+        mLocation = location;
+        mDescription = description;
+        mId = id;
+        mConventionYearId = conventionYearId;
+    }
+
     public String getSeries() {
         return mSeries;
     }

@@ -11,6 +11,13 @@ public class ConventionYear {
     private long mId;
     private long mConventionId;
 
+    public ConventionYear(long id, Date date, int days, long conventionId) {
+        mDate = date;
+        mDays = days;
+        mId = id;
+        mConventionId = conventionId;
+    }
+
     public Date getDate() {
         return mDate;
     }
