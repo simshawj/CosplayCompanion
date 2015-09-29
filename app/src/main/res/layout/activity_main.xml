@@ -8,7 +8,6 @@
                 android:paddingBottom="0dp"
                 tools:context="com.jamessimshaw.cosplaycompanion.activities.MainActivity">
 
-    <include android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar"/>
 
 </RelativeLayout>
