@@ -8,4 +8,8 @@
     <string name="register_button_text">Register</string>
     <string name="sign_in_button_text">Sign In</string>
     <string name="forgot_password_button_text">Forgot Password?</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
