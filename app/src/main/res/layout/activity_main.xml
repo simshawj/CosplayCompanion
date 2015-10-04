@@ -9,10 +9,46 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <include
-        layout="@layout/content_main"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:id="@+id/fragment_area_main"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_input_add"/>
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
