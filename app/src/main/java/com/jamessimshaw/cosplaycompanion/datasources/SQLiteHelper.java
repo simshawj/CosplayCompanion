@@ -37,10 +37,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String CONVENTION_YEARS_CREATE = "create table " +
             TABLE_CONVENTION_YEARS + " (" + BaseColumns._ID +
             " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_DATE +
-            " INTEGER NOT NULL," + COLUMN_DAYS +
-            " INTEGER NOT NULL," + COLUMN_CONVENTION +
-            " INTEGER NOT NULL," +
-            " FORIEGN KEY(" + COLUMN_CONVENTION + ") REFERENCES " + TABLE_CONVENTIONS +
+            " INTEGER NOT NULL, " + COLUMN_DAYS +
+            " INTEGER NOT NULL, " + COLUMN_CONVENTION +
+            " INTEGER NOT NULL, " +
+            " FOREIGN KEY(" + COLUMN_CONVENTION + ") REFERENCES " + TABLE_CONVENTIONS +
             "(" + BaseColumns._ID + ")";
 
     private static final String PHOTOSHOOTS_CREATE = "create table " +
@@ -51,7 +51,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             " TEXT NOT NULL, " + COLUMN_DESCRIPTION +
             " TEXT, " + COLUMN_CONVENTION_YEAR +
             " INTEGER NOT NULL, " +
-            " FORIEGN KEY(" + COLUMN_CONVENTION_YEAR + ") REFERENCES " + TABLE_CONVENTION_YEARS +
+            " FOREIGN KEY(" + COLUMN_CONVENTION_YEAR + ") REFERENCES " + TABLE_CONVENTION_YEARS +
             "(" + BaseColumns._ID + ")";
 
     public SQLiteHelper(Context context) {
