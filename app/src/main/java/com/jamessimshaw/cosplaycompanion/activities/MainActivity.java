@@ -1,9 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,9 +12,12 @@ import android.view.MenuItem;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.fragments.ConventionFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.NewConventionFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ConventionFragment.OnFragmentInteractionListener,
+        NewConventionFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity
 
             ConventionFragment conventionFragment = ConventionFragment.newInstance();
 
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container_main, conventionFragment)
                     .commit();
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -105,5 +105,21 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onConventionFragmentInteraction() {
+        NewConventionFragment newConventionFragment = NewConventionFragment.newInstance();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_main, newConventionFragment)
+                .addToBackStack(null)
+                .commit(); //TODO: Double check if this is the right call
+
+    }
+
+    @Override
+    public void onNewConventionFragmentInteraction() {
+
     }
 }

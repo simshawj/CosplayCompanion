@@ -1,12 +1,12 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -63,10 +63,15 @@ public class ConventionFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (mListener != null)
+                    mListener.onConventionFragmentInteraction();
+                else
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
             }
         });
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Conventions");
 
         RecyclerView conventionRecyclerView = (RecyclerView)view
                 .findViewById(R.id.convention_recyclerview);
@@ -84,7 +89,7 @@ public class ConventionFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onConventionFragmentInteraction();
         }
     }
 
@@ -116,8 +121,7 @@ public class ConventionFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onConventionFragmentInteraction();
     }
 
 }
