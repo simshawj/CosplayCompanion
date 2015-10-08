@@ -18,6 +18,12 @@ public class Convention {
         mLogo = logo;
     }
 
+    public Convention(String name, String description, Bitmap logo) {
+        mName = name;
+        mDescription = description;
+        mLogo = logo;
+    }
+
     public String getDescription() {
         return mDescription;
     }

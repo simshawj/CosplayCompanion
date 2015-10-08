@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.fragments.ConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.NewConventionFragment;
+import com.jamessimshaw.cosplaycompanion.models.Convention;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onNewConventionFragmentInteraction() {
+    public void onNewConventionFragmentInteraction(Convention convention) {
 
     }
 }
