@@ -2,6 +2,7 @@ package com.jamessimshaw.cosplaycompanion.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ConventionFragment.OnFragmentInteractionListener,
         NewConventionFragment.OnFragmentInteractionListener {
+
+    private static String CONVENTIONS_FRAGMENT = "conventions";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,13 +117,13 @@ public class MainActivity extends AppCompatActivity
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container_main, newConventionFragment)
-                .addToBackStack(null)
+                .addToBackStack(CONVENTIONS_FRAGMENT)
                 .commit(); //TODO: Double check if this is the right call
 
     }
 
     @Override
     public void onNewConventionFragmentInteraction(Convention convention) {
-
+        getSupportFragmentManager().popBackStack();
     }
 }
