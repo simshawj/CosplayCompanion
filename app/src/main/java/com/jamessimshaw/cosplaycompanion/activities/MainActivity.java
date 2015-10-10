@@ -2,23 +2,21 @@ package com.jamessimshaw.cosplaycompanion.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jamessimshaw.cosplaycompanion.R;
-import com.jamessimshaw.cosplaycompanion.fragments.ConventionFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.NewConventionFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ConventionFragment.OnFragmentInteractionListener,
+        ListConventionsFragment.OnFragmentInteractionListener,
         NewConventionFragment.OnFragmentInteractionListener {
 
     private static String CONVENTIONS_FRAGMENT = "conventions";
@@ -45,10 +43,10 @@ public class MainActivity extends AppCompatActivity
             if(savedInstanceState != null)
                 return;
 
-            ConventionFragment conventionFragment = ConventionFragment.newInstance();
+            ListConventionsFragment listConventionsFragment = ListConventionsFragment.newInstance();
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container_main, conventionFragment)
+                    .add(R.id.fragment_container_main, listConventionsFragment)
                     .commit();
 
         }

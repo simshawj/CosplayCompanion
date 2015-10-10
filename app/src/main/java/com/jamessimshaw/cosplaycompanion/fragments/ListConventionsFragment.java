@@ -22,12 +22,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ConventionFragment.OnFragmentInteractionListener} interface
+ * {@link ListConventionsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ConventionFragment#newInstance} factory method to
+ * Use the {@link ListConventionsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConventionFragment extends Fragment {
+public class ListConventionsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private ArrayList<Convention> mConventions;
@@ -37,14 +37,14 @@ public class ConventionFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment ConventionFragment.
+     * @return A new instance of fragment ListConventionsFragment.
      */
-    public static ConventionFragment newInstance() {
-        ConventionFragment fragment = new ConventionFragment();
+    public static ListConventionsFragment newInstance() {
+        ListConventionsFragment fragment = new ListConventionsFragment();
         return fragment;
     }
 
-    public ConventionFragment() {
+    public ListConventionsFragment() {
         // Required empty public constructor
     }
 
