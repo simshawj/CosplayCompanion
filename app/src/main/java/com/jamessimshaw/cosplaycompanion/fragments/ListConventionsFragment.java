@@ -79,7 +79,7 @@ public class ListConventionsFragment extends Fragment {
 
         mSQLiteDataSource = new SQLiteDataSource(getActivity());
         mConventions = mSQLiteDataSource.read();
-        ConventionRecViewAdapter adapter = new ConventionRecViewAdapter(mConventions);
+        ConventionRecViewAdapter adapter = new ConventionRecViewAdapter(mConventions, getActivity());
         conventionRecyclerView.setAdapter(adapter);
 
         return view;

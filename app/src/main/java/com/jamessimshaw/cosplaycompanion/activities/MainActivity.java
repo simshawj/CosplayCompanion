@@ -124,4 +124,8 @@ public class MainActivity extends AppCompatActivity
     public void onNewConventionFragmentInteraction(Convention convention) {
         getSupportFragmentManager().popBackStack();
     }
+
+    public void switchToConventionFragment(Convention convention) {
+
+    }
 }
