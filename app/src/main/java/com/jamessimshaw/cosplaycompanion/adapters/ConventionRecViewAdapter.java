@@ -61,6 +61,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
             mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
             itemView.setOnClickListener(this);
         }
+
         public void onClick(View v) {
             if (mActivity instanceof MainActivity)
                 ((MainActivity)mActivity).switchToConventionFragment(mConvention);
