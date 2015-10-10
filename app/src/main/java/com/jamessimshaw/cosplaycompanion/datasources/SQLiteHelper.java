@@ -41,7 +41,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             " INTEGER NOT NULL, " + COLUMN_CONVENTION +
             " INTEGER NOT NULL, " +
             " FOREIGN KEY(" + COLUMN_CONVENTION + ") REFERENCES " + TABLE_CONVENTIONS +
-            "(" + BaseColumns._ID + ")";
+            "(" + BaseColumns._ID + "))";
 
     private static final String PHOTOSHOOTS_CREATE = "create table " +
             TABLE_PHOTOSHOOTS + " (" + BaseColumns._ID +
@@ -52,7 +52,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             " TEXT, " + COLUMN_CONVENTION_YEAR +
             " INTEGER NOT NULL, " +
             " FOREIGN KEY(" + COLUMN_CONVENTION_YEAR + ") REFERENCES " + TABLE_CONVENTION_YEARS +
-            "(" + BaseColumns._ID + ")";
+            "(" + BaseColumns._ID + "))";
 
     public SQLiteHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
