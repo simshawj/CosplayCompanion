@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container_main, newConventionFragment)
                 .addToBackStack(CONVENTIONS_FRAGMENT)
-                .commit(); //TODO: Double check if this is the right call
+                .commit();
 
     }
 

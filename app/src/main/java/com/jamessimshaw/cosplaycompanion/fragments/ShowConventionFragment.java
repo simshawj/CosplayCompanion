@@ -20,11 +20,8 @@ import com.jamessimshaw.cosplaycompanion.models.Convention;
  * create an instance of this fragment.
  */
 public class ShowConventionFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-    // TODO: Rename and change types of parameters
     private Convention mConvention;
 
     private OnFragmentInteractionListener mListener;
@@ -91,8 +88,7 @@ public class ShowConventionFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onShowConventionFragmentInteraction();
     }
 
 }
