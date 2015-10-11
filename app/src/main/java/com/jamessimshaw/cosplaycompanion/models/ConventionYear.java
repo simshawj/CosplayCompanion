@@ -10,6 +10,7 @@ public class ConventionYear {
     private int mDays;
     private long mId;
     private long mConventionId;
+    //TODO: Missing location info, what to store it as?
 
     public ConventionYear(long id, Date date, int days, long conventionId) {
         mDate = date;

@@ -64,16 +64,13 @@ public class ListConventionsFragment extends Fragment {
             public void onClick(View view) {
                 if (mListener != null)
                     mListener.onConventionFragmentInteraction();
-                else
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
             }
         });
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Conventions");
 
         RecyclerView conventionRecyclerView = (RecyclerView)view
-                .findViewById(R.id.convention_recyclerview);
+                .findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionRecyclerView.setLayoutManager(linearLayoutManager);
 
