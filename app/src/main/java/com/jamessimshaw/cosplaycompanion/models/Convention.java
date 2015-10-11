@@ -1,11 +1,15 @@
 package com.jamessimshaw.cosplaycompanion.models;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by james on 9/25/15.
  */
-public class Convention {
+public class Convention implements Parcelable {
     private String mName;
     private String mDescription;
     private Bitmap mLogo;
@@ -16,6 +20,18 @@ public class Convention {
         mName = name;
         mDescription = description;
         mLogo = logo;
+    }
+
+    public Convention(String name, String description, Bitmap logo) {
+        mName = name;
+        mDescription = description;
+        mLogo = logo;
+    }
+
+    public Convention (Parcel in) {
+        mName = in.readString();
+        mLogo = in.readParcelable(Bitmap.class.getClassLoader());
+        mDescription = in.readString();
     }
 
     public String getDescription() {
@@ -49,4 +65,30 @@ public class Convention {
     public void setId(long id) {
         mId = id;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mName);
+        dest.writeParcelable(mLogo, 0);
+        dest.writeString(mDescription);
+    }
+
+    public static final Parcelable.Creator<Convention> CREATOR
+            = new Parcelable.Creator<Convention>() {
+
+        @Override
+        public Convention createFromParcel(Parcel source) {
+            return new Convention(source);
+        }
+
+        @Override
+        public Convention[] newArray(int size) {
+            return new Convention[size];
+        }
+    };
 }

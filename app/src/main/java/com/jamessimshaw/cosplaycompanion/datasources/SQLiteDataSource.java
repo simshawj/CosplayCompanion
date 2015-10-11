@@ -12,6 +12,7 @@ import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,9 +39,8 @@ public class SQLiteDataSource {
     }
 
     public void create(Convention convention) {
-        int bytes = convention.getLogo().getByteCount();    // number of bytes for the buffer
-        ByteBuffer buffer = ByteBuffer.allocate(bytes);     // creates a buffer to store img
-        convention.getLogo().copyPixelsToBuffer(buffer);    // copies img to buffer
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        convention.getLogo().compress(Bitmap.CompressFormat.PNG, 0, stream);
 
         SQLiteDatabase database = open();
         database.beginTransaction();
@@ -48,7 +48,7 @@ public class SQLiteDataSource {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.COLUMN_NAME, convention.getName());
         values.put(SQLiteHelper.COLUMN_DESCRIPTION, convention.getDescription());
-        values.put(SQLiteHelper.COLUMN_LOGO, buffer.array());
+        values.put(SQLiteHelper.COLUMN_LOGO, stream.toByteArray());
         convention.setId(database.insert(SQLiteHelper.TABLE_CONVENTIONS, null, values));
 
         database.setTransactionSuccessful();
