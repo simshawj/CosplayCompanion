@@ -10,13 +10,14 @@ public class ConventionYear {
     private int mDays;
     private long mId;
     private long mConventionId;
-    //TODO: Missing location info, what to store it as?
+    private String mLocation;
 
-    public ConventionYear(long id, Date date, int days, long conventionId) {
+    public ConventionYear(long id, Date date, int days, long conventionId, String location) {
         mDate = date;
         mDays = days;
         mId = id;
         mConventionId = conventionId;
+        mLocation = location;
     }
 
     public Date getDate() {
@@ -49,5 +50,13 @@ public class ConventionYear {
 
     public void setConventionId(long conventionId) {
         mConventionId = conventionId;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
     }
 }

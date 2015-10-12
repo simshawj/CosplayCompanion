@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "cosplay_companion.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
 
     public static final String TABLE_CONVENTIONS = "conventions";
     public static final String TABLE_CONVENTION_YEARS = "convention_years";
@@ -39,7 +39,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_DATE +
             " INTEGER NOT NULL, " + COLUMN_DAYS +
             " INTEGER NOT NULL, " + COLUMN_CONVENTION +
-            " INTEGER NOT NULL, " +
+            " INTEGER NOT NULL, " + COLUMN_LOCATION +
+            " TEXT NOT NULL, " +
             " FOREIGN KEY(" + COLUMN_CONVENTION + ") REFERENCES " + TABLE_CONVENTIONS +
             "(" + BaseColumns._ID + "))";
 
