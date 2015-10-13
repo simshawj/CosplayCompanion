@@ -20,6 +20,13 @@ public class ConventionYear {
         mLocation = location;
     }
 
+    public ConventionYear(Date date, int days, long conventionId, String location) {
+        mDate = date;
+        mDays = days;
+        mConventionId = conventionId;
+        mLocation = location;
+    }
+
     public Date getDate() {
         return mDate;
     }

@@ -66,7 +66,7 @@ public class NewConventionFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.new_convention_fragment_menu, menu);
+        inflater.inflate(R.menu.new_item_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

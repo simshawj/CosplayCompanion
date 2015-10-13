@@ -12,12 +12,16 @@ import android.view.MenuItem;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.NewConventionFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.NewConventionYearFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListConventionsFragment.OnFragmentInteractionListener,
-        NewConventionFragment.OnFragmentInteractionListener {
+        NewConventionFragment.OnFragmentInteractionListener,
+        ShowConventionFragment.OnFragmentInteractionListener,
+        NewConventionYearFragment.OnFragmentInteractionListener {
 
     private static String CONVENTIONS_FRAGMENT = "conventions";
 
@@ -115,7 +119,7 @@ public class MainActivity extends AppCompatActivity
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container_main, newConventionFragment)
-                .addToBackStack(CONVENTIONS_FRAGMENT)
+                .addToBackStack(null)
                 .commit();
 
     }
@@ -126,6 +130,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void switchToConventionFragment(Convention convention) {
+        ShowConventionFragment fragment = ShowConventionFragment.newInstance(convention);
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_main, fragment)
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+    @Override
+    public void onShowConventionFragmentInteraction(Convention convention) {
+        NewConventionYearFragment fragment = NewConventionYearFragment.newInstance(convention);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_main, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onNewConventionYearFragmentInteraction() {
+        getSupportFragmentManager().popBackStack();
     }
 }

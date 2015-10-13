@@ -13,7 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +32,8 @@ public class ShowConventionFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
 
     private Convention mConvention;
+    private ArrayList<ConventionYear> mConventionYears;
+    private SQLiteDataSource mSQLiteDataSource;
 
     private OnFragmentInteractionListener mListener;
 
@@ -67,7 +74,7 @@ public class ShowConventionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mListener != null)
-                    mListener.onShowConventionFragmentInteraction();
+                    mListener.onShowConventionFragmentInteraction(mConvention);
             }
         });
 
@@ -77,7 +84,12 @@ public class ShowConventionFragment extends Fragment {
                 .findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
-        
+
+        mSQLiteDataSource = new SQLiteDataSource(getActivity());
+        mConventionYears = mSQLiteDataSource.read(mConvention);
+        ConYearRecViewAdapter adapter = new ConYearRecViewAdapter(mConvention, mConventionYears);
+        conventionDetailsRecyclerView.setAdapter(adapter);
+
         return view;
     }
 
@@ -109,7 +121,7 @@ public class ShowConventionFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onShowConventionFragmentInteraction();
+        public void onShowConventionFragmentInteraction(Convention convention);
     }
 
 }
