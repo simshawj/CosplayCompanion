@@ -64,6 +64,7 @@ public class SQLiteDataSource {
         values.put(SQLiteHelper.COLUMN_DATE, conventionYear.getDate().getTime());
         values.put(SQLiteHelper.COLUMN_DAYS, conventionYear.getDays());
         values.put(SQLiteHelper.COLUMN_CONVENTION, conventionYear.getConventionId());
+        values.put(SQLiteHelper.COLUMN_LOCATION, conventionYear.getLocation());
         conventionYear.setId(database.insert(SQLiteHelper.TABLE_CONVENTION_YEARS, null, values));
 
         database.setTransactionSuccessful();
@@ -139,7 +140,8 @@ public class SQLiteDataSource {
                         getLongFromColumnName(cursor, BaseColumns._ID),
                         new Date(getLongFromColumnName(cursor, SQLiteHelper.COLUMN_DATE)),
                         getIntFromColumnName(cursor, SQLiteHelper.COLUMN_DAYS),
-                        getLongFromColumnName(cursor, SQLiteHelper.COLUMN_CONVENTION)
+                        getLongFromColumnName(cursor, SQLiteHelper.COLUMN_CONVENTION),
+                        getStringFromColumnName(cursor, SQLiteHelper.COLUMN_LOCATION)
                 );
                 conventionYears.add(conventionYear);
             } while(cursor.moveToNext());
