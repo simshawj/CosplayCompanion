@@ -2,6 +2,7 @@ package com.jamessimshaw.cosplaycompanion.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -113,44 +114,44 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onConventionFragmentInteraction() {
-        NewConventionFragment newConventionFragment = NewConventionFragment.newInstance();
-
+    private void gotoFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_main, newConventionFragment)
+                .replace(R.id.fragment_container_main, fragment)
                 .addToBackStack(null)
                 .commit();
-
     }
 
-    @Override
-    public void onNewConventionFragmentInteraction(Convention convention) {
+    private void leaveFragment() {
         getSupportFragmentManager().popBackStack();
     }
 
     public void switchToConventionFragment(Convention convention) {
         ShowConventionFragment fragment = ShowConventionFragment.newInstance(convention);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_main, fragment)
-                .addToBackStack(null)
-                .commit();
+        gotoFragment(fragment);
+    }
 
+    @Override
+    public void onConventionFragmentInteraction() {
+        NewConventionFragment fragment = NewConventionFragment.newInstance();
+
+        gotoFragment(fragment);
     }
 
     @Override
     public void onShowConventionFragmentInteraction(Convention convention) {
         NewConventionYearFragment fragment = NewConventionYearFragment.newInstance(convention);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_main, fragment)
-                .addToBackStack(null)
-                .commit();
+        gotoFragment(fragment);
+    }
+
+    @Override
+    public void onNewConventionFragmentInteraction(Convention convention) {
+        leaveFragment();
     }
 
     @Override
     public void onNewConventionYearFragmentInteraction() {
-        getSupportFragmentManager().popBackStack();
+        leaveFragment();
     }
 }
