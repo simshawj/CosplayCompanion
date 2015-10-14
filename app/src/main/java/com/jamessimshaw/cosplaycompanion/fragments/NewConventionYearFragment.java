@@ -66,8 +66,7 @@ public class NewConventionYearFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_convention_year, container, false);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mConvention.getName());
+        
         setHasOptionsMenu(true);
 
         mDaysTextView = (TextView) view.findViewById(R.id.days);
@@ -87,8 +86,10 @@ public class NewConventionYearFragment extends Fragment {
         mDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDays--;
-                mDaysTextView.setText(Integer.toString(mDays));
+                if (mDays != 1) {
+                    mDays--;
+                    mDaysTextView.setText(Integer.toString(mDays));
+                }
             }
         });
 

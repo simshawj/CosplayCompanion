@@ -92,7 +92,7 @@ public class ConventionYear implements Parcelable {
     public Date getEndDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(mDate);
-        calendar.add(Calendar.DAY_OF_MONTH, mDays);
+        calendar.add(Calendar.DAY_OF_MONTH, mDays - 1);
         return calendar.getTime();
     }
 
