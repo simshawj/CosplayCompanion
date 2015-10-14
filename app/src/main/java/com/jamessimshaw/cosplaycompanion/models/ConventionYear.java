@@ -1,11 +1,14 @@
 package com.jamessimshaw.cosplaycompanion.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * Created by james on 9/25/15.
  */
-public class ConventionYear {
+public class ConventionYear implements Parcelable {
     private Date mDate;
     private int mDays;
     private long mId;
@@ -25,6 +28,14 @@ public class ConventionYear {
         mDays = days;
         mConventionId = conventionId;
         mLocation = location;
+    }
+
+    public ConventionYear(Parcel in) {
+        mDate = new Date(in.readLong());
+        mDays = in.readInt();
+        mId = in.readLong();
+        mConventionId = in.readLong();
+        mLocation = in.readString();
     }
 
     public Date getDate() {
@@ -66,4 +77,32 @@ public class ConventionYear {
     public void setLocation(String location) {
         mLocation = location;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mDate.getTime());
+        dest.writeInt(mDays);
+        dest.writeLong(mId);
+        dest.writeLong(mConventionId);
+        dest.writeString(mLocation);
+    }
+
+    public static final Parcelable.Creator<ConventionYear> CREATOR
+            = new Parcelable.Creator<ConventionYear>() {
+
+        @Override
+        public ConventionYear createFromParcel(Parcel source) {
+            return new ConventionYear(source);
+        }
+
+        @Override
+        public ConventionYear[] newArray(int size) {
+            return new ConventionYear[size];
+        }
+    };
 }
