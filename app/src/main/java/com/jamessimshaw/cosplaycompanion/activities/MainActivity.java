@@ -134,8 +134,9 @@ public class MainActivity extends AppCompatActivity
         gotoFragment(fragment);
     }
 
-    public void switchToConventionYearFragment(ConventionYear conventionYear) {
-        ShowConventionYearFragment fragment = ShowConventionYearFragment.newInstance(conventionYear);
+    public void switchToConventionYearFragment(Convention convention, ConventionYear conventionYear) {
+        ShowConventionYearFragment fragment = ShowConventionYearFragment.newInstance(convention,
+                conventionYear);
 
         gotoFragment(fragment);
     }

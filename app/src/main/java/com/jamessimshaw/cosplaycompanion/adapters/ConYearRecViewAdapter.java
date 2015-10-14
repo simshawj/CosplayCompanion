@@ -59,16 +59,14 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             holder.mConventionNameTextView.setText(mConvention.getName());
             holder.mConventionLogoImageView.setImageBitmap(mConvention.getLogo());
         } else {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(mConventionYears.get(position - 1).getDate());
-            holder.mConventionYearYear.setText(Integer.toString(calendar.get(Calendar.YEAR)));
-            calendar.add(Calendar.DAY_OF_MONTH, mConventionYears.get(position - 1).getDays());
-            Date endDate = calendar.getTime();
+            ConventionYear conventionYear = mConventionYears.get(position - 1);
+            holder.mConventionYearYear.setText(conventionYear.getYearAsString());
             SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
-            String dateString = dateFormat.format(mConventionYears.get(position - 1).getDate()) + " to " +
-                    dateFormat.format(endDate);
+            String dateString = dateFormat.format(conventionYear.getDate()) + " to " +
+                    dateFormat.format(conventionYear.getEndDate());
             holder.mConventionYearDates.setText(dateString);
-            holder.mConventionYear = mConventionYears.get(position - 1);
+            holder.mConventionYear = conventionYear;
+            holder.mConvention = mConvention;
         }
 
     }
@@ -94,6 +92,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
         private TextView mConventionYearDates;
         private Activity mActivity;
         private ConventionYear mConventionYear;
+        private Convention mConvention;
 
         public ViewHolder(View itemView, int itemType, Activity activity) {
             super(itemView);
@@ -113,7 +112,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
         @Override
         public void onClick(View v) {
             if (mActivity instanceof MainActivity)
-                ((MainActivity)mActivity).switchToConventionYearFragment(mConventionYear);
+                ((MainActivity)mActivity).switchToConventionYearFragment(mConvention, mConventionYear);
         }
     }
 }

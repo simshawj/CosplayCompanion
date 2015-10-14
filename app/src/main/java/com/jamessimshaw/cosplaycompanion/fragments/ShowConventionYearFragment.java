@@ -4,14 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
+import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,9 +32,13 @@ import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
  * create an instance of this fragment.
  */
 public class ShowConventionYearFragment extends Fragment {
-    private static final String ARG_PARAM1 = "conventionYear";
+    private static final String ARG_PARAM1 = "convention";
+    private static final String ARG_PARAM2 = "conventionYear";
 
     private ConventionYear mConventionYear;
+    private Convention mConvention;
+    private SQLiteDataSource mSQLiteDataSource;
+    private ArrayList<Photoshoot> mPhotoshoots;
 
     private OnFragmentInteractionListener mListener;
 
@@ -32,14 +46,16 @@ public class ShowConventionYearFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
+     * @param convention Convention associated with the ConventionYear
      * @param conventionYear ConventionYear to show.
      * @return A new instance of fragment ShowConventionYearFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ShowConventionYearFragment newInstance(ConventionYear conventionYear) {
+    public static ShowConventionYearFragment newInstance(Convention convention, ConventionYear conventionYear) {
         ShowConventionYearFragment fragment = new ShowConventionYearFragment();
         Bundle args = new Bundle();
-        //args.putParcelable(ARG_PARAM1, conventionYear);
+        args.putParcelable(ARG_PARAM1, convention);
+        args.putParcelable(ARG_PARAM2, conventionYear);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,16 +68,40 @@ public class ShowConventionYearFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            //mConventionYear = getArguments().getParcelable(ARG_PARAM1);
+            mConvention = getArguments().getParcelable(ARG_PARAM1);
+            mConventionYear = getArguments().getParcelable(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+        View view = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null)
+                    mListener.onShowConventionYearFragmentInteraction(mConventionYear);
+            }
+        });
+
+        String title = mConvention.getName() + " " + mConventionYear.getYearAsString();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(title);
+
+        RecyclerView conventionDetailsRecyclerView = (RecyclerView)view
+                .findViewById(R.id.list_fragment_recyclerview);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
+
+        mSQLiteDataSource = new SQLiteDataSource(getActivity());
+        mPhotoshoots = mSQLiteDataSource.read(mConventionYear);
+        //ConYearRecViewAdapter adapter = new ConYearRecViewAdapter(mConvention, mConventionYears,
+        //        getActivity());
+        //conventionDetailsRecyclerView.setAdapter(adapter);
+
+        return view;
     }
 
     @Override
