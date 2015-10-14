@@ -66,7 +66,7 @@ public class NewConventionYearFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_convention_year, container, false);
-        
+
         setHasOptionsMenu(true);
 
         mDaysTextView = (TextView) view.findViewById(R.id.days);
@@ -86,10 +86,12 @@ public class NewConventionYearFragment extends Fragment {
         mDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDays != 1) {
+                if (mDays > 1) {
                     mDays--;
-                    mDaysTextView.setText(Integer.toString(mDays));
+                } else {
+                    mDays = 1;
                 }
+                mDaysTextView.setText(Integer.toString(mDays));
             }
         });
 
