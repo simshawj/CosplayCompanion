@@ -3,6 +3,7 @@ package com.jamessimshaw.cosplaycompanion.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -76,6 +77,23 @@ public class ConventionYear implements Parcelable {
 
     public void setLocation(String location) {
         mLocation = location;
+    }
+
+    public String getYearAsString() {
+        return Integer.toString(getYear());
+    }
+
+    public int getYear() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(mDate);
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public Date getEndDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(mDate);
+        calendar.add(Calendar.DAY_OF_MONTH, mDays);
+        return calendar.getTime();
     }
 
     @Override
