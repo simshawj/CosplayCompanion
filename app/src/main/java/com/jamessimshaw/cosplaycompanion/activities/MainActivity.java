@@ -14,6 +14,7 @@ import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.NewConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.NewConventionYearFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.NewPhotoshootFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity
         NewConventionFragment.OnFragmentInteractionListener,
         ShowConventionFragment.OnFragmentInteractionListener,
         NewConventionYearFragment.OnFragmentInteractionListener,
-        ShowConventionYearFragment.OnFragmentInteractionListener {
+        ShowConventionYearFragment.OnFragmentInteractionListener,
+        NewPhotoshootFragment.OnFragmentInteractionListener {
 
     private static String CONVENTIONS_FRAGMENT = "conventions";
 
@@ -157,7 +159,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onShowConventionYearFragmentInteraction(ConventionYear conventionYear) {
+        NewPhotoshootFragment fragment = NewPhotoshootFragment.newInstance(conventionYear);
 
+        gotoFragment(fragment);
     }
 
     @Override
@@ -167,6 +171,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNewConventionYearFragmentInteraction() {
+        leaveFragment();
+    }
+
+    @Override
+    public void onNewPhotoshootFragmentInteraction() {
         leaveFragment();
     }
 }
