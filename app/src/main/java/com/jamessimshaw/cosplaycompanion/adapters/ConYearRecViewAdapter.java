@@ -1,5 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.adapters;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
@@ -28,10 +30,13 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
 
     private Convention mConvention;
     private ArrayList<ConventionYear> mConventionYears;
+    private Activity mActivity;
 
-    public ConYearRecViewAdapter(Convention convention, ArrayList<ConventionYear> conventionYears) {
+    public ConYearRecViewAdapter(Convention convention, ArrayList<ConventionYear> conventionYears,
+                                 Activity activity) {
         mConvention = convention;
         mConventionYears = conventionYears;
+        mActivity = activity;
     }
 
     @Override
@@ -45,7 +50,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
 
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 
-        return new ViewHolder(view, viewType);
+        return new ViewHolder(view, viewType, mActivity);
     }
 
     @Override
@@ -63,6 +68,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             String dateString = dateFormat.format(mConventionYears.get(position - 1).getDate()) + " to " +
                     dateFormat.format(endDate);
             holder.mConventionYearDates.setText(dateString);
+            holder.mConventionYear = mConventionYears.get(position - 1);
         }
 
     }
@@ -80,16 +86,19 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             return TYPE_YEAR;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private int mType;
         private TextView mConventionNameTextView;
         private ImageView mConventionLogoImageView;
         private TextView mConventionYearYear;
         private TextView mConventionYearDates;
+        private Activity mActivity;
+        private ConventionYear mConventionYear;
 
-        public ViewHolder(View itemView, int itemType) {
+        public ViewHolder(View itemView, int itemType, Activity activity) {
             super(itemView);
 
+            mActivity = activity;
             mType = itemType;
             if (mType == TYPE_HEADER) {
                 mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
@@ -97,7 +106,14 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             } else {
                 mConventionYearYear = (TextView) itemView.findViewById(R.id.convention_year);
                 mConventionYearDates = (TextView) itemView.findViewById(R.id.convention_dates);
+                itemView.setOnClickListener(this);
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mActivity instanceof MainActivity)
+                ((MainActivity)mActivity).switchToConventionYearFragment(mConventionYear);
         }
     }
 }

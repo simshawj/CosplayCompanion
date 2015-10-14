@@ -87,7 +87,8 @@ public class ShowConventionFragment extends Fragment {
 
         mSQLiteDataSource = new SQLiteDataSource(getActivity());
         mConventionYears = mSQLiteDataSource.read(mConvention);
-        ConYearRecViewAdapter adapter = new ConYearRecViewAdapter(mConvention, mConventionYears);
+        ConYearRecViewAdapter adapter = new ConYearRecViewAdapter(mConvention, mConventionYears,
+                getActivity());
         conventionDetailsRecyclerView.setAdapter(adapter);
 
         return view;

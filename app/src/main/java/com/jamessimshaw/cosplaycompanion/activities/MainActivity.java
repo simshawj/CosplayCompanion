@@ -15,14 +15,17 @@ import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.NewConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.NewConventionYearFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListConventionsFragment.OnFragmentInteractionListener,
         NewConventionFragment.OnFragmentInteractionListener,
         ShowConventionFragment.OnFragmentInteractionListener,
-        NewConventionYearFragment.OnFragmentInteractionListener {
+        NewConventionYearFragment.OnFragmentInteractionListener,
+        ShowConventionYearFragment.OnFragmentInteractionListener {
 
     private static String CONVENTIONS_FRAGMENT = "conventions";
 
@@ -131,6 +134,12 @@ public class MainActivity extends AppCompatActivity
         gotoFragment(fragment);
     }
 
+    public void switchToConventionYearFragment(ConventionYear conventionYear) {
+        ShowConventionYearFragment fragment = ShowConventionYearFragment.newInstance(conventionYear);
+
+        gotoFragment(fragment);
+    }
+
     @Override
     public void onConventionFragmentInteraction() {
         NewConventionFragment fragment = NewConventionFragment.newInstance();
@@ -143,6 +152,11 @@ public class MainActivity extends AppCompatActivity
         NewConventionYearFragment fragment = NewConventionYearFragment.newInstance(convention);
 
         gotoFragment(fragment);
+    }
+
+    @Override
+    public void onShowConventionYearFragmentInteraction(ConventionYear conventionYear) {
+
     }
 
     @Override
