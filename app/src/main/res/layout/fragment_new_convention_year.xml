@@ -12,14 +12,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date: "/>
+            android:text="Start: "/>
 
-        <DatePicker
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:datePickerMode="spinner"
-            android:id="@+id/date"
-            android:calendarViewShown="false"/>
+            android:text="Thursday Oct. 15 2015"
+            android:id="@+id/startDateButton"/>
 
     </LinearLayout>
 
@@ -31,29 +30,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Days: "/>
+            android:text="End: "/>
 
-        <ImageButton
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            style=""
-            android:id="@+id/minusDay"
-            android:src="@android:drawable/arrow_down_float"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="2dp"
-            android:id="@+id/days"
-            android:text="3"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="2dp"
-            android:id="@+id/addDay"
-            android:src="@android:drawable/arrow_up_float"/>
+            android:text="Thursday Oct. 15 2015"
+            android:id="@+id/endDateButton"/>
 
 
     </LinearLayout>

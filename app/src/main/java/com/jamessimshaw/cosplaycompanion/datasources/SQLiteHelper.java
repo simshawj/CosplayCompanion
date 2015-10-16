@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "cosplay_companion.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     public static final String TABLE_CONVENTIONS = "conventions";
     public static final String TABLE_CONVENTION_YEARS = "convention_years";

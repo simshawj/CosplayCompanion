@@ -13,12 +13,8 @@ import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -62,7 +58,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             ConventionYear conventionYear = mConventionYears.get(position - 1);
             holder.mConventionYearYear.setText(conventionYear.getYearAsString());
             SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
-            String dateString = dateFormat.format(conventionYear.getDate()) + " to " +
+            String dateString = dateFormat.format(conventionYear.getStartDate()) + " to " +
                     dateFormat.format(conventionYear.getEndDate());
             holder.mConventionYearDates.setText(dateString);
             holder.mConventionYear = conventionYear;

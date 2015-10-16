@@ -13,7 +13,6 @@ import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -61,8 +60,8 @@ public class SQLiteDataSource {
         database.beginTransaction();
 
         ContentValues values = new ContentValues();
-        values.put(SQLiteHelper.COLUMN_DATE, conventionYear.getDate().getTime());
-        values.put(SQLiteHelper.COLUMN_DAYS, conventionYear.getDays());
+        values.put(SQLiteHelper.COLUMN_DATE, conventionYear.getStartDate().getTime());
+        values.put(SQLiteHelper.COLUMN_DAYS, conventionYear.getEndDate().getTime());
         values.put(SQLiteHelper.COLUMN_CONVENTION, conventionYear.getConventionId());
         values.put(SQLiteHelper.COLUMN_LOCATION, conventionYear.getLocation());
         conventionYear.setId(database.insert(SQLiteHelper.TABLE_CONVENTION_YEARS, null, values));
@@ -139,7 +138,7 @@ public class SQLiteDataSource {
                 ConventionYear conventionYear = new ConventionYear(
                         getLongFromColumnName(cursor, BaseColumns._ID),
                         new Date(getLongFromColumnName(cursor, SQLiteHelper.COLUMN_DATE)),
-                        getIntFromColumnName(cursor, SQLiteHelper.COLUMN_DAYS),
+                        new Date(getLongFromColumnName(cursor, SQLiteHelper.COLUMN_DAYS)),
                         getLongFromColumnName(cursor, SQLiteHelper.COLUMN_CONVENTION),
                         getStringFromColumnName(cursor, SQLiteHelper.COLUMN_LOCATION)
                 );

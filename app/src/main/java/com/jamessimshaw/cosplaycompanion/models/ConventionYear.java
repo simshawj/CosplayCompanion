@@ -10,49 +10,49 @@ import java.util.Date;
  * Created by james on 9/25/15.
  */
 public class ConventionYear implements Parcelable {
-    private Date mDate;
-    private int mDays;
+    private Date mStart;
+    private Date mEnd;
     private long mId;
     private long mConventionId;
     private String mLocation;
 
-    public ConventionYear(long id, Date date, int days, long conventionId, String location) {
-        mDate = date;
-        mDays = days;
+    public ConventionYear(long id, Date start, Date end, long conventionId, String location) {
+        mStart = start;
+        mEnd = end;
         mId = id;
         mConventionId = conventionId;
         mLocation = location;
     }
 
-    public ConventionYear(Date date, int days, long conventionId, String location) {
-        mDate = date;
-        mDays = days;
+    public ConventionYear(Date start, Date end, long conventionId, String location) {
+        mStart = start;
+        mEnd = end;
         mConventionId = conventionId;
         mLocation = location;
     }
 
     public ConventionYear(Parcel in) {
-        mDate = new Date(in.readLong());
-        mDays = in.readInt();
+        mStart = new Date(in.readLong());
+        mEnd = new Date(in.readLong());
         mId = in.readLong();
         mConventionId = in.readLong();
         mLocation = in.readString();
     }
 
-    public Date getDate() {
-        return mDate;
+    public Date getStartDate() {
+        return mStart;
     }
 
-    public void setDate(Date date) {
-        mDate = date;
+    public void setStart(Date start) {
+        mStart = start;
     }
 
-    public int getDays() {
-        return mDays;
+    public Date getEndDate() {
+        return mEnd;
     }
 
-    public void setDays(int days) {
-        mDays = days;
+    public void setEnd(Date end) {
+        mEnd = end;
     }
 
     public long getId() {
@@ -85,15 +85,8 @@ public class ConventionYear implements Parcelable {
 
     public int getYear() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(mDate);
+        calendar.setTime(mStart);
         return calendar.get(Calendar.YEAR);
-    }
-
-    public Date getEndDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(mDate);
-        calendar.add(Calendar.DAY_OF_MONTH, mDays - 1);
-        return calendar.getTime();
     }
 
     @Override
@@ -103,8 +96,8 @@ public class ConventionYear implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(mDate.getTime());
-        dest.writeInt(mDays);
+        dest.writeLong(mStart.getTime());
+        dest.writeLong(mEnd.getTime());
         dest.writeLong(mId);
         dest.writeLong(mConventionId);
         dest.writeString(mLocation);
