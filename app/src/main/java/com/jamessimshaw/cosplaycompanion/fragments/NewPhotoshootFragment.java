@@ -1,23 +1,33 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +41,12 @@ public class NewPhotoshootFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
 
     private ConventionYear mConventionYear;
+    private Calendar mStart;
+    private Button mStartDateButton;
+    private Button mStartTimeButton;
+    private EditText mLocationEditText;
+    private EditText mSeriesEditText;
+    private EditText mDescriptionEditText;
 
     private OnFragmentInteractionListener mListener;
 
@@ -41,7 +57,6 @@ public class NewPhotoshootFragment extends Fragment {
      * @param conventionYear ConventionYear to add the photoshoot to
      * @return A new instance of fragment NewPhotoshootFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static NewPhotoshootFragment newInstance(ConventionYear conventionYear) {
         NewPhotoshootFragment fragment = new NewPhotoshootFragment();
         Bundle args = new Bundle();
@@ -60,20 +75,52 @@ public class NewPhotoshootFragment extends Fragment {
         if (getArguments() != null) {
             mConventionYear = getArguments().getParcelable(ARG_PARAM1);
         }
+        mStart = Calendar.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_photoshoot, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_photoshoot, container, false);
+
+        setHasOptionsMenu(true);
+
+        mStartDateButton = (Button) view.findViewById(R.id.dateButton);
+        mStartTimeButton = (Button) view.findViewById(R.id.timeButton);
+        mLocationEditText = (EditText) view.findViewById(R.id.locationEditText);
+        mSeriesEditText = (EditText) view.findViewById(R.id.seriesEditText);
+        mDescriptionEditText = (EditText) view.findViewById(R.id.descriptionEditText);
+
+        updateDateAndTimeButtons();
+
+        mStartDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+                fragment.setListener(mDateListener);
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                fragment.show(transaction, "Start Date");
+            }
+        });
+
+        mStartTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialogFragment fragment = new TimePickerDialogFragment();
+                fragment.setListener(mTimeListener);
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                fragment.show(transaction, "Start Time");
+            }
+        });
+
+        return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (OnFragmentInteractionListener) context;
+            mListener = (OnFragmentInteractionListener) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -97,22 +144,43 @@ public class NewPhotoshootFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_submit) {
-
-            return true;
+            Photoshoot photoshoot = new Photoshoot(mSeriesEditText.getText().toString(),
+                    mStart.getTime(), mLocationEditText.getText().toString(),
+                    mDescriptionEditText.getText().toString(), mConventionYear.getId());
+            SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
+            sqLiteDataSource.create(photoshoot);
+            mListener.onNewPhotoshootFragmentInteraction();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    private TimePickerDialog.OnTimeSetListener mTimeListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            mStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mStart.set(Calendar.MINUTE, minute);
+
+            updateDateAndTimeButtons();
+        }
+    };
+
+    private DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mStart.set(year, monthOfYear, dayOfMonth);
+
+            updateDateAndTimeButtons();
+        }
+    };
+
+    private void updateDateAndTimeButtons() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
+        mStartDateButton.setText(dateFormat.format(mStart.getTime()));
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+        mStartTimeButton.setText(timeFormat.format(mStart.getTime()));
+    }
+
     public interface OnFragmentInteractionListener {
         public void onNewPhotoshootFragmentInteraction();
     }
