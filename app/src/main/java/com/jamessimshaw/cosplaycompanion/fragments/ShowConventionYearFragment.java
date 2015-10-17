@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
@@ -50,7 +51,6 @@ public class ShowConventionYearFragment extends Fragment {
      * @param conventionYear ConventionYear to show.
      * @return A new instance of fragment ShowConventionYearFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ShowConventionYearFragment newInstance(Convention convention, ConventionYear conventionYear) {
         ShowConventionYearFragment fragment = new ShowConventionYearFragment();
         Bundle args = new Bundle();
@@ -90,16 +90,16 @@ public class ShowConventionYearFragment extends Fragment {
         String title = mConvention.getName() + " " + mConventionYear.getYearAsString();
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(title);
 
-        RecyclerView conventionDetailsRecyclerView = (RecyclerView)view
+        RecyclerView conventionYearDetailsRecyclerView = (RecyclerView)view
                 .findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
+        conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
         mSQLiteDataSource = new SQLiteDataSource(getActivity());
         mPhotoshoots = mSQLiteDataSource.read(mConventionYear);
-        //ConYearRecViewAdapter adapter = new ConYearRecViewAdapter(mConvention, mConventionYears,
-        //        getActivity());
-        //conventionDetailsRecyclerView.setAdapter(adapter);
+        PhotoshootRecViewAdapter adapter = new PhotoshootRecViewAdapter(mConvention, mConventionYear,
+                mPhotoshoots);
+        conventionYearDetailsRecyclerView.setAdapter(adapter);
 
         return view;
     }
