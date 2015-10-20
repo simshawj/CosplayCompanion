@@ -35,11 +35,18 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mConventionNameTextView.setText(mConventions.get(position).getName());
         holder.mConventionLogoImageView.setImageBitmap(mConventions.get(position).getLogo());
         holder.mConventionDescriptionTextView.setText(mConventions.get(position).getDescription());
-        holder.mConvention = mConventions.get(position);
+        holder.mConventionYearTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mActivity instanceof MainActivity)
+                    ((MainActivity)mActivity).switchToConventionFragment(mConventions.get(
+                            position));
+            }
+        });
     }
 
     @Override
@@ -47,28 +54,21 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
         return mConventions.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mConventionNameTextView;
         private ImageView mConventionLogoImageView;
         private TextView mConventionDescriptionTextView;
-        private Activity mActivity;
-        private Convention mConvention;
+        private TextView mConventionEditTextView;
+        private TextView mConventionYearTextView;
 
         public ViewHolder(View itemView, Activity activity) {
             super(itemView);
 
-            mActivity = activity;
             mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
             mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
             mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionEditText);
-
-            itemView.setOnClickListener(this);
-        }
-
-        public void onClick(View v) {
-            if (mActivity instanceof MainActivity)
-                ((MainActivity)mActivity).switchToConventionFragment(mConvention);
+            mConventionYearTextView = (TextView) itemView.findViewById(R.id.conventionEdit);
         }
     }
 }

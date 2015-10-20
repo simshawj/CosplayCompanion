@@ -2,10 +2,12 @@ package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jamessimshaw.cosplaycompanion.R;
@@ -54,6 +56,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
         if (holder.mType == TYPE_HEADER) {
             holder.mConventionNameTextView.setText(mConvention.getName());
             holder.mConventionLogoImageView.setImageBitmap(mConvention.getLogo());
+            holder.mConventionDescriptionTextView.setText(mConvention.getDescription());
         } else {
             ConventionYear conventionYear = mConventionYears.get(position - 1);
             holder.mConventionYearYear.setText(conventionYear.getYearAsString());
@@ -82,7 +85,9 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private int mType;
+        private View mConventionOptions;
         private TextView mConventionNameTextView;
+        private TextView mConventionDescriptionTextView;
         private ImageView mConventionLogoImageView;
         private TextView mConventionYearYear;
         private TextView mConventionYearDates;
@@ -98,6 +103,9 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             if (mType == TYPE_HEADER) {
                 mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
                 mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
+                mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionEditText);
+                mConventionOptions = itemView.findViewById(R.id.options);
+                mConventionOptions.setVisibility(View.GONE);
             } else {
                 mConventionYearYear = (TextView) itemView.findViewById(R.id.convention_year);
                 mConventionYearDates = (TextView) itemView.findViewById(R.id.convention_dates);
