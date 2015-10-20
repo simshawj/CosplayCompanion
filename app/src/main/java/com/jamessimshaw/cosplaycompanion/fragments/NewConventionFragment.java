@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -28,6 +29,7 @@ public class NewConventionFragment extends Fragment {
     EditText mNameEditText;
     EditText mDescriptionEditText;
     ImageView mLogoImageView;
+    Button mLogoButton;
 
     public static NewConventionFragment newInstance() {
         NewConventionFragment fragment = new NewConventionFragment();
@@ -49,6 +51,13 @@ public class NewConventionFragment extends Fragment {
         mNameEditText = (EditText) view.findViewById(R.id.conventionNameEditText);
         mDescriptionEditText = (EditText) view.findViewById(R.id.descriptionEditText);
         mLogoImageView = (ImageView) view.findViewById(R.id.logoImageView);
+        mLogoButton = (Button) view.findViewById(R.id.conventionLogoChangeButton);
+        mLogoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         return view;
     }

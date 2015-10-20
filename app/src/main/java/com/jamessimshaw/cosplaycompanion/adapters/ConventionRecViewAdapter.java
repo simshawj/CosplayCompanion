@@ -38,6 +38,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mConventionNameTextView.setText(mConventions.get(position).getName());
         holder.mConventionLogoImageView.setImageBitmap(mConventions.get(position).getLogo());
+        holder.mConventionDescriptionTextView.setText(mConventions.get(position).getDescription());
         holder.mConvention = mConventions.get(position);
     }
 
@@ -50,6 +51,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
 
         private TextView mConventionNameTextView;
         private ImageView mConventionLogoImageView;
+        private TextView mConventionDescriptionTextView;
         private Activity mActivity;
         private Convention mConvention;
 
@@ -59,6 +61,8 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
             mActivity = activity;
             mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
             mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
+            mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionEditText);
+
             itemView.setOnClickListener(this);
         }
 
