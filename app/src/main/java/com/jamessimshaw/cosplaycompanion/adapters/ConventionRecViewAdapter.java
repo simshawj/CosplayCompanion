@@ -68,7 +68,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
             mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
             mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
             mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionEditText);
-            mConventionYearTextView = (TextView) itemView.findViewById(R.id.conventionEdit);
+            mConventionYearTextView = (TextView) itemView.findViewById(R.id.conventionYearsLink);
         }
     }
 }
