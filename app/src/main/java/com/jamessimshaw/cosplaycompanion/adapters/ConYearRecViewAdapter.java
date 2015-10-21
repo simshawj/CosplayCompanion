@@ -2,12 +2,10 @@ package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jamessimshaw.cosplaycompanion.R;
@@ -48,7 +46,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
 
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 
-        return new ViewHolder(view, viewType, mActivity);
+        return new ViewHolder(view, viewType);
     }
 
     @Override
@@ -58,14 +56,19 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             holder.mConventionLogoImageView.setImageBitmap(mConvention.getLogo());
             holder.mConventionDescriptionTextView.setText(mConvention.getDescription());
         } else {
-            ConventionYear conventionYear = mConventionYears.get(position - 1);
+            final ConventionYear conventionYear = mConventionYears.get(position - 1);
             holder.mConventionYearYear.setText(conventionYear.getYearAsString());
             SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
             String dateString = dateFormat.format(conventionYear.getStartDate()) + " to " +
                     dateFormat.format(conventionYear.getEndDate());
             holder.mConventionYearDates.setText(dateString);
-            holder.mConventionYear = conventionYear;
-            holder.mConvention = mConvention;
+            holder.mPhotoshootLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mActivity instanceof MainActivity)
+                        ((MainActivity)mActivity).switchToConventionYearFragment(mConvention, conventionYear);
+                }
+            });
         }
 
     }
@@ -83,7 +86,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             return TYPE_YEAR;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private int mType;
         private View mConventionOptions;
         private TextView mConventionNameTextView;
@@ -91,14 +94,11 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
         private ImageView mConventionLogoImageView;
         private TextView mConventionYearYear;
         private TextView mConventionYearDates;
-        private Activity mActivity;
-        private ConventionYear mConventionYear;
-        private Convention mConvention;
+        private TextView mPhotoshootLink;
 
-        public ViewHolder(View itemView, int itemType, Activity activity) {
+        public ViewHolder(View itemView, int itemType) {
             super(itemView);
 
-            mActivity = activity;
             mType = itemType;
             if (mType == TYPE_HEADER) {
                 mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
@@ -109,14 +109,8 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             } else {
                 mConventionYearYear = (TextView) itemView.findViewById(R.id.convention_year);
                 mConventionYearDates = (TextView) itemView.findViewById(R.id.convention_dates);
-                itemView.setOnClickListener(this);
+                mPhotoshootLink = (TextView) itemView.findViewById(R.id.photoshoots);
             }
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (mActivity instanceof MainActivity)
-                ((MainActivity)mActivity).switchToConventionYearFragment(mConvention, mConventionYear);
         }
     }
 }
