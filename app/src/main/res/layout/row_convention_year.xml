@@ -23,32 +23,32 @@
             android:layout_height="wrap_content"
             android:id="@+id/convention_dates"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/options"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/photoshoots"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_weight=".25"
                 android:text="Photoshoots"/>
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_weight=".25"
-                android:text="Edit"/>
+                android:text="Edit"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/photoshoots"
+                android:layout_toEndOf="@+id/photoshoots"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </LinearLayout>
