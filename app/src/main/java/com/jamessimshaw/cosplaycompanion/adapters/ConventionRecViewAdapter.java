@@ -30,7 +30,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_convention,
                 parent, false);
-        ViewHolder holder = new ViewHolder(view, mActivity);
+        ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
@@ -62,7 +62,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
         private TextView mConventionEditTextView;
         private TextView mConventionYearTextView;
 
-        public ViewHolder(View itemView, Activity activity) {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
