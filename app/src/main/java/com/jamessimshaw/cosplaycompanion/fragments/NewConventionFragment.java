@@ -1,8 +1,12 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,21 +19,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by james on 10/4/15.
  */
 public class NewConventionFragment extends Fragment {
+    public static final int LOGO = 0;
 
     OnFragmentInteractionListener mListener;
     EditText mNameEditText;
     EditText mDescriptionEditText;
     ImageView mLogoImageView;
     Button mLogoButton;
+    Uri mLogoUri;
 
     public static NewConventionFragment newInstance() {
         NewConventionFragment fragment = new NewConventionFragment();
@@ -55,7 +63,11 @@ public class NewConventionFragment extends Fragment {
         mLogoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(intent, LOGO);
             }
         });
 
@@ -104,5 +116,14 @@ public class NewConventionFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         public void onNewConventionFragmentInteraction(Convention convention);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            mLogoUri = data.getData();
+            Picasso.with(getContext()).load(mLogoUri).into(mLogoImageView);
+        }
     }
 }
