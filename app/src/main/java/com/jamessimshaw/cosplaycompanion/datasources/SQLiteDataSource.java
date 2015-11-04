@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.jamessimshaw.cosplaycompanion.models.Convention;
@@ -38,16 +39,13 @@ public class SQLiteDataSource {
     }
 
     public void create(Convention convention) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        convention.getLogo().compress(Bitmap.CompressFormat.PNG, 0, stream);
-
         SQLiteDatabase database = open();
         database.beginTransaction();
 
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.COLUMN_NAME, convention.getName());
         values.put(SQLiteHelper.COLUMN_DESCRIPTION, convention.getDescription());
-        values.put(SQLiteHelper.COLUMN_LOGO, stream.toByteArray());
+        values.put(SQLiteHelper.COLUMN_LOGO, convention.getLogoUri().toString());
         convention.setId(database.insert(SQLiteHelper.TABLE_CONVENTIONS, null, values));
 
         database.setTransactionSuccessful();
@@ -104,13 +102,12 @@ public class SQLiteDataSource {
         ArrayList<Convention> conventions = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                byte[] array = getBlobFromColumnName(cursor, SQLiteHelper.COLUMN_LOGO);
-                Bitmap logo = BitmapFactory.decodeByteArray(array, 0, array.length);
+                Uri logoUri = Uri.parse(getStringFromColumnName(cursor, SQLiteHelper.COLUMN_LOGO));
                 Convention convention = new Convention(
                         getLongFromColumnName(cursor, BaseColumns._ID),
                         getStringFromColumnName(cursor, SQLiteHelper.COLUMN_NAME),
                         getStringFromColumnName(cursor, SQLiteHelper.COLUMN_DESCRIPTION),
-                        logo);
+                        logoUri);
                 conventions.add(convention);
             } while(cursor.moveToNext());
         }

@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "cosplay_companion.db";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
 
     public static final String TABLE_CONVENTIONS = "conventions";
     public static final String TABLE_CONVENTION_YEARS = "convention_years";
@@ -32,7 +32,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_NAME +
             " TEXT NOT NULL, " + COLUMN_DESCRIPTION +
             " TEXT," + COLUMN_LOGO +
-            " BLOB)";
+            " TEXT)";
 
     private static final String CONVENTION_YEARS_CREATE = "create table " +
             TABLE_CONVENTION_YEARS + " (" + BaseColumns._ID +

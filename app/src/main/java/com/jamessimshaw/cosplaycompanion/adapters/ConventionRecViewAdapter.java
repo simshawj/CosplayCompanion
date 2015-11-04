@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,9 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mConventionNameTextView.setText(mConventions.get(position).getName());
-        holder.mConventionLogoImageView.setImageBitmap(mConventions.get(position).getLogo());
+        Picasso.with(mActivity)
+                .load(mConventions.get(position).getLogoUri())
+                .into(holder.mConventionLogoImageView);
         holder.mConventionDescriptionTextView.setText(mConventions.get(position).getDescription());
         holder.mConventionYearTextView.setOnClickListener(new View.OnClickListener() {
             @Override

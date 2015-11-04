@@ -1,10 +1,9 @@
 package com.jamessimshaw.cosplaycompanion.models;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.ByteArrayOutputStream;
 
 /**
  * Created by james on 9/25/15.
@@ -12,25 +11,25 @@ import java.io.ByteArrayOutputStream;
 public class Convention implements Parcelable {
     private String mName;
     private String mDescription;
-    private Bitmap mLogo;
+    private Uri mLogoUri;
     private long mId;
 
-    public Convention(long id, String name, String description, Bitmap logo) {
+    public Convention(long id, String name, String description, Uri logoUri) {
         mId = id;
         mName = name;
         mDescription = description;
-        mLogo = logo;
+        mLogoUri = logoUri;
     }
 
-    public Convention(String name, String description, Bitmap logo) {
+    public Convention(String name, String description, Uri logoUri) {
         mName = name;
         mDescription = description;
-        mLogo = logo;
+        mLogoUri = logoUri;
     }
 
     public Convention (Parcel in) {
         mName = in.readString();
-        mLogo = in.readParcelable(Bitmap.class.getClassLoader());
+        mLogoUri = in.readParcelable(Bitmap.class.getClassLoader());
         mDescription = in.readString();
     }
 
@@ -50,12 +49,12 @@ public class Convention implements Parcelable {
         mName = name;
     }
 
-    public Bitmap getLogo() {
-        return mLogo;
+    public Uri getLogoUri() {
+        return mLogoUri;
     }
 
-    public void setLogo(Bitmap logo) {
-        mLogo = logo;
+    public void setLogoUri(Uri logoUri) {
+        mLogoUri = logoUri;
     }
 
     public long getId() {
@@ -74,7 +73,7 @@ public class Convention implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
-        dest.writeParcelable(mLogo, 0);
+        dest.writeParcelable(mLogoUri, 0);
         dest.writeString(mDescription);
     }
 

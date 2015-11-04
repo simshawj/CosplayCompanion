@@ -66,7 +66,6 @@ public class NewConventionFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                 startActivityForResult(intent, LOGO);
             }
         });
@@ -98,8 +97,7 @@ public class NewConventionFragment extends Fragment {
         if (id == R.id.action_submit) {
             String name = mNameEditText.getText().toString();
             String description = mDescriptionEditText.getText().toString();
-            Bitmap logo = ((BitmapDrawable)mLogoImageView.getDrawable()).getBitmap();
-            Convention convention = new Convention(name, description, logo);
+            Convention convention = new Convention(name, description, mLogoUri);
             SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
             sqLiteDataSource.create(convention);
             mListener.onNewConventionFragmentInteraction(convention);

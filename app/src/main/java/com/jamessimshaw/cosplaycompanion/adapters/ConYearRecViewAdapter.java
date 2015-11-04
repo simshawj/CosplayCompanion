@@ -12,6 +12,7 @@ import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,7 +54,9 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder.mType == TYPE_HEADER) {
             holder.mConventionNameTextView.setText(mConvention.getName());
-            holder.mConventionLogoImageView.setImageBitmap(mConvention.getLogo());
+            Picasso.with(mActivity)
+                    .load(mConvention.getLogoUri())
+                    .into(holder.mConventionLogoImageView);
             holder.mConventionDescriptionTextView.setText(mConvention.getDescription());
         } else {
             final ConventionYear conventionYear = mConventionYears.get(position - 1);
