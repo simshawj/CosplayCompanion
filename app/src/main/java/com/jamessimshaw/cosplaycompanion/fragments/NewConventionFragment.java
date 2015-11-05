@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -63,7 +64,11 @@ public class NewConventionFragment extends Fragment {
         mLogoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent intent;
+                if (Build.VERSION.SDK_INT < 19)
+                    intent = new Intent(Intent.ACTION_GET_CONTENT);
+                else
+                    intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.setType("image/*");
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, LOGO);
@@ -121,6 +126,10 @@ public class NewConventionFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             mLogoUri = data.getData();
+            if (Build.VERSION.SDK_INT >= 19)
+                getContext().getApplicationContext().getContentResolver().takePersistableUriPermission(
+                        mLogoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                );
             Picasso.with(getContext()).load(mLogoUri).into(mLogoImageView);
         }
     }
