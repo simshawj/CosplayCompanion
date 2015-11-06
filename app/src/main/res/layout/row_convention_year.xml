@@ -23,6 +23,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/convention_dates"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#AA8FB2A9" />
+
         <RelativeLayout
             android:id="@+id/options"
             android:layout_width="match_parent"

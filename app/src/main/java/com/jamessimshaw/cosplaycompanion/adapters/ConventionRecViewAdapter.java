@@ -39,7 +39,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mConventionNameTextView.setText(mConventions.get(position).getName());
         Picasso.with(mActivity)
-                .load(mConventions.get(position).getLogoUri())
+                .load(mConventions.get(position).getLogoUri()).fit().centerInside()
                 .into(holder.mConventionLogoImageView);
         holder.mConventionDescriptionTextView.setText(mConventions.get(position).getDescription());
         holder.mConventionYearTextView.setOnClickListener(new View.OnClickListener() {

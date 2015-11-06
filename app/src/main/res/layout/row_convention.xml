@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:orientation="vertical">
@@ -18,7 +19,7 @@
             android:id="@+id/convention_logo"
             android:layout_width="match_parent"
             android:paddingBottom="16dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="250dp"/>
 
         <TextView
             android:id="@+id/convention_name"
@@ -29,6 +30,11 @@
             android:id="@+id/conDescriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#AA8FB2A9" />
 
         <RelativeLayout
             android:id="@+id/options"
