@@ -39,14 +39,30 @@ public class NewConventionFragment extends Fragment {
     ImageView mLogoImageView;
     Button mLogoButton;
     Uri mLogoUri;
+    Convention mConvention;
 
     public static NewConventionFragment newInstance() {
         NewConventionFragment fragment = new NewConventionFragment();
         return fragment;
     }
 
+    public static NewConventionFragment newInstance(Convention convention) {
+        NewConventionFragment fragment = new NewConventionFragment();
+        Bundle params = new Bundle();
+        params.putParcelable("convention", convention);
+        fragment.setArguments(params);
+        return fragment;
+    }
+
     public NewConventionFragment() {
 
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mConvention = getArguments().getParcelable("convention");
     }
 
     @Override
@@ -75,6 +91,13 @@ public class NewConventionFragment extends Fragment {
             }
         });
 
+        if (mConvention != null) {
+            mNameEditText.setText(mConvention.getName());
+            mDescriptionEditText.setText(mConvention.getDescription());
+            mLogoUri = mConvention.getLogoUri();
+            Picasso.with(getContext()).load(mLogoUri).into(mLogoImageView);
+        }
+
         return view;
     }
 
@@ -102,10 +125,18 @@ public class NewConventionFragment extends Fragment {
         if (id == R.id.action_submit) {
             String name = mNameEditText.getText().toString();
             String description = mDescriptionEditText.getText().toString();
-            Convention convention = new Convention(name, description, mLogoUri);
             SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
-            sqLiteDataSource.create(convention);
-            mListener.onNewConventionFragmentInteraction(convention);
+            if (mConvention == null) {
+                mConvention = new Convention(name, description, mLogoUri);
+                sqLiteDataSource.create(mConvention);
+            } else {
+                mConvention.setDescription(description);
+                mConvention.setName(name);
+                mConvention.setLogoUri(mLogoUri);
+                sqLiteDataSource.update(mConvention);
+            }
+            //TODO: Double check if mConvention is needed
+            mListener.onNewConventionFragmentInteraction(mConvention);
             return true;
         }
         return super.onOptionsItemSelected(item);

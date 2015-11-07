@@ -176,6 +176,22 @@ public class SQLiteDataSource {
         return photoshoots;
     }
 
+    public void update(Convention convention) {
+        SQLiteDatabase database = open();
+        database.beginTransaction();
+
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.COLUMN_NAME, convention.getName());
+        values.put(SQLiteHelper.COLUMN_DESCRIPTION, convention.getDescription());
+        values.put(SQLiteHelper.COLUMN_LOGO, convention.getLogoUri().toString());
+        String[] whereArgs = {Long.toString(convention.getId())};
+        database.update(SQLiteHelper.TABLE_CONVENTIONS, values, BaseColumns._ID + "=?", whereArgs);
+
+        database.setTransactionSuccessful();
+        database.endTransaction();
+        close(database);
+    }
+
     private long getLongFromColumnName(Cursor cursor, String columnName) {
         return cursor.getLong(cursor.getColumnIndex(columnName));
     }

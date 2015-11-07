@@ -46,8 +46,15 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
             @Override
             public void onClick(View v) {
                 if (mActivity instanceof MainActivity)
-                    ((MainActivity)mActivity).switchToConventionFragment(mConventions.get(
+                    ((MainActivity) mActivity).switchToConventionFragment(mConventions.get(
                             position));
+            }
+        });
+        holder.mConventionEditTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mActivity instanceof  MainActivity)
+                    ((MainActivity) mActivity).switchtoEditConvention(mConventions.get(position));
             }
         });
     }
@@ -72,6 +79,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
             mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
             mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionEditText);
             mConventionYearTextView = (TextView) itemView.findViewById(R.id.conventionYearsLink);
+            mConventionEditTextView = (TextView) itemView.findViewById(R.id.conventionEdit);
         }
     }
 }
