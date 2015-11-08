@@ -62,7 +62,10 @@ public class NewConventionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mConvention = getArguments().getParcelable("convention");
+        mConvention = null;
+
+        if (getArguments() != null)
+            mConvention = getArguments().getParcelable("convention");
     }
 
     @Override
