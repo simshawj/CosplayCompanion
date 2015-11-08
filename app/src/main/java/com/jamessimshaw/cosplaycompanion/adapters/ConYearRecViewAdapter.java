@@ -69,7 +69,14 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
                 @Override
                 public void onClick(View v) {
                     if (mActivity instanceof MainActivity)
-                        ((MainActivity)mActivity).switchToConventionYearFragment(mConvention, conventionYear);
+                        ((MainActivity) mActivity).switchToConventionYearFragment(mConvention, conventionYear);
+                }
+            });
+            holder.mEditTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   if (mActivity instanceof MainActivity)
+                       ((MainActivity) mActivity).switchtoEditConventionYear(conventionYear);
                 }
             });
         }
@@ -98,6 +105,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
         private TextView mConventionYearYear;
         private TextView mConventionYearDates;
         private TextView mPhotoshootLink;
+        private TextView mEditTextView;
 
         public ViewHolder(View itemView, int itemType) {
             super(itemView);
@@ -113,6 +121,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
                 mConventionYearYear = (TextView) itemView.findViewById(R.id.convention_year);
                 mConventionYearDates = (TextView) itemView.findViewById(R.id.convention_dates);
                 mPhotoshootLink = (TextView) itemView.findViewById(R.id.photoshoots);
+                mEditTextView = (TextView) itemView.findViewById(R.id.yearEditText);
             }
         }
     }

@@ -192,6 +192,24 @@ public class SQLiteDataSource {
         close(database);
     }
 
+    public void update(ConventionYear conventionYear) {
+        SQLiteDatabase database = open();
+        database.beginTransaction();
+
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.COLUMN_DATE, conventionYear.getStartDate().getTime());
+        values.put(SQLiteHelper.COLUMN_DAYS, conventionYear.getEndDate().getTime());
+        values.put(SQLiteHelper.COLUMN_CONVENTION, conventionYear.getConventionId());
+        values.put(SQLiteHelper.COLUMN_LOCATION, conventionYear.getLocation());
+        String[] whereArgs = {Long.toString(conventionYear.getId())};
+        database.update(SQLiteHelper.TABLE_CONVENTION_YEARS, values, BaseColumns._ID + "=?",
+                whereArgs);
+
+        database.setTransactionSuccessful();
+        database.endTransaction();
+        close(database);
+    }
+
     private long getLongFromColumnName(Cursor cursor, String columnName) {
         return cursor.getLong(cursor.getColumnIndex(columnName));
     }

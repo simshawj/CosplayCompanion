@@ -1,15 +1,10 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,17 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,9 +30,6 @@ import java.util.Locale;
  * Created by james on 10/11/15.
  */
 public class NewConventionYearFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final int START_DATE = 0;
-    private static final int END_DATE = 1;
 
     private OnFragmentInteractionListener mListener;
     private Convention mConvention;
@@ -52,11 +39,20 @@ public class NewConventionYearFragment extends Fragment {
     private Date mStartDate;
     private Date mEndDate;
     private SimpleDateFormat mDateFormat;
+    private ConventionYear mConventionYear;
 
     public static NewConventionYearFragment newInstance(Convention convention) {
         NewConventionYearFragment fragment = new NewConventionYearFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, convention);
+        args.putParcelable("convention", convention);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static NewConventionYearFragment newInstance(ConventionYear conventionYear) {
+        NewConventionYearFragment fragment = new NewConventionYearFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("conventionYear", conventionYear);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,12 +64,11 @@ public class NewConventionYearFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mConventionYear = null;
         if (getArguments() != null) {
-            mConvention = getArguments().getParcelable(ARG_PARAM1);
+            mConvention = getArguments().getParcelable("convention");
+            mConventionYear = getArguments().getParcelable("conventionYear");
         }
-        Calendar calendar = Calendar.getInstance();
-        mStartDate = calendar.getTime();
-        mEndDate = calendar.getTime();
     }
 
     @Override
@@ -81,7 +76,6 @@ public class NewConventionYearFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_convention_year, container, false);
-        mDateFormat = new SimpleDateFormat("cccc MMMM dd yyyy", Locale.getDefault());
 
         setHasOptionsMenu(true);
 
@@ -89,8 +83,6 @@ public class NewConventionYearFragment extends Fragment {
         mEndButton = (Button) view.findViewById(R.id.endDateButton);
         mLocationEditText = (EditText) view.findViewById(R.id.conventionLocation);
 
-        mStartButton.setText(mDateFormat.format(mStartDate));
-        mEndButton.setText(mDateFormat.format(mEndDate));
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +102,25 @@ public class NewConventionYearFragment extends Fragment {
             }
         });
 
+        populateView();
+
         return view;
+    }
+
+    private void populateView() {
+        mDateFormat = new SimpleDateFormat("cccc MMMM dd yyyy", Locale.getDefault());
+        if (mConventionYear == null) {
+            Calendar calendar = Calendar.getInstance();
+            mStartDate = calendar.getTime();
+            mEndDate = calendar.getTime();
+        } else {
+            mStartDate = mConventionYear.getStartDate();
+            mEndDate = mConventionYear.getEndDate();
+            mLocationEditText.setText(mConventionYear.getLocation());
+        }
+
+        mStartButton.setText(mDateFormat.format(mStartDate));
+        mEndButton.setText(mDateFormat.format(mEndDate));
     }
 
     @Override
@@ -140,10 +150,17 @@ public class NewConventionYearFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
                 return true;
             }
-            ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
-                    mConvention.getId(), mLocationEditText.getText().toString());
             SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
-            sqLiteDataSource.create(conventionYear);
+            if (mConventionYear == null) {
+                ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
+                        mConvention.getId(), mLocationEditText.getText().toString());
+                sqLiteDataSource.create(conventionYear);
+            } else {
+                mConventionYear.setStart(mStartDate);
+                mConventionYear.setEnd(mEndDate);
+                mConventionYear.setLocation(mLocationEditText.getText().toString());
+                sqLiteDataSource.update(mConventionYear);
+            }
             mListener.onNewConventionYearFragmentInteraction();
             return true;
         }
