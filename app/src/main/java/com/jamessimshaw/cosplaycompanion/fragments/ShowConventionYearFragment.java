@@ -98,7 +98,7 @@ public class ShowConventionYearFragment extends Fragment {
         mSQLiteDataSource = new SQLiteDataSource(getActivity());
         mPhotoshoots = mSQLiteDataSource.read(mConventionYear);
         PhotoshootRecViewAdapter adapter = new PhotoshootRecViewAdapter(mConvention, mConventionYear,
-                mPhotoshoots);
+                mPhotoshoots, getActivity());
         conventionYearDetailsRecyclerView.setAdapter(adapter);
 
         return view;

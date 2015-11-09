@@ -210,6 +210,25 @@ public class SQLiteDataSource {
         close(database);
     }
 
+    public void update(Photoshoot photoshoot) {
+        SQLiteDatabase database = open();
+        database.beginTransaction();
+
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.COLUMN_SERIES, photoshoot.getSeries());
+        values.put(SQLiteHelper.COLUMN_START, photoshoot.getStart().getTime());
+        values.put(SQLiteHelper.COLUMN_LOCATION, photoshoot.getLocation());
+        values.put(SQLiteHelper.COLUMN_DESCRIPTION, photoshoot.getDescription());
+        values.put(SQLiteHelper.COLUMN_CONVENTION_YEAR, photoshoot.getConventionYearId());
+        String[] whereArgs = {Long.toString(photoshoot.getId())};
+        database.update(SQLiteHelper.TABLE_PHOTOSHOOTS, values, BaseColumns._ID + "=?",
+                whereArgs);
+
+        database.setTransactionSuccessful();
+        database.endTransaction();
+        close(database);
+    }
+
     private long getLongFromColumnName(Cursor cursor, String columnName) {
         return cursor.getLong(cursor.getColumnIndex(columnName));
     }

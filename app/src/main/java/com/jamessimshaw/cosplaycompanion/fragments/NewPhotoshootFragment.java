@@ -41,6 +41,7 @@ public class NewPhotoshootFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
 
     private ConventionYear mConventionYear;
+    private Photoshoot mPhotoshoot;
     private Calendar mStart;
     private Button mStartDateButton;
     private Button mStartTimeButton;
@@ -65,6 +66,21 @@ public class NewPhotoshootFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param photoshoot Photoshoot to edit
+     * @return A new instance of fragment NewPhotoshootFragment.
+     */
+    public static NewPhotoshootFragment newInstance(Photoshoot photoshoot) {
+        NewPhotoshootFragment fragment = new NewPhotoshootFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("photoshoot", photoshoot);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public NewPhotoshootFragment() {
         // Required empty public constructor
     }
@@ -72,10 +88,11 @@ public class NewPhotoshootFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPhotoshoot = null;
         if (getArguments() != null) {
             mConventionYear = getArguments().getParcelable(ARG_PARAM1);
+            mPhotoshoot = getArguments().getParcelable("photoshoot");
         }
-        mStart = Calendar.getInstance();
     }
 
     @Override
@@ -91,7 +108,7 @@ public class NewPhotoshootFragment extends Fragment {
         mSeriesEditText = (EditText) view.findViewById(R.id.seriesEditText);
         mDescriptionEditText = (EditText) view.findViewById(R.id.descriptionEditText);
 
-        updateDateAndTimeButtons();
+        populateView();
 
         mStartDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +131,18 @@ public class NewPhotoshootFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void populateView() {
+        mStart = Calendar.getInstance();
+        if(mPhotoshoot != null) {
+            mStart.setTime(mPhotoshoot.getStart());
+            mLocationEditText.setText(mPhotoshoot.getLocation());
+            mSeriesEditText.setText(mPhotoshoot.getSeries());
+            mDescriptionEditText.setText(mPhotoshoot.getDescription());
+        }
+
+        updateDateAndTimeButtons();
     }
 
     @Override
@@ -144,11 +173,19 @@ public class NewPhotoshootFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_submit) {
-            Photoshoot photoshoot = new Photoshoot(mSeriesEditText.getText().toString(),
-                    mStart.getTime(), mLocationEditText.getText().toString(),
-                    mDescriptionEditText.getText().toString(), mConventionYear.getId());
             SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
-            sqLiteDataSource.create(photoshoot);
+            if (mPhotoshoot == null) {
+                Photoshoot photoshoot = new Photoshoot(mSeriesEditText.getText().toString(),
+                        mStart.getTime(), mLocationEditText.getText().toString(),
+                        mDescriptionEditText.getText().toString(), mConventionYear.getId());
+                sqLiteDataSource.create(photoshoot);
+            } else {
+                mPhotoshoot.setDescription(mDescriptionEditText.getText().toString());
+                mPhotoshoot.setLocation(mLocationEditText.getText().toString());
+                mPhotoshoot.setSeries(mSeriesEditText.getText().toString());
+                mPhotoshoot.setStart(mStart.getTime());
+                sqLiteDataSource.update(mPhotoshoot);
+            }
             mListener.onNewPhotoshootFragmentInteraction();
         }
         return super.onOptionsItemSelected(item);

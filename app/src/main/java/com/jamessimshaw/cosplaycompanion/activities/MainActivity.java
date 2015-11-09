@@ -19,6 +19,7 @@ import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -134,6 +135,12 @@ public class MainActivity extends AppCompatActivity
 
     public void switchtoEditConventionYear(ConventionYear conventionYear) {
         NewConventionYearFragment fragment = NewConventionYearFragment.newInstance(conventionYear);
+
+        gotoFragment(fragment);
+    }
+
+    public void switchtoEditPhotoshoot(Photoshoot photoshoot) {
+        NewPhotoshootFragment fragment = NewPhotoshootFragment.newInstance(photoshoot);
 
         gotoFragment(fragment);
     }

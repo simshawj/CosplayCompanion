@@ -1,5 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.adapters;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
@@ -25,12 +27,14 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
     private ArrayList<Photoshoot> mPhotoshoots;
     private Convention mConvention;
     private ConventionYear mConventionYear;
+    private Activity mActivity;
 
     public PhotoshootRecViewAdapter(Convention convention, ConventionYear conventionYear,
-                                    ArrayList<Photoshoot> photoshoots) {
+                                    ArrayList<Photoshoot> photoshoots, Activity activity) {
         mConvention = convention;
         mConventionYear = conventionYear;
         mPhotoshoots = photoshoots;
+        mActivity = activity;
     }
 
     @Override
@@ -47,7 +51,7 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         if (holder.mType == TYPE_HEADER) {
             holder.mConventionYearYear.setText(mConventionYear.getYearAsString());
             SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
@@ -55,12 +59,20 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
                     dateFormat.format(mConventionYear.getEndDate());
             holder.mConventionYearDates.setText(dateString);
         } else {
-            holder.mPhotoshootSeries.setText(mPhotoshoots.get(position - 1).getSeries());
-            holder.mPhotoshootDescription.setText(mPhotoshoots.get(position - 1).getDescription());
-            holder.mPhotoshootLocation.setText(mPhotoshoots.get(position - 1).getLocation());
+            final Photoshoot photoshoot = mPhotoshoots.get(position - 1);
+            holder.mPhotoshootSeries.setText(photoshoot.getSeries());
+            holder.mPhotoshootDescription.setText(photoshoot.getDescription());
+            holder.mPhotoshootLocation.setText(photoshoot.getLocation());
             SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd yyyy @ hh:mm aa",
                     Locale.getDefault());
-            holder.mPhotoshootDate.setText(dateFormat.format(mPhotoshoots.get(position - 1).getStart()));
+            holder.mPhotoshootDate.setText(dateFormat.format(photoshoot.getStart()));
+            holder.mEditPhotoshoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mActivity instanceof MainActivity)
+                        ((MainActivity) mActivity).switchtoEditPhotoshoot(photoshoot);
+                }
+            });
         }
     }
 
@@ -85,6 +97,7 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
         private TextView mPhotoshootDate;
         private TextView mPhotoshootLocation;
         private TextView mPhotoshootDescription;
+        private TextView mEditPhotoshoot;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
@@ -100,6 +113,7 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
                 mPhotoshootDate = (TextView) itemView.findViewById(R.id.dateTextView);
                 mPhotoshootLocation = (TextView) itemView.findViewById(R.id.locationTextView);
                 mPhotoshootDescription = (TextView) itemView.findViewById(R.id.descriptionTextView);
+                mEditPhotoshoot = (TextView) itemView.findViewById(R.id.editPhotoshoot);
             }
         }
     }
