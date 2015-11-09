@@ -98,7 +98,6 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private int mType;
-        private View mConventionOptions;
         private TextView mConventionNameTextView;
         private TextView mConventionDescriptionTextView;
         private ImageView mConventionLogoImageView;
@@ -115,8 +114,8 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
                 mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
                 mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
                 mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionEditText);
-                mConventionOptions = itemView.findViewById(R.id.options);
-                mConventionOptions.setVisibility(View.GONE);
+                itemView.findViewById(R.id.options).setVisibility(View.GONE);
+                itemView.findViewById(R.id.horizontalRule).setVisibility(View.GONE);
             } else {
                 mConventionYearYear = (TextView) itemView.findViewById(R.id.convention_year);
                 mConventionYearDates = (TextView) itemView.findViewById(R.id.convention_dates);

@@ -94,6 +94,7 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
                 mConventionYearYear = (TextView) itemView.findViewById(R.id.convention_year);
                 mConventionYearDates = (TextView) itemView.findViewById(R.id.convention_dates);
                 itemView.findViewById(R.id.options).setVisibility(View.GONE);   //Removes options
+                itemView.findViewById(R.id.horizontalRule).setVisibility(View.GONE);
             } else {
                 mPhotoshootSeries = (TextView) itemView.findViewById(R.id.seriesTextView);
                 mPhotoshootDate = (TextView) itemView.findViewById(R.id.dateTextView);
