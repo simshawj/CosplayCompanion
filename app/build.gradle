@@ -27,4 +27,9 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // Robolectric
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:shadows-support-v4:3.0'
+    testCompile 'org.robolectric:robolectric:3.0'
 }
