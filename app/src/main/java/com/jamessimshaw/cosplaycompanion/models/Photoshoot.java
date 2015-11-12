@@ -118,4 +118,35 @@ public class Photoshoot implements Parcelable {
             return new Photoshoot[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Photoshoot))
+            return false;
+
+        Photoshoot otherPhotoshoot = (Photoshoot) o;
+
+        return mSeries.equals(otherPhotoshoot.mSeries) &&
+                mStart.equals(otherPhotoshoot.mStart) &&
+                mLocation.equals(otherPhotoshoot.mLocation) &&
+                mDescription.equals(otherPhotoshoot.mDescription) &&
+                (mConventionYearId == otherPhotoshoot.mConventionYearId) &&
+                (mId == otherPhotoshoot.mId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+
+        result = 37 * result + mSeries.hashCode();
+        result = 37 * result + mStart.hashCode();
+        result = 37 * result + mLocation.hashCode();
+        result = 37 * result + mDescription.hashCode();
+        result = 37 * result + (int) (mConventionYearId ^ (mConventionYearId >>> 32));
+        result = 37 * result + (int) (mId ^ (mId >>> 32));
+
+        return result;
+    }
 }
