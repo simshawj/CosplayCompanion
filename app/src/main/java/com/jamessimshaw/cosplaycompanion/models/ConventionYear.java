@@ -116,4 +116,33 @@ public class ConventionYear implements Parcelable {
             return new ConventionYear[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof ConventionYear))
+            return false;
+
+        ConventionYear otherYear = (ConventionYear) o;
+
+        return mStart.equals(otherYear.mStart) &&
+                mEnd.equals(otherYear.mEnd) &&
+                mLocation.equals(otherYear.mLocation) &&
+                (mConventionId == otherYear.mConventionId) &&
+                (mId == otherYear.mId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+
+        result = 37 * result + mStart.hashCode();
+        result = 37 * result + mEnd.hashCode();
+        result = 37 * result + mLocation.hashCode();
+        result = 37 * result + (int) (mConventionId ^ (mConventionId >>> 32));
+        result = 37 * result + (int) (mId ^ (mId >>> 32));
+
+        return result;
+    }
 }
