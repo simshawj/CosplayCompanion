@@ -31,6 +31,7 @@ public class Convention implements Parcelable {
         mName = in.readString();
         mLogoUri = in.readParcelable(Bitmap.class.getClassLoader());
         mDescription = in.readString();
+        mId = in.readLong();
     }
 
     public String getDescription() {
@@ -75,6 +76,7 @@ public class Convention implements Parcelable {
         dest.writeString(mName);
         dest.writeParcelable(mLogoUri, 0);
         dest.writeString(mDescription);
+        dest.writeLong(mId);
     }
 
     public static final Parcelable.Creator<Convention> CREATOR
@@ -90,4 +92,31 @@ public class Convention implements Parcelable {
             return new Convention[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Convention))
+            return false;
+
+        Convention otherConvention = (Convention) o;
+
+        return mName.equals(otherConvention.mName) &&
+                mDescription.equals(otherConvention.mDescription) &&
+                mLogoUri.equals(otherConvention.mLogoUri) &&
+                (mId == otherConvention.mId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+
+        result = 37 * result + mName.hashCode();
+        result = 37 * result + mDescription.hashCode();
+        result = 37 * result + mLogoUri.hashCode();
+        result = 37 * result + (int) (mId ^ (mId >>> 32));
+
+        return result;
+    }
 }
