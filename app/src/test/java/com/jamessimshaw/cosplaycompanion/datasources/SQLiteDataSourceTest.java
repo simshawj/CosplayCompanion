@@ -88,12 +88,7 @@ public class SQLiteDataSourceTest {
     @Test
     public void testReadPhotoshoot() throws Exception {
         ArrayList<Photoshoot> photoshoots = mDataSource.read(mConventionYear);
-        assertEquals(mPhotoshoot.getLocation(), photoshoots.get(0).getLocation());
-        assertEquals(mPhotoshoot.getDescription(), photoshoots.get(0).getDescription());
-        assertEquals(mPhotoshoot.getSeries(), photoshoots.get(0).getSeries());
-        assertEquals(mPhotoshoot.getStart(), photoshoots.get(0).getStart());
-        assertEquals(mPhotoshoot.getConventionYearId(), photoshoots.get(0).getConventionYearId());
-        assertEquals(mPhotoshoot.getId(), photoshoots.get(0).getId());
+        assertEquals(mPhotoshoot, photoshoots.get(0));
     }
 
     @Test
@@ -102,7 +97,7 @@ public class SQLiteDataSourceTest {
         long originalId = mPhotoshoot.getId();
         mDataSource.update(mPhotoshoot);
         ArrayList<Photoshoot> photoshoots = mDataSource.read(mConventionYear);
-        assertEquals(mPhotoshoot.getLocation(), photoshoots.get(0).getLocation());
+        assertEquals(mPhotoshoot, photoshoots.get(0));
         assertEquals(originalId, photoshoots.get(0).getId());
     }
 }
