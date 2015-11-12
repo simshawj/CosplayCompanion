@@ -72,11 +72,7 @@ public class SQLiteDataSourceTest {
     @Test
     public void testReadConventionYear() throws Exception {
         ArrayList<ConventionYear> conventionYears = mDataSource.read(mConvention);
-        assertEquals(mConventionYear.getStartDate(), conventionYears.get(0).getStartDate());
-        assertEquals(mConventionYear.getEndDate(), conventionYears.get(0).getEndDate());
-        assertEquals(mConventionYear.getLocation(), conventionYears.get(0).getLocation());
-        assertEquals(mConventionYear.getConventionId(), conventionYears.get(0).getConventionId());
-        assertEquals(mConventionYear.getId(), conventionYears.get(0).getId());
+        assertEquals(mConventionYear, conventionYears.get(0));
     }
 
     @Test
@@ -85,7 +81,7 @@ public class SQLiteDataSourceTest {
         long originalId = mConventionYear.getId();
         mDataSource.update(mConventionYear);
         ArrayList<ConventionYear> conventionYears = mDataSource.read(mConvention);
-        assertEquals(mConventionYear.getLocation(), conventionYears.get(0).getLocation());
+        assertEquals(mConventionYear, conventionYears.get(0));
         assertEquals(originalId, conventionYears.get(0).getId());
     }
 
