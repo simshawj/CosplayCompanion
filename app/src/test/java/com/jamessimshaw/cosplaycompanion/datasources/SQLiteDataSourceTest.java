@@ -56,10 +56,7 @@ public class SQLiteDataSourceTest {
     @Test
     public void testReadConvention() throws Exception {
         ArrayList<Convention> conventions = mDataSource.read();
-        assertEquals(mConvention.getDescription(), conventions.get(0).getDescription());
-        assertEquals(mConvention.getLogoUri(), conventions.get(0).getLogoUri());
-        assertEquals(mConvention.getName(), conventions.get(0).getName());
-        assertEquals(mConvention.getId(), conventions.get(0).getId());
+        assertEquals(mConvention, conventions.get(0));
     }
 
     @Test
@@ -68,7 +65,7 @@ public class SQLiteDataSourceTest {
         long originalId = mConvention.getId();
         mDataSource.update(mConvention);
         ArrayList<Convention> conventions = mDataSource.read();
-        assertEquals(mConvention.getDescription(), conventions.get(0).getDescription());
+        assertEquals(mConvention, conventions.get(0));
         assertEquals(originalId, conventions.get(0).getId());
     }
 
