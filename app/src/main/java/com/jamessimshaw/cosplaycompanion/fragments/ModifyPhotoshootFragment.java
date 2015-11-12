@@ -1,10 +1,8 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -26,18 +24,17 @@ import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NewPhotoshootFragment.OnFragmentInteractionListener} interface
+ * {@link ModifyPhotoshootFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NewPhotoshootFragment#newInstance} factory method to
+ * Use the {@link ModifyPhotoshootFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewPhotoshootFragment extends Fragment {
+public class ModifyPhotoshootFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
 
     private ConventionYear mConventionYear;
@@ -56,10 +53,10 @@ public class NewPhotoshootFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param conventionYear ConventionYear to add the photoshoot to
-     * @return A new instance of fragment NewPhotoshootFragment.
+     * @return A new instance of fragment ModifyPhotoshootFragment.
      */
-    public static NewPhotoshootFragment newInstance(ConventionYear conventionYear) {
-        NewPhotoshootFragment fragment = new NewPhotoshootFragment();
+    public static ModifyPhotoshootFragment newInstance(ConventionYear conventionYear) {
+        ModifyPhotoshootFragment fragment = new ModifyPhotoshootFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_PARAM1, conventionYear);
         fragment.setArguments(args);
@@ -71,17 +68,17 @@ public class NewPhotoshootFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param photoshoot Photoshoot to edit
-     * @return A new instance of fragment NewPhotoshootFragment.
+     * @return A new instance of fragment ModifyPhotoshootFragment.
      */
-    public static NewPhotoshootFragment newInstance(Photoshoot photoshoot) {
-        NewPhotoshootFragment fragment = new NewPhotoshootFragment();
+    public static ModifyPhotoshootFragment newInstance(Photoshoot photoshoot) {
+        ModifyPhotoshootFragment fragment = new ModifyPhotoshootFragment();
         Bundle args = new Bundle();
         args.putParcelable("photoshoot", photoshoot);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public NewPhotoshootFragment() {
+    public ModifyPhotoshootFragment() {
         // Required empty public constructor
     }
 

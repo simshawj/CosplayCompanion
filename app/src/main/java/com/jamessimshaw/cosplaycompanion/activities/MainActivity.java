@@ -12,9 +12,9 @@ import android.view.MenuItem;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
-import com.jamessimshaw.cosplaycompanion.fragments.NewConventionFragment;
-import com.jamessimshaw.cosplaycompanion.fragments.NewConventionYearFragment;
-import com.jamessimshaw.cosplaycompanion.fragments.NewPhotoshootFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionYearFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
@@ -24,11 +24,11 @@ import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListConventionsFragment.OnFragmentInteractionListener,
-        NewConventionFragment.OnFragmentInteractionListener,
+        ModifyConventionFragment.OnFragmentInteractionListener,
         ShowConventionFragment.OnFragmentInteractionListener,
-        NewConventionYearFragment.OnFragmentInteractionListener,
+        ModifyConventionYearFragment.OnFragmentInteractionListener,
         ShowConventionYearFragment.OnFragmentInteractionListener,
-        NewPhotoshootFragment.OnFragmentInteractionListener {
+        ModifyPhotoshootFragment.OnFragmentInteractionListener {
 
     private static String CONVENTIONS_FRAGMENT = "conventions";
 
@@ -128,19 +128,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void switchtoEditConvention(Convention convention) {
-        NewConventionFragment fragment = NewConventionFragment.newInstance(convention);
+        ModifyConventionFragment fragment = ModifyConventionFragment.newInstance(convention);
 
         gotoFragment(fragment);
     }
 
     public void switchtoEditConventionYear(ConventionYear conventionYear) {
-        NewConventionYearFragment fragment = NewConventionYearFragment.newInstance(conventionYear);
+        ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(conventionYear);
 
         gotoFragment(fragment);
     }
 
     public void switchtoEditPhotoshoot(Photoshoot photoshoot) {
-        NewPhotoshootFragment fragment = NewPhotoshootFragment.newInstance(photoshoot);
+        ModifyPhotoshootFragment fragment = ModifyPhotoshootFragment.newInstance(photoshoot);
 
         gotoFragment(fragment);
     }
@@ -154,21 +154,21 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConventionFragmentInteraction() {
-        NewConventionFragment fragment = NewConventionFragment.newInstance();
+        ModifyConventionFragment fragment = ModifyConventionFragment.newInstance();
 
         gotoFragment(fragment);
     }
 
     @Override
     public void onShowConventionFragmentInteraction(Convention convention) {
-        NewConventionYearFragment fragment = NewConventionYearFragment.newInstance(convention);
+        ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(convention);
 
         gotoFragment(fragment);
     }
 
     @Override
     public void onShowConventionYearFragmentInteraction(ConventionYear conventionYear) {
-        NewPhotoshootFragment fragment = NewPhotoshootFragment.newInstance(conventionYear);
+        ModifyPhotoshootFragment fragment = ModifyPhotoshootFragment.newInstance(conventionYear);
 
         gotoFragment(fragment);
     }

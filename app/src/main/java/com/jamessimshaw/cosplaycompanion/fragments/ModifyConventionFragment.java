@@ -3,11 +3,8 @@ package com.jamessimshaw.cosplaycompanion.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
@@ -30,7 +26,7 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by james on 10/4/15.
  */
-public class NewConventionFragment extends Fragment {
+public class ModifyConventionFragment extends Fragment {
     public static final int LOGO = 0;
 
     OnFragmentInteractionListener mListener;
@@ -41,20 +37,20 @@ public class NewConventionFragment extends Fragment {
     Uri mLogoUri;
     Convention mConvention;
 
-    public static NewConventionFragment newInstance() {
-        NewConventionFragment fragment = new NewConventionFragment();
+    public static ModifyConventionFragment newInstance() {
+        ModifyConventionFragment fragment = new ModifyConventionFragment();
         return fragment;
     }
 
-    public static NewConventionFragment newInstance(Convention convention) {
-        NewConventionFragment fragment = new NewConventionFragment();
+    public static ModifyConventionFragment newInstance(Convention convention) {
+        ModifyConventionFragment fragment = new ModifyConventionFragment();
         Bundle params = new Bundle();
         params.putParcelable("convention", convention);
         fragment.setArguments(params);
         return fragment;
     }
 
-    public NewConventionFragment() {
+    public ModifyConventionFragment() {
 
     }
 

@@ -29,7 +29,7 @@ import java.util.Locale;
 /**
  * Created by james on 10/11/15.
  */
-public class NewConventionYearFragment extends Fragment {
+public class ModifyConventionYearFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Convention mConvention;
@@ -41,23 +41,23 @@ public class NewConventionYearFragment extends Fragment {
     private SimpleDateFormat mDateFormat;
     private ConventionYear mConventionYear;
 
-    public static NewConventionYearFragment newInstance(Convention convention) {
-        NewConventionYearFragment fragment = new NewConventionYearFragment();
+    public static ModifyConventionYearFragment newInstance(Convention convention) {
+        ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
         Bundle args = new Bundle();
         args.putParcelable("convention", convention);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static NewConventionYearFragment newInstance(ConventionYear conventionYear) {
-        NewConventionYearFragment fragment = new NewConventionYearFragment();
+    public static ModifyConventionYearFragment newInstance(ConventionYear conventionYear) {
+        ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
         Bundle args = new Bundle();
         args.putParcelable("conventionYear", conventionYear);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public NewConventionYearFragment() {
+    public ModifyConventionYearFragment() {
         // Required Default constructor
     }
 
