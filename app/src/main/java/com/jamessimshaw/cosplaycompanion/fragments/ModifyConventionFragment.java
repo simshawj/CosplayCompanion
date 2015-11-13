@@ -135,7 +135,7 @@ public class ModifyConventionFragment extends Fragment {
                 sqLiteDataSource.update(mConvention);
             }
             //TODO: Double check if mConvention is needed
-            mListener.onNewConventionFragmentInteraction(mConvention);
+            mListener.onModifyFragmentInteraction();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -148,7 +148,7 @@ public class ModifyConventionFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        public void onNewConventionFragmentInteraction(Convention convention);
+        public void onModifyFragmentInteraction();
     }
 
     @Override

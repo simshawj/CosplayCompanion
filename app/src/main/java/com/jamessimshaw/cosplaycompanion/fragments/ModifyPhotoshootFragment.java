@@ -183,7 +183,7 @@ public class ModifyPhotoshootFragment extends Fragment {
                 mPhotoshoot.setStart(mStart.getTime());
                 sqLiteDataSource.update(mPhotoshoot);
             }
-            mListener.onNewPhotoshootFragmentInteraction();
+            mListener.onModifyFragmentInteraction();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -216,7 +216,7 @@ public class ModifyPhotoshootFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        public void onNewPhotoshootFragmentInteraction();
+        public void onModifyFragmentInteraction();
     }
 
 }

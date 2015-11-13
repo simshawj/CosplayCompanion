@@ -174,17 +174,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onNewConventionFragmentInteraction(Convention convention) {
-        leaveFragment();
-    }
-
-    @Override
-    public void onNewConventionYearFragmentInteraction() {
-        leaveFragment();
-    }
-
-    @Override
-    public void onNewPhotoshootFragmentInteraction() {
+    public void onModifyFragmentInteraction() {
         leaveFragment();
     }
 }

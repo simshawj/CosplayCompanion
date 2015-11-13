@@ -161,7 +161,7 @@ public class ModifyConventionYearFragment extends Fragment {
                 mConventionYear.setLocation(mLocationEditText.getText().toString());
                 sqLiteDataSource.update(mConventionYear);
             }
-            mListener.onNewConventionYearFragmentInteraction();
+            mListener.onModifyFragmentInteraction();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -196,6 +196,6 @@ public class ModifyConventionYearFragment extends Fragment {
             };
 
     public interface OnFragmentInteractionListener {
-        public void onNewConventionYearFragmentInteraction();
+        public void onModifyFragmentInteraction();
     }
 }
