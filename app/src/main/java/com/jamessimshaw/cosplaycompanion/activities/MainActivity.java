@@ -48,19 +48,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Make sure the container for the fragments is present
-        if (findViewById(R.id.fragment_container_main) != null) {
+        if (savedInstanceState != null)
+            return;
 
-            if(savedInstanceState != null)
-                return;
-
-            ListConventionsFragment listConventionsFragment = ListConventionsFragment.newInstance();
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container_main, listConventionsFragment)
-                    .commit();
-
-        }
+        Fragment fragment = ListConventionsFragment.newInstance();
+        gotoFragment(fragment);
     }
 
     @Override
@@ -72,28 +64,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -111,10 +81,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void gotoFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_main, fragment)
-                .addToBackStack(null)
-                .commit();
+        //Make sure the container for the fragments is present
+        if (findViewById(R.id.fragment_container_main) != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container_main, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     private void leaveFragment() {
