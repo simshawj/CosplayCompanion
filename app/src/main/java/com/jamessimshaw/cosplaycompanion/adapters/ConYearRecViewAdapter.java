@@ -69,14 +69,14 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
                 @Override
                 public void onClick(View v) {
                     if (mActivity instanceof MainActivity)
-                        ((MainActivity) mActivity).switchToConventionYearFragment(mConvention, conventionYear);
+                        ((MainActivity) mActivity).onFragmentInteraction("show conventionYear", conventionYear);
                 }
             });
             holder.mEditTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    if (mActivity instanceof MainActivity)
-                       ((MainActivity) mActivity).switchtoEditConventionYear(conventionYear);
+                       ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", conventionYear);
                 }
             });
         }

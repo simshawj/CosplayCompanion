@@ -63,7 +63,7 @@ public class ListConventionsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mListener != null)
-                    mListener.onConventionFragmentInteraction();
+                    mListener.onFragmentInteraction("create convention", null);
             }
         });
 
@@ -110,7 +110,7 @@ public class ListConventionsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onConventionFragmentInteraction();
+        void onFragmentInteraction(String event, Object item);
     }
 
 }

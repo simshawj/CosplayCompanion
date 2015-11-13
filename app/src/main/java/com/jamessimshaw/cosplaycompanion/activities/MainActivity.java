@@ -94,60 +94,51 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().popBackStack();
     }
 
-    public void switchToConventionFragment(Convention convention) {
-        ShowConventionFragment fragment = ShowConventionFragment.newInstance(convention);
-
-        gotoFragment(fragment);
-    }
-
-    public void switchtoEditConvention(Convention convention) {
-        ModifyConventionFragment fragment = ModifyConventionFragment.newInstance(convention);
-
-        gotoFragment(fragment);
-    }
-
-    public void switchtoEditConventionYear(ConventionYear conventionYear) {
-        ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(conventionYear);
-
-        gotoFragment(fragment);
-    }
-
-    public void switchtoEditPhotoshoot(Photoshoot photoshoot) {
-        ModifyPhotoshootFragment fragment = ModifyPhotoshootFragment.newInstance(photoshoot);
-
-        gotoFragment(fragment);
-    }
-
-    public void switchToConventionYearFragment(Convention convention, ConventionYear conventionYear) {
-        ShowConventionYearFragment fragment = ShowConventionYearFragment.newInstance(convention,
-                conventionYear);
-
-        gotoFragment(fragment);
-    }
-
-    @Override
-    public void onConventionFragmentInteraction() {
-        ModifyConventionFragment fragment = ModifyConventionFragment.newInstance();
-
-        gotoFragment(fragment);
-    }
-
-    @Override
-    public void onShowConventionFragmentInteraction(Convention convention) {
-        ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(convention);
-
-        gotoFragment(fragment);
-    }
-
-    @Override
-    public void onShowConventionYearFragmentInteraction(ConventionYear conventionYear) {
-        ModifyPhotoshootFragment fragment = ModifyPhotoshootFragment.newInstance(conventionYear);
-
-        gotoFragment(fragment);
-    }
-
     @Override
     public void onModifyFragmentInteraction() {
         leaveFragment();
+    }
+
+    @Override
+    public void onFragmentInteraction(String event, Object item) {
+        Fragment fragment = null;
+
+        switch(event) {
+            case "show convention":
+                if (item instanceof Convention)
+                    fragment = ShowConventionFragment.newInstance((Convention) item);
+                break;
+            case "show conventionYear":
+                if (item instanceof ConventionYear)
+                    fragment = ShowConventionYearFragment.newInstance((ConventionYear) item);
+                break;
+            case "create convention":
+                fragment = ModifyConventionFragment.newInstance();
+                break;
+            case "create conventionYear":
+                if (item instanceof Convention)
+                    fragment = ModifyConventionYearFragment.newInstance((Convention) item);
+                break;
+            case "create photoshoot":
+                if (item instanceof ConventionYear)
+                    fragment = ModifyPhotoshootFragment.newInstance((ConventionYear) item);
+                break;
+            case "edit convention":
+                if (item instanceof Convention)
+                    fragment = ModifyConventionFragment.newInstance((Convention) item);
+                break;
+            case "edit conventionYear":
+                if (item instanceof ConventionYear)
+                    fragment = ModifyConventionYearFragment.newInstance((ConventionYear) item);
+                break;
+            case "edit photoshoot":
+                if (item instanceof Photoshoot)
+                    fragment = ModifyPhotoshootFragment.newInstance((Photoshoot) item);
+                break;
+            default: break;
+        }
+
+        if (fragment != null)
+            gotoFragment(fragment);
     }
 }

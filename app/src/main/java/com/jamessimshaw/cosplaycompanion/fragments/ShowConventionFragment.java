@@ -74,7 +74,7 @@ public class ShowConventionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mListener != null)
-                    mListener.onShowConventionFragmentInteraction(mConvention);
+                    mListener.onFragmentInteraction("create conventionYear", mConvention);
             }
         });
 
@@ -122,7 +122,7 @@ public class ShowConventionFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onShowConventionFragmentInteraction(Convention convention);
+        void onFragmentInteraction(String event, Object item);
     }
 
 }

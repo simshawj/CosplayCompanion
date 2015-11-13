@@ -68,7 +68,7 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
                 @Override
                 public void onClick(View v) {
                     if (mActivity instanceof MainActivity)
-                        ((MainActivity) mActivity).switchtoEditPhotoshoot(photoshoot);
+                        ((MainActivity) mActivity).onFragmentInteraction("edit photoshoot", photoshoot);
                 }
             });
         }

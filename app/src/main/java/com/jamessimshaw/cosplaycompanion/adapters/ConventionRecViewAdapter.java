@@ -46,7 +46,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
             @Override
             public void onClick(View v) {
                 if (mActivity instanceof MainActivity)
-                    ((MainActivity) mActivity).switchToConventionFragment(mConventions.get(
+                    ((MainActivity) mActivity).onFragmentInteraction("show convention", mConventions.get(
                             position));
             }
         });
@@ -54,7 +54,7 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
             @Override
             public void onClick(View v) {
                 if (mActivity instanceof  MainActivity)
-                    ((MainActivity) mActivity).switchtoEditConvention(mConventions.get(position));
+                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", mConventions.get(position));
             }
         });
     }
