@@ -41,7 +41,8 @@ public class SQLiteDataSourceTest {
                 Uri.parse("localfile.png"));
         mDataSource.create(mConvention);
         mConventionYear = new ConventionYear(new GregorianCalendar(2015, Calendar.OCTOBER, 31).getTime(),
-                new GregorianCalendar(2015, Calendar.NOVEMBER, 5).getTime(), mConvention.getId(), "Somewhere");
+                new GregorianCalendar(2015, Calendar.NOVEMBER, 5).getTime(), mConvention.getId(),
+                "Somewhere", "Con 2015");
         mDataSource.create(mConventionYear);
         mPhotoshoot = new Photoshoot("Test Series", new GregorianCalendar(2015, Calendar.NOVEMBER, 2).getTime(),
                 "Middle of Nowhere", "A test photo shoot", mConventionYear.getId());

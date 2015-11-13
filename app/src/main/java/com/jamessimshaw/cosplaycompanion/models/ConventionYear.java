@@ -15,20 +15,24 @@ public class ConventionYear implements Parcelable {
     private long mId;
     private long mConventionId;
     private String mLocation;
+    private String mDisplayName;
 
-    public ConventionYear(long id, Date start, Date end, long conventionId, String location) {
+    public ConventionYear(long id, Date start, Date end, long conventionId, String location,
+                          String displayName) {
         mStart = start;
         mEnd = end;
         mId = id;
         mConventionId = conventionId;
         mLocation = location;
+        mDisplayName = displayName;
     }
 
-    public ConventionYear(Date start, Date end, long conventionId, String location) {
+    public ConventionYear(Date start, Date end, long conventionId, String location, String displayName) {
         mStart = start;
         mEnd = end;
         mConventionId = conventionId;
         mLocation = location;
+        mDisplayName = displayName;
     }
 
     public ConventionYear(Parcel in) {
@@ -77,6 +81,14 @@ public class ConventionYear implements Parcelable {
 
     public void setLocation(String location) {
         mLocation = location;
+    }
+
+    public String getDisplayName() {
+        return mDisplayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        mDisplayName = displayName;
     }
 
     public String getYearAsString() {

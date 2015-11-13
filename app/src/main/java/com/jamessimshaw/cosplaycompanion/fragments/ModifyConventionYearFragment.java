@@ -151,9 +151,11 @@ public class ModifyConventionYearFragment extends Fragment {
                 return true;
             }
             SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
+            String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
             if (mConventionYear == null) {
                 ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
-                        mConvention.getId(), mLocationEditText.getText().toString());
+                        mConvention.getId(), mLocationEditText.getText().toString(),
+                        displayName);
                 sqLiteDataSource.create(conventionYear);
             } else {
                 mConventionYear.setStart(mStartDate);
@@ -165,6 +167,12 @@ public class ModifyConventionYearFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private String getYearFromDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return Integer.toString(calendar.get(Calendar.YEAR));
     }
 
     @Override

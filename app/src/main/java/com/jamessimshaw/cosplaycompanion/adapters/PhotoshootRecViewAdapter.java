@@ -25,13 +25,11 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
     private static final int TYPE_PHOTOSHOOT = 1;
 
     private ArrayList<Photoshoot> mPhotoshoots;
-    private Convention mConvention;
     private ConventionYear mConventionYear;
     private Activity mActivity;
 
-    public PhotoshootRecViewAdapter(Convention convention, ConventionYear conventionYear,
+    public PhotoshootRecViewAdapter(ConventionYear conventionYear,
                                     ArrayList<Photoshoot> photoshoots, Activity activity) {
-        mConvention = convention;
         mConventionYear = conventionYear;
         mPhotoshoots = photoshoots;
         mActivity = activity;

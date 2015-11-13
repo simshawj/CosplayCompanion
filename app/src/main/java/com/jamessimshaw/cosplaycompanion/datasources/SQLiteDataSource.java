@@ -38,14 +38,42 @@ public class SQLiteDataSource {
         database.close();
     }
 
-    public void create(Convention convention) {
-        SQLiteDatabase database = open();
-        database.beginTransaction();
-
+    private ContentValues createValues(Convention convention) {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.COLUMN_NAME, convention.getName());
         values.put(SQLiteHelper.COLUMN_DESCRIPTION, convention.getDescription());
         values.put(SQLiteHelper.COLUMN_LOGO, convention.getLogoUri().toString());
+
+        return values;
+    }
+
+    private ContentValues createValues(ConventionYear conventionYear) {
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.COLUMN_DATE, conventionYear.getStartDate().getTime());
+        values.put(SQLiteHelper.COLUMN_DAYS, conventionYear.getEndDate().getTime());
+        values.put(SQLiteHelper.COLUMN_CONVENTION, conventionYear.getConventionId());
+        values.put(SQLiteHelper.COLUMN_LOCATION, conventionYear.getLocation());
+        values.put(SQLiteHelper.COLUMN_DISPLAY_NAME, conventionYear.getDisplayName());
+
+        return values;
+    }
+
+    private ContentValues createValues(Photoshoot photoshoot) {
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.COLUMN_SERIES, photoshoot.getSeries());
+        values.put(SQLiteHelper.COLUMN_START, photoshoot.getStart().getTime());
+        values.put(SQLiteHelper.COLUMN_LOCATION, photoshoot.getLocation());
+        values.put(SQLiteHelper.COLUMN_DESCRIPTION, photoshoot.getDescription());
+        values.put(SQLiteHelper.COLUMN_CONVENTION_YEAR, photoshoot.getConventionYearId());
+
+        return values;
+    }
+
+    public void create(Convention convention) {
+        SQLiteDatabase database = open();
+        database.beginTransaction();
+
+        ContentValues values = createValues(convention);
         convention.setId(database.insert(SQLiteHelper.TABLE_CONVENTIONS, null, values));
 
         database.setTransactionSuccessful();
@@ -57,11 +85,7 @@ public class SQLiteDataSource {
         SQLiteDatabase database = open();
         database.beginTransaction();
 
-        ContentValues values = new ContentValues();
-        values.put(SQLiteHelper.COLUMN_DATE, conventionYear.getStartDate().getTime());
-        values.put(SQLiteHelper.COLUMN_DAYS, conventionYear.getEndDate().getTime());
-        values.put(SQLiteHelper.COLUMN_CONVENTION, conventionYear.getConventionId());
-        values.put(SQLiteHelper.COLUMN_LOCATION, conventionYear.getLocation());
+        ContentValues values = createValues(conventionYear);
         conventionYear.setId(database.insert(SQLiteHelper.TABLE_CONVENTION_YEARS, null, values));
 
         database.setTransactionSuccessful();
@@ -73,12 +97,7 @@ public class SQLiteDataSource {
         SQLiteDatabase database = open();
         database.beginTransaction();
 
-        ContentValues values = new ContentValues();
-        values.put(SQLiteHelper.COLUMN_SERIES, photoshoot.getSeries());
-        values.put(SQLiteHelper.COLUMN_START, photoshoot.getStart().getTime());
-        values.put(SQLiteHelper.COLUMN_LOCATION, photoshoot.getLocation());
-        values.put(SQLiteHelper.COLUMN_DESCRIPTION, photoshoot.getDescription());
-        values.put(SQLiteHelper.COLUMN_CONVENTION_YEAR, photoshoot.getConventionYearId());
+        ContentValues values = createValues(photoshoot);
         photoshoot.setId(database.insert(SQLiteHelper.TABLE_PHOTOSHOOTS, null, values));
 
         database.setTransactionSuccessful();
@@ -137,7 +156,8 @@ public class SQLiteDataSource {
                         new Date(getLongFromColumnName(cursor, SQLiteHelper.COLUMN_DATE)),
                         new Date(getLongFromColumnName(cursor, SQLiteHelper.COLUMN_DAYS)),
                         getLongFromColumnName(cursor, SQLiteHelper.COLUMN_CONVENTION),
-                        getStringFromColumnName(cursor, SQLiteHelper.COLUMN_LOCATION)
+                        getStringFromColumnName(cursor, SQLiteHelper.COLUMN_LOCATION),
+                        getStringFromColumnName(cursor, SQLiteHelper.COLUMN_DISPLAY_NAME)
                 );
                 conventionYears.add(conventionYear);
             } while(cursor.moveToNext());
