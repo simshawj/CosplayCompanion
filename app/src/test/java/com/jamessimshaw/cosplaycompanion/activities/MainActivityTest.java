@@ -49,11 +49,6 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testOnNavigationItemSelected() throws Exception {
-        //TODO: Return to this when we're ready to work on the menu
-    }
-
-    @Test
     public void testOnModifyFragmentInteraction() throws Exception {
         int numberOfFragments = mActivity.getSupportFragmentManager().getBackStackEntryCount();
         Fragment fragment = ModifyConventionFragment.newInstance();
