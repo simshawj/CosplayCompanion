@@ -208,7 +208,7 @@ public class ModifyPhotoshootFragment extends Fragment {
     };
 
     private void updateDateAndTimeButtons() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM dd", Locale.getDefault());
         mStartDateButton.setText(dateFormat.format(mStart.getTime()));
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());

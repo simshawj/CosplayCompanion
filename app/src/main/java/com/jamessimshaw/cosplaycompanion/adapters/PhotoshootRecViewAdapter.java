@@ -52,7 +52,7 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
     public void onBindViewHolder(ViewHolder holder, final int position) {
         if (holder.mType == TYPE_HEADER) {
             holder.mConventionYearYear.setText(mConventionYear.getYearAsString());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM dd", Locale.getDefault());
             String dateString = dateFormat.format(mConventionYear.getStartDate()) + " to " +
                     dateFormat.format(mConventionYear.getEndDate());
             holder.mConventionYearDates.setText(dateString);
@@ -61,7 +61,7 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
             holder.mPhotoshootSeries.setText(photoshoot.getSeries());
             holder.mPhotoshootDescription.setText(photoshoot.getDescription());
             holder.mPhotoshootLocation.setText(photoshoot.getLocation());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd yyyy @ hh:mm aa",
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM dd yyyy @ hh:mm aa",
                     Locale.getDefault());
             holder.mPhotoshootDate.setText(dateFormat.format(photoshoot.getStart()));
             holder.mEditPhotoshoot.setOnClickListener(new View.OnClickListener() {

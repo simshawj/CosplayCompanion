@@ -108,7 +108,7 @@ public class ModifyConventionYearFragment extends Fragment {
     }
 
     private void populateView() {
-        mDateFormat = new SimpleDateFormat("cccc MMMM dd yyyy", Locale.getDefault());
+        mDateFormat = new SimpleDateFormat("EEEE MMMM dd yyyy", Locale.getDefault());
         if (mConventionYear == null) {
             Calendar calendar = Calendar.getInstance();
             mStartDate = calendar.getTime();
