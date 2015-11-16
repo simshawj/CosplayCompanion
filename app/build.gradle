@@ -27,6 +27,7 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
 
     // Robolectric
     testCompile 'junit:junit:4.12'
