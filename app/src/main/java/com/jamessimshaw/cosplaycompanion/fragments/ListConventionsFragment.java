@@ -87,7 +87,7 @@ public class ListConventionsFragment extends Fragment {
         conventionRecyclerView.setAdapter(adapter);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://stark-hamlet-5909.herokuapp.com/")
+                .baseUrl(getString(R.string.internalAPIBase))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
