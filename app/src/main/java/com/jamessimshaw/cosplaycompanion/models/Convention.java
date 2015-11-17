@@ -5,13 +5,18 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by james on 9/25/15.
  */
 public class Convention implements Parcelable {
+    @SerializedName("name")
     private String mName;
+    @SerializedName("description")
     private String mDescription;
     private Uri mLogoUri;
+    @SerializedName("id")
     private long mId;
 
     public Convention(long id, String name, String description, Uri logoUri) {

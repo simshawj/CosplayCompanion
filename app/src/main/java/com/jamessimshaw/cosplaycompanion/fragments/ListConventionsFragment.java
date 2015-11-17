@@ -3,7 +3,6 @@ package com.jamessimshaw.cosplaycompanion.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,10 +13,17 @@ import android.view.ViewGroup;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,10 +80,30 @@ public class ListConventionsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mSQLiteDataSource = new SQLiteDataSource(getActivity());
-        mConventions = mSQLiteDataSource.read();
-        ConventionRecViewAdapter adapter = new ConventionRecViewAdapter(mConventions, getActivity());
+        //mSQLiteDataSource = new SQLiteDataSource(getActivity());
+        //mConventions = mSQLiteDataSource.read();
+        mConventions = new ArrayList<>();
+        final ConventionRecViewAdapter adapter = new ConventionRecViewAdapter(mConventions, getActivity());
         conventionRecyclerView.setAdapter(adapter);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://stark-hamlet-5909.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+        internalAPI.getConventions().enqueue(new Callback<List<Convention>>() {
+            @Override
+            public void onResponse(Response<List<Convention>> response, Retrofit retrofit) {
+                mConventions.addAll(response.body());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
 
         return view;
     }
