@@ -1,6 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.datasources;
 
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
 import java.util.List;
 
@@ -24,4 +25,13 @@ public interface InternalAPI {
 
     @PATCH("conventions/{id}.json")
     Call<Convention> updateConvention(@Path("id") long id, @Body Convention convention);
+
+    @GET("conventions/{id}/convention_years.json")
+    Call<List<ConventionYear>> getConventionYears(@Path("id") long id);
+
+    @POST("convention_years.json")
+    Call<ConventionYear> createConventionYear(@Body ConventionYear conventionYear);
+
+    @PATCH("convention_years/{id}.json")
+    Call<ConventionYear> updateConventionYear(@Path("id") long id, @Body ConventionYear conventionYear);
 }
