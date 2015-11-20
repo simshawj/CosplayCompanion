@@ -14,15 +14,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,10 +99,32 @@ public class ShowConventionYearFragment extends Fragment {
         conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
         mSQLiteDataSource = new SQLiteDataSource(getActivity());
-        mPhotoshoots = mSQLiteDataSource.read(mConventionYear);
-        PhotoshootRecViewAdapter adapter = new PhotoshootRecViewAdapter(mConventionYear,
+        //mPhotoshoots = mSQLiteDataSource.read(mConventionYear);
+        mPhotoshoots = new ArrayList<>();
+        final PhotoshootRecViewAdapter adapter = new PhotoshootRecViewAdapter(mConventionYear,
                 mPhotoshoots, getActivity());
         conventionYearDetailsRecyclerView.setAdapter(adapter);
+
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.internalAPIBase))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+        internalAPI.getPhotoShoots(mConventionYear.getId()).enqueue(new Callback<List<Photoshoot>>() {
+            @Override
+            public void onResponse(Response<List<Photoshoot>> response, Retrofit retrofit) {
+                mPhotoshoots.addAll(response.body());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
 
         return view;
     }

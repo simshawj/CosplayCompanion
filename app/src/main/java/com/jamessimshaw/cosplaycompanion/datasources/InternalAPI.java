@@ -2,6 +2,7 @@ package com.jamessimshaw.cosplaycompanion.datasources;
 
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.util.List;
 
@@ -34,4 +35,13 @@ public interface InternalAPI {
 
     @PATCH("convention_years/{id}.json")
     Call<ConventionYear> updateConventionYear(@Path("id") long id, @Body ConventionYear conventionYear);
+
+    @GET("convention_years/{id}/photo_shoots.json")
+    Call<List<Photoshoot>> getPhotoShoots(@Path("id") long id);
+
+    @POST("photo_shoots.json")
+    Call<Photoshoot> createPhotoShoot(@Body Photoshoot photoshoot);
+
+    @PATCH("photo_shoots/{id}.json")
+    Call<Photoshoot> updatePhotoShoot(@Path("id") long id, @Body Photoshoot photoshoot);
 }
