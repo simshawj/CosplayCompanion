@@ -189,7 +189,7 @@ public class ModifyConventionYearFragment extends Fragment {
 
                     @Override
                     public void onFailure(Throwable t) {
-                        Toast.makeText(getContext(), "Failed to create convention, please check your connection and try again.",
+                        Toast.makeText(getContext(), "Failed to create convention year, please check your connection and try again.",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
@@ -203,14 +203,14 @@ public class ModifyConventionYearFragment extends Fragment {
                         if (response.code() == 200)
                             mListener.onModifyFragmentInteraction();
                         else {
-                            Toast.makeText(getContext(), "Failed to update convention.",
+                            Toast.makeText(getContext(), "Failed to update convention year.",
                                     Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
-                        Toast.makeText(getContext(), "Failed to update convention, please check your connection and try again.",
+                        Toast.makeText(getContext(), "Failed to update convention year, please check your connection and try again.",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
