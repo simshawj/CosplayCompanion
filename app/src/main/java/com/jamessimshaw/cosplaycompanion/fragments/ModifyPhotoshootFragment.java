@@ -16,8 +16,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
@@ -25,6 +29,11 @@ import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -170,20 +179,61 @@ public class ModifyPhotoshootFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_submit) {
-            SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(getString(R.string.internalAPIBase))
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+            //SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
             if (mPhotoshoot == null) {
                 Photoshoot photoshoot = new Photoshoot(mSeriesEditText.getText().toString(),
                         mStart.getTime(), mLocationEditText.getText().toString(),
                         mDescriptionEditText.getText().toString(), mConventionYear.getId());
-                sqLiteDataSource.create(photoshoot);
+                internalAPI.createPhotoShoot(photoshoot).enqueue(new Callback<Photoshoot>() {
+                    @Override
+                    public void onResponse(Response<Photoshoot> response, Retrofit retrofit) {
+                        if (response.code() == 201)
+                            mListener.onModifyFragmentInteraction();
+                        else {
+                            Toast.makeText(getContext(), "Failed to create photo shoot.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getContext(), "Failed to create photo shoot, please check your connection and try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                //sqLiteDataSource.create(photoshoot);
             } else {
                 mPhotoshoot.setDescription(mDescriptionEditText.getText().toString());
                 mPhotoshoot.setLocation(mLocationEditText.getText().toString());
                 mPhotoshoot.setSeries(mSeriesEditText.getText().toString());
                 mPhotoshoot.setStart(mStart.getTime());
-                sqLiteDataSource.update(mPhotoshoot);
+                //sqLiteDataSource.update(mPhotoshoot);
+                internalAPI.updatePhotoShoot(mPhotoshoot.getId(), mPhotoshoot).enqueue(new Callback<Photoshoot>() {
+                    @Override
+                    public void onResponse(Response<Photoshoot> response, Retrofit retrofit) {
+                        if (response.code() == 200)
+                            mListener.onModifyFragmentInteraction();
+                        else {
+                            Toast.makeText(getContext(), "Failed to update photo shoot.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getContext(), "Failed to update photo shoot, please check your connection and try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
-            mListener.onModifyFragmentInteraction();
         }
         return super.onOptionsItemSelected(item);
     }

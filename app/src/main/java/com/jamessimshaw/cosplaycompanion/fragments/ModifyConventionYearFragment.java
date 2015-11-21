@@ -16,7 +16,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
@@ -25,6 +28,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by james on 10/11/15.
@@ -150,20 +158,64 @@ public class ModifyConventionYearFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
                 return true;
             }
-            SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
+
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(getString(R.string.internalAPIBase))
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+
+            //SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
             String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
             if (mConventionYear == null) {
                 ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
                         mConvention.getId(), mLocationEditText.getText().toString(),
                         displayName);
-                sqLiteDataSource.create(conventionYear);
+                //sqLiteDataSource.create(conventionYear);
+
+                internalAPI.createConventionYear(conventionYear).enqueue(new Callback<ConventionYear>() {
+                    @Override
+                    public void onResponse(Response<ConventionYear> response, Retrofit retrofit) {
+                        if (response.code() == 201)
+                            mListener.onModifyFragmentInteraction();
+                        else {
+                            Toast.makeText(getContext(), "Failed to create convention year.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getContext(), "Failed to create convention year, please check your connection and try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             } else {
                 mConventionYear.setStart(mStartDate);
                 mConventionYear.setEnd(mEndDate);
                 mConventionYear.setLocation(mLocationEditText.getText().toString());
-                sqLiteDataSource.update(mConventionYear);
+                internalAPI.updateConventionYear(mConventionYear.getId(), mConventionYear).enqueue(new Callback<ConventionYear>() {
+                    @Override
+                    public void onResponse(Response<ConventionYear> response, Retrofit retrofit) {
+                        if (response.code() == 200)
+                            mListener.onModifyFragmentInteraction();
+                        else {
+                            Toast.makeText(getContext(), "Failed to update convention year.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getContext(), "Failed to update convention year, please check your connection and try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                //sqLiteDataSource.update(mConventionYear);
             }
-            mListener.onModifyFragmentInteraction();
             return true;
         }
         return super.onOptionsItemSelected(item);

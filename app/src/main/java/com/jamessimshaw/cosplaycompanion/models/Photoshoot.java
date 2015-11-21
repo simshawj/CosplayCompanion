@@ -3,17 +3,25 @@ package com.jamessimshaw.cosplaycompanion.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 /**
  * Created by james on 9/25/15.
  */
 public class Photoshoot implements Parcelable {
+    @SerializedName("series")
     private String mSeries;
+    @SerializedName("start")
     private Date mStart;
+    @SerializedName("location")
     private String mLocation;
+    @SerializedName("description")
     private String mDescription;
+    @SerializedName("id")
     private long mId;
+    @SerializedName("convention_year_id")
     private long mConventionYearId;
 
     public Photoshoot(long id, String series, Date start, String location, String description,

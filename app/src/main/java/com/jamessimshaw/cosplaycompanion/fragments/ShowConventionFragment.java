@@ -12,13 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,11 +94,33 @@ public class ShowConventionFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mSQLiteDataSource = new SQLiteDataSource(getActivity());
-        mConventionYears = mSQLiteDataSource.read(mConvention);
-        ConYearRecViewAdapter adapter = new ConYearRecViewAdapter(mConvention, mConventionYears,
+        //mSQLiteDataSource = new SQLiteDataSource(getActivity());
+        //mConventionYears = mSQLiteDataSource.read(mConvention);
+        mConventionYears = new ArrayList<>();
+        final ConYearRecViewAdapter adapter = new ConYearRecViewAdapter(mConvention, mConventionYears,
                 getActivity());
         conventionDetailsRecyclerView.setAdapter(adapter);
+
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.internalAPIBase))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+        internalAPI.getConventionYears(mConvention.getId()).enqueue(new Callback<List<ConventionYear>>() {
+            @Override
+            public void onResponse(Response<List<ConventionYear>> response, Retrofit retrofit) {
+                mConventionYears.addAll(response.body());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
 
         return view;
     }

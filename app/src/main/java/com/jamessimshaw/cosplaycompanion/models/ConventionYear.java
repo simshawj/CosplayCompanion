@@ -3,6 +3,8 @@ package com.jamessimshaw.cosplaycompanion.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,11 +12,17 @@ import java.util.Date;
  * Created by james on 9/25/15.
  */
 public class ConventionYear implements Parcelable {
+    @SerializedName("start")
     private Date mStart;
+    @SerializedName("finish")
     private Date mEnd;
+    @SerializedName("id")
     private long mId;
+    @SerializedName("convention_id")
     private long mConventionId;
+    @SerializedName("location")
     private String mLocation;
+    @SerializedName("display")
     private String mDisplayName;
 
     public ConventionYear(long id, Date start, Date end, long conventionId, String location,

@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,11 +17,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.squareup.picasso.Picasso;
+
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by james on 10/4/15.
@@ -125,17 +132,59 @@ public class ModifyConventionFragment extends Fragment {
             String name = mNameEditText.getText().toString();
             String description = mDescriptionEditText.getText().toString();
             SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
-            if (mConvention == null) {
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(getString(R.string.internalAPIBase))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+
+            if (mConvention == null || mConvention.getId() < 0) {
                 mConvention = new Convention(name, description, mLogoUri);
-                sqLiteDataSource.create(mConvention);
+
+                internalAPI.createConvention(mConvention).enqueue(new Callback<Convention>() {
+                    @Override
+                    public void onResponse(Response<Convention> response, Retrofit retrofit) {
+                        if (response.code() == 201)
+                            mListener.onModifyFragmentInteraction();
+                        else {
+                            Toast.makeText(getContext(), "Failed to create convention.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getContext(), "Failed to create convention, please check your connection and try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                //sqLiteDataSource.create(mConvention);
             } else {
                 mConvention.setDescription(description);
                 mConvention.setName(name);
                 mConvention.setLogoUri(mLogoUri);
-                sqLiteDataSource.update(mConvention);
+                internalAPI.updateConvention(mConvention.getId(), mConvention).enqueue(new Callback<Convention>() {
+                    @Override
+                    public void onResponse(Response<Convention> response, Retrofit retrofit) {
+                        if (response.code() == 200)
+                            mListener.onModifyFragmentInteraction();
+                        else {
+                            Toast.makeText(getContext(), "Failed to update convention.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getContext(), "Failed to update convention, please check your connection and try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
             }
-            //TODO: Double check if mConvention is needed
-            mListener.onModifyFragmentInteraction();
             return true;
         }
         return super.onOptionsItemSelected(item);
