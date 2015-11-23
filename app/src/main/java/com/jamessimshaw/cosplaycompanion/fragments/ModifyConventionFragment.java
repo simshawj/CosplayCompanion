@@ -139,7 +139,7 @@ public class ModifyConventionFragment extends Fragment {
 
             InternalAPI internalAPI = retrofit.create(InternalAPI.class);
 
-            if (mConvention == null || mConvention.getId() < 0) {
+            if (mConvention == null) {
                 Convention convention = new Convention(name, description, mLogoUri);
 
                 internalAPI.createConvention(convention).enqueue(new Callback<Convention>() {
