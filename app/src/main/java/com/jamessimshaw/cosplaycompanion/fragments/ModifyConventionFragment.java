@@ -140,9 +140,9 @@ public class ModifyConventionFragment extends Fragment {
             InternalAPI internalAPI = retrofit.create(InternalAPI.class);
 
             if (mConvention == null || mConvention.getId() < 0) {
-                mConvention = new Convention(name, description, mLogoUri);
+                Convention convention = new Convention(name, description, mLogoUri);
 
-                internalAPI.createConvention(mConvention).enqueue(new Callback<Convention>() {
+                internalAPI.createConvention(convention).enqueue(new Callback<Convention>() {
                     @Override
                     public void onResponse(Response<Convention> response, Retrofit retrofit) {
                         if (response.code() == 201)
