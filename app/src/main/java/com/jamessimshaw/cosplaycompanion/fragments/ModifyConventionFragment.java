@@ -131,7 +131,6 @@ public class ModifyConventionFragment extends Fragment {
         if (id == R.id.action_submit) {
             String name = mNameEditText.getText().toString();
             String description = mDescriptionEditText.getText().toString();
-            SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(getString(R.string.internalAPIBase))
@@ -160,8 +159,6 @@ public class ModifyConventionFragment extends Fragment {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-
-                //sqLiteDataSource.create(mConvention);
             } else {
                 mConvention.setDescription(description);
                 mConvention.setName(name);
@@ -183,7 +180,6 @@ public class ModifyConventionFragment extends Fragment {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-
             }
             return true;
         }
