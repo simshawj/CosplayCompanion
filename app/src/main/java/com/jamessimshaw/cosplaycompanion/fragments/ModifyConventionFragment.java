@@ -3,11 +3,14 @@ package com.jamessimshaw.cosplaycompanion.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +26,12 @@ import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
 
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -139,8 +147,14 @@ public class ModifyConventionFragment extends Fragment {
 
             InternalAPI internalAPI = retrofit.create(InternalAPI.class);
 
+            Bitmap logo = ((BitmapDrawable)mLogoImageView.getDrawable()).getBitmap();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            logo.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+            String logoString = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+
             if (mConvention == null) {
                 Convention convention = new Convention(name, description, mLogoUri);
+                convention.setBase64Logo(logoString);
 
                 internalAPI.createConvention(convention).enqueue(new Callback<Convention>() {
                     @Override

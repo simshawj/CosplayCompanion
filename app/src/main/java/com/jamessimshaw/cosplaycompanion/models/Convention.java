@@ -21,6 +21,9 @@ public class Convention implements Parcelable {
     private Uri mLogoUri;
     @SerializedName("id")
     private long mId;
+    @SerializedName("logo64")
+    @Expose
+    private String mBase64Logo;
 
     public Convention(long id, String name, String description, Uri logoUri) {
         mId = id;
@@ -33,7 +36,6 @@ public class Convention implements Parcelable {
         mName = name;
         mDescription = description;
         mLogoUri = logoUri;
-        mId = -1;
     }
 
     public Convention (Parcel in) {
@@ -73,6 +75,14 @@ public class Convention implements Parcelable {
 
     public void setId(long id) {
         mId = id;
+    }
+
+    public String getBase64Logo() {
+        return mBase64Logo;
+    }
+
+    public void setBase64Logo(String base64Logo) {
+        mBase64Logo = base64Logo;
     }
 
     @Override
