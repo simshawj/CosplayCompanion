@@ -52,7 +52,12 @@ public class MainActivity extends AppCompatActivity
             return;
 
         Fragment fragment = ListConventionsFragment.newInstance();
-        gotoFragment(fragment);
+        //Make sure the container for the fragments is present
+        if (findViewById(R.id.fragment_container_main) != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container_main, fragment)
+                    .commit();
+        }
     }
 
     @Override

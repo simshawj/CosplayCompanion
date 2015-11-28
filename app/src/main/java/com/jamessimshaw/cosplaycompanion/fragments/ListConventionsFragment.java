@@ -11,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.jamessimshaw.cosplaycompanion.serialization.ConventionDeserializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,9 +89,13 @@ public class ListConventionsFragment extends Fragment {
         final ConventionRecViewAdapter adapter = new ConventionRecViewAdapter(mConventions, getActivity());
         conventionRecyclerView.setAdapter(adapter);
 
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Convention.class, new ConventionDeserializer(getContext()))
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.internalAPIBase))
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         InternalAPI internalAPI = retrofit.create(InternalAPI.class);

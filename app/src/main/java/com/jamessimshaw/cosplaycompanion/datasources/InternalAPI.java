@@ -3,15 +3,19 @@ package com.jamessimshaw.cosplaycompanion.datasources;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
+import com.squareup.okhttp.RequestBody;
 
 import java.util.List;
 
 import retrofit.Call;
 import retrofit.http.Body;
+import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.Multipart;
 import retrofit.http.PATCH;
 import retrofit.http.POST;
+import retrofit.http.Part;
 import retrofit.http.Path;
 
 /**
