@@ -18,6 +18,7 @@ public class Convention implements Parcelable {
     @SerializedName("description")
     @Expose
     private String mDescription;
+    @SerializedName("logo.url")
     private Uri mLogoUri;
     @SerializedName("id")
     private long mId;

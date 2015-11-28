@@ -150,7 +150,7 @@ public class ModifyConventionFragment extends Fragment {
             Bitmap logo = ((BitmapDrawable)mLogoImageView.getDrawable()).getBitmap();
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             logo.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-            String logoString = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+            String logoString = Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP);
 
             if (mConvention == null) {
                 Convention convention = new Convention(name, description, mLogoUri);
