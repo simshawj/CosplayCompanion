@@ -29,10 +29,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by james on 10/11/15.
@@ -178,7 +179,7 @@ public class ModifyConventionYearFragment extends Fragment {
 
                 internalAPI.createConventionYear(conventionYear).enqueue(new Callback<ConventionYear>() {
                     @Override
-                    public void onResponse(Response<ConventionYear> response, Retrofit retrofit) {
+                    public void onResponse(Call<ConventionYear> call, Response<ConventionYear> response) {
                         if (response.code() == 201)
                             mListener.onModifyFragmentInteraction();
                         else {
@@ -188,7 +189,7 @@ public class ModifyConventionYearFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<ConventionYear> call, Throwable t) {
                         Toast.makeText(getContext(), "Failed to create convention year, please check your connection and try again.",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -199,7 +200,7 @@ public class ModifyConventionYearFragment extends Fragment {
                 mConventionYear.setLocation(mLocationEditText.getText().toString());
                 internalAPI.updateConventionYear(mConventionYear.getId(), mConventionYear).enqueue(new Callback<ConventionYear>() {
                     @Override
-                    public void onResponse(Response<ConventionYear> response, Retrofit retrofit) {
+                    public void onResponse(Call<ConventionYear> call, Response<ConventionYear> response) {
                         if (response.code() == 200)
                             mListener.onModifyFragmentInteraction();
                         else {
@@ -209,7 +210,7 @@ public class ModifyConventionYearFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<ConventionYear> call, Throwable t) {
                         Toast.makeText(getContext(), "Failed to update convention year, please check your connection and try again.",
                                 Toast.LENGTH_LONG).show();
                     }

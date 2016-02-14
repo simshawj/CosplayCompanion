@@ -30,10 +30,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -194,7 +195,7 @@ public class ModifyPhotoshootFragment extends Fragment {
                         mDescriptionEditText.getText().toString(), mConventionYear.getId());
                 internalAPI.createPhotoShoot(photoshoot).enqueue(new Callback<Photoshoot>() {
                     @Override
-                    public void onResponse(Response<Photoshoot> response, Retrofit retrofit) {
+                    public void onResponse(Call<Photoshoot> call, Response<Photoshoot> response) {
                         if (response.code() == 201)
                             mListener.onModifyFragmentInteraction();
                         else {
@@ -204,7 +205,7 @@ public class ModifyPhotoshootFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<Photoshoot> call, Throwable t) {
                         Toast.makeText(getContext(), "Failed to create photo shoot, please check your connection and try again.",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -218,7 +219,7 @@ public class ModifyPhotoshootFragment extends Fragment {
                 //sqLiteDataSource.update(mPhotoshoot);
                 internalAPI.updatePhotoShoot(mPhotoshoot.getId(), mPhotoshoot).enqueue(new Callback<Photoshoot>() {
                     @Override
-                    public void onResponse(Response<Photoshoot> response, Retrofit retrofit) {
+                    public void onResponse(Call<Photoshoot> call, Response<Photoshoot> response) {
                         if (response.code() == 200)
                             mListener.onModifyFragmentInteraction();
                         else {
@@ -228,7 +229,7 @@ public class ModifyPhotoshootFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<Photoshoot> call, Throwable t) {
                         Toast.makeText(getContext(), "Failed to update photo shoot, please check your connection and try again.",
                                 Toast.LENGTH_LONG).show();
                     }

@@ -24,19 +24,16 @@ import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
-import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.MultipartBuilder;
-import com.squareup.okhttp.RequestBody;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by james on 10/4/15.
@@ -158,7 +155,7 @@ public class ModifyConventionFragment extends Fragment {
 
                 internalAPI.createConvention(convention).enqueue(new Callback<Convention>() {
                     @Override
-                    public void onResponse(Response<Convention> response, Retrofit retrofit) {
+                    public void onResponse(Call<Convention> call, Response<Convention> response) {
                         if (response.code() == 201)
                             mListener.onModifyFragmentInteraction();
                         else {
@@ -168,7 +165,7 @@ public class ModifyConventionFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<Convention> call, Throwable t) {
                         Toast.makeText(getContext(), "Failed to create convention, please check your connection and try again.",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -179,7 +176,7 @@ public class ModifyConventionFragment extends Fragment {
                 mConvention.setLogoUri(mLogoUri);
                 internalAPI.updateConvention(mConvention.getId(), mConvention).enqueue(new Callback<Convention>() {
                     @Override
-                    public void onResponse(Response<Convention> response, Retrofit retrofit) {
+                    public void onResponse(Call<Convention> call, Response<Convention> response) {
                         if (response.code() == 200)
                             mListener.onModifyFragmentInteraction();
                         else {
@@ -189,7 +186,7 @@ public class ModifyConventionFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<Convention> call, Throwable t) {
                         Toast.makeText(getContext(), "Failed to update convention, please check your connection and try again.",
                                 Toast.LENGTH_LONG).show();
                     }

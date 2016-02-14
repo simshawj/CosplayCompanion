@@ -1,8 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,26 +10,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
-import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
-import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,13 +111,13 @@ public class ShowConventionYearFragment extends Fragment {
         InternalAPI internalAPI = retrofit.create(InternalAPI.class);
         internalAPI.getPhotoShoots(mConventionYear.getId()).enqueue(new Callback<List<Photoshoot>>() {
             @Override
-            public void onResponse(Response<List<Photoshoot>> response, Retrofit retrofit) {
+            public void onResponse(Call<List<Photoshoot>> call, Response<List<Photoshoot>> response) {
                 mPhotoshoots.addAll(response.body());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<Photoshoot>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

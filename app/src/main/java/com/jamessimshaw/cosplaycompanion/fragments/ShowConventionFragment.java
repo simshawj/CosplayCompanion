@@ -24,10 +24,11 @@ import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -111,13 +112,13 @@ public class ShowConventionFragment extends Fragment {
         InternalAPI internalAPI = retrofit.create(InternalAPI.class);
         internalAPI.getConventionYears(mConvention.getId()).enqueue(new Callback<List<ConventionYear>>() {
             @Override
-            public void onResponse(Response<List<ConventionYear>> response, Retrofit retrofit) {
+            public void onResponse(Call<List<ConventionYear>> call, Response<List<ConventionYear>> response) {
                 mConventionYears.addAll(response.body());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<ConventionYear>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

@@ -23,10 +23,11 @@ import com.jamessimshaw.cosplaycompanion.serialization.ConventionDeserializer;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -101,13 +102,13 @@ public class ListConventionsFragment extends Fragment {
         InternalAPI internalAPI = retrofit.create(InternalAPI.class);
         internalAPI.getConventions().enqueue(new Callback<List<Convention>>() {
             @Override
-            public void onResponse(Response<List<Convention>> response, Retrofit retrofit) {
+            public void onResponse(Call<List<Convention>> call, Response<List<Convention>> response) {
                 mConventions.addAll(response.body());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<Convention>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
