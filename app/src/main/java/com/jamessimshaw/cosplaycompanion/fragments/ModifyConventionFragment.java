@@ -29,6 +29,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,11 +43,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ModifyConventionFragment extends Fragment {
     public static final int LOGO = 0;
 
+    @Bind(R.id.conventionNameEditText) EditText mNameEditText;
+    @Bind(R.id.descriptionEditText) EditText mDescriptionEditText;
+    @Bind(R.id.logoImageView) ImageView mLogoImageView;
+    @Bind(R.id.conventionLogoChangeButton) Button mLogoButton;
+
     OnFragmentInteractionListener mListener;
-    EditText mNameEditText;
-    EditText mDescriptionEditText;
-    ImageView mLogoImageView;
-    Button mLogoButton;
     Uri mLogoUri;
     Convention mConvention;
 
@@ -83,11 +86,8 @@ public class ModifyConventionFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("New Convention");
         setHasOptionsMenu(true);
+        ButterKnife.bind(this, view);
 
-        mNameEditText = (EditText) view.findViewById(R.id.conventionNameEditText);
-        mDescriptionEditText = (EditText) view.findViewById(R.id.descriptionEditText);
-        mLogoImageView = (ImageView) view.findViewById(R.id.logoImageView);
-        mLogoButton = (Button) view.findViewById(R.id.conventionLogoChangeButton);
         mLogoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
