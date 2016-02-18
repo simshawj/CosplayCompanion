@@ -23,11 +23,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,7 +39,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by james on 10/4/15.
@@ -47,6 +50,8 @@ public class ModifyConventionFragment extends Fragment {
     @Bind(R.id.descriptionEditText) EditText mDescriptionEditText;
     @Bind(R.id.logoImageView) ImageView mLogoImageView;
     @Bind(R.id.conventionLogoChangeButton) Button mLogoButton;
+
+    @Inject Retrofit mRetrofit;
 
     OnFragmentInteractionListener mListener;
     Uri mLogoUri;
@@ -77,6 +82,10 @@ public class ModifyConventionFragment extends Fragment {
 
         if (getArguments() != null)
             mConvention = getArguments().getParcelable("convention");
+
+        DaggerNetworkComponent.builder()
+                .networkModule(new NetworkModule(getString(R.string.internalAPIBase)))
+                .build().inject(this);
     }
 
     @Override
@@ -137,12 +146,7 @@ public class ModifyConventionFragment extends Fragment {
             String name = mNameEditText.getText().toString();
             String description = mDescriptionEditText.getText().toString();
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(getString(R.string.internalAPIBase))
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+            InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
 
             Bitmap logo = ((BitmapDrawable)mLogoImageView.getDrawable()).getBitmap();
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

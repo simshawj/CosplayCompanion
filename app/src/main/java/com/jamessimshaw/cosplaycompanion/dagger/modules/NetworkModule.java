@@ -24,8 +24,24 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    @Named("conventions")
     Gson provideGson() {
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+    }
+
+
+    @Provides
+    @Singleton
+    Retrofit provideRetrofit(Gson gson) {
+        return new Retrofit.Builder()
+                .baseUrl(mBaseURL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    @Named("conventions")
+    Gson provideConventionGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(Convention.class, new ConventionDeserializer())
                 .create();
@@ -35,7 +51,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     @Named("conventions")
-    Retrofit provideRetrofit(@Named("conventions") Gson gson) {
+    Retrofit provideConventionRetrofit(@Named("conventions") Gson gson) {
         return new Retrofit.Builder()
                 .baseUrl(mBaseURL)
                 .addConverterFactory(GsonConverterFactory.create(gson))

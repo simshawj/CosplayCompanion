@@ -18,11 +18,10 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
-import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
@@ -30,11 +29,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +46,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ModifyPhotoshootFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
+
+    @Inject Retrofit mRetrofit;
 
     private ConventionYear mConventionYear;
     private Photoshoot mPhotoshoot;
@@ -100,6 +102,10 @@ public class ModifyPhotoshootFragment extends Fragment {
             mConventionYear = getArguments().getParcelable(ARG_PARAM1);
             mPhotoshoot = getArguments().getParcelable("photoshoot");
         }
+
+        DaggerNetworkComponent.builder()
+                .networkModule(new NetworkModule(getString(R.string.internalAPIBase)))
+                .build().inject(this);
     }
 
     @Override
@@ -180,14 +186,7 @@ public class ModifyPhotoshootFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_submit) {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(getString(R.string.internalAPIBase))
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build();
-
-            InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+            InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
             //SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
             if (mPhotoshoot == null) {
                 Photoshoot photoshoot = new Photoshoot(mSeriesEditText.getText().toString(),

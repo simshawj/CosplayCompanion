@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
@@ -23,11 +23,12 @@ import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ShowConventionYearFragment extends Fragment {
     private static final String ARG_PARAM2 = "conventionYear";
+
+    @Inject Retrofit mRetrofit;
 
     private ConventionYear mConventionYear;
     private SQLiteDataSource mSQLiteDataSource;
@@ -71,6 +74,10 @@ public class ShowConventionYearFragment extends Fragment {
         if (getArguments() != null) {
             mConventionYear = getArguments().getParcelable(ARG_PARAM2);
         }
+
+        DaggerNetworkComponent.builder()
+                .networkModule(new NetworkModule(getString(R.string.internalAPIBase)))
+                .build().inject(this);
     }
 
     @Override
@@ -101,14 +108,7 @@ public class ShowConventionYearFragment extends Fragment {
                 mPhotoshoots, getActivity());
         conventionYearDetailsRecyclerView.setAdapter(adapter);
 
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.internalAPIBase))
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
         internalAPI.getPhotoShoots(mConventionYear.getId()).enqueue(new Callback<List<Photoshoot>>() {
             @Override
             public void onResponse(Call<List<Photoshoot>> call, Response<List<Photoshoot>> response) {

@@ -39,7 +39,7 @@ import retrofit2.Retrofit;
  * create an instance of this fragment.
  */
 public class ListConventionsFragment extends Fragment {
-    @Inject @Named("conventions") Retrofit retrofit;
+    @Inject @Named("conventions") Retrofit mRetrofit;
 
     private OnFragmentInteractionListener mListener;
     private ArrayList<Convention> mConventions;
@@ -95,7 +95,7 @@ public class ListConventionsFragment extends Fragment {
         final ConventionRecViewAdapter adapter = new ConventionRecViewAdapter(mConventions, getActivity());
         conventionRecyclerView.setAdapter(adapter);
 
-        InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
         internalAPI.getConventions().enqueue(new Callback<List<Convention>>() {
             @Override
             public void onResponse(Call<List<Convention>> call, Response<List<Convention>> response) {

@@ -16,11 +16,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
-import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
@@ -29,16 +28,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by james on 10/11/15.
  */
 public class ModifyConventionYearFragment extends Fragment {
+
+    @Inject Retrofit mRetrofit;
 
     private OnFragmentInteractionListener mListener;
     private Convention mConvention;
@@ -78,6 +80,10 @@ public class ModifyConventionYearFragment extends Fragment {
             mConvention = getArguments().getParcelable("convention");
             mConventionYear = getArguments().getParcelable("conventionYear");
         }
+
+        DaggerNetworkComponent.builder()
+                .networkModule(new NetworkModule(getString(R.string.internalAPIBase)))
+                .build().inject(this);
     }
 
     @Override
@@ -160,14 +166,7 @@ public class ModifyConventionYearFragment extends Fragment {
                 return true;
             }
 
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(getString(R.string.internalAPIBase))
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build();
-
-            InternalAPI internalAPI = retrofit.create(InternalAPI.class);
+            InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
 
             //SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
             String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
