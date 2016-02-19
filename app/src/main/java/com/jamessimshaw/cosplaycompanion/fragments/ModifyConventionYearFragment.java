@@ -1,10 +1,10 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.app.DatePickerDialog;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,40 +17,28 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenter;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.views.ModifyConventionYearView;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
-import javax.inject.Inject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by james on 10/11/15.
  */
-public class ModifyConventionYearFragment extends Fragment {
-
-    @Inject Retrofit mRetrofit;
-
+public class ModifyConventionYearFragment extends Fragment implements ModifyConventionYearView {
     private OnFragmentInteractionListener mListener;
-    private Convention mConvention;
-    private EditText mLocationEditText;
-    private Button mStartButton;
-    private Button mEndButton;
-    private Date mStartDate;
-    private Date mEndDate;
-    private SimpleDateFormat mDateFormat;
-    private ConventionYear mConventionYear;
+    private ModifyConventionYearPresenter mPresenter;
+
+    @Bind(R.id.conventionLocation) EditText mLocationEditText;
+    @Bind(R.id.startDateButton) Button mStartButton;
+    @Bind(R.id.endDateButton) Button mEndButton;
 
     public static ModifyConventionYearFragment newInstance(Convention convention) {
         ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
@@ -75,15 +63,19 @@ public class ModifyConventionYearFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mConventionYear = null;
+        Convention convention = null;
+        ConventionYear conventionYear = null;
         if (getArguments() != null) {
-            mConvention = getArguments().getParcelable("convention");
-            mConventionYear = getArguments().getParcelable("conventionYear");
+            convention = getArguments().getParcelable("convention");
+            conventionYear = getArguments().getParcelable("conventionYear");
         }
-
-        DaggerNetworkComponent.builder()
-                .networkModule(new NetworkModule(getString(R.string.internalAPIBase)))
-                .build().inject(this);
+        if(mPresenter == null)
+            mPresenter = new ModifyConventionYearPresenterImpl(this, convention, conventionYear);
+        else {
+            mPresenter.setView(this);
+            mPresenter.setConvention(convention);
+            mPresenter.setConventionYear(conventionYear);
+        }
     }
 
     @Override
@@ -91,51 +83,13 @@ public class ModifyConventionYearFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_convention_year, container, false);
-
         setHasOptionsMenu(true);
-
-        mStartButton = (Button) view.findViewById(R.id.startDateButton);
-        mEndButton = (Button) view.findViewById(R.id.endDateButton);
-        mLocationEditText = (EditText) view.findViewById(R.id.conventionLocation);
-
-        mStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
-                datePickerDialogFragment.setListener(mStartDateListener);
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                datePickerDialogFragment.show(transaction, "Start Date");
-            }
-        });
-        mEndButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
-                datePickerDialogFragment.setListener(mEndDateListener);
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                datePickerDialogFragment.show(transaction, "End Date");
-            }
-        });
-
-        populateView();
+        ButterKnife.bind(this, view);
+        mStartButton.setOnClickListener(mStartButtonListener);
+        mEndButton.setOnClickListener(mEndButtonListener);
+        mPresenter.requestInitialData();
 
         return view;
-    }
-
-    private void populateView() {
-        mDateFormat = new SimpleDateFormat("EEEE MMMM dd yyyy", Locale.getDefault());
-        if (mConventionYear == null) {
-            Calendar calendar = Calendar.getInstance();
-            mStartDate = calendar.getTime();
-            mEndDate = calendar.getTime();
-        } else {
-            mStartDate = mConventionYear.getStartDate();
-            mEndDate = mConventionYear.getEndDate();
-            mLocationEditText.setText(mConventionYear.getLocation());
-        }
-
-        mStartButton.setText(mDateFormat.format(mStartDate));
-        mEndButton.setText(mDateFormat.format(mEndDate));
     }
 
     @Override
@@ -160,78 +114,40 @@ public class ModifyConventionYearFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_submit) {
-            if (mStartDate.after(mEndDate)) {
-                Toast.makeText(getContext(), "End date must be after the start date",
-                        Toast.LENGTH_LONG).show();
-                return true;
-            }
-
-            InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-
-            //SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
-            String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
-            if (mConventionYear == null) {
-                ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
-                        mConvention.getId(), mLocationEditText.getText().toString(),
-                        displayName);
-                //sqLiteDataSource.create(conventionYear);
-
-                internalAPI.createConventionYear(conventionYear).enqueue(new Callback<ConventionYear>() {
-                    @Override
-                    public void onResponse(Call<ConventionYear> call, Response<ConventionYear> response) {
-                        if (response.code() == 201)
-                            mListener.onModifyFragmentInteraction();
-                        else {
-                            Toast.makeText(getContext(), "Failed to create convention year.",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ConventionYear> call, Throwable t) {
-                        Toast.makeText(getContext(), "Failed to create convention year, please check your connection and try again.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            } else {
-                mConventionYear.setStart(mStartDate);
-                mConventionYear.setEnd(mEndDate);
-                mConventionYear.setLocation(mLocationEditText.getText().toString());
-                internalAPI.updateConventionYear(mConventionYear.getId(), mConventionYear).enqueue(new Callback<ConventionYear>() {
-                    @Override
-                    public void onResponse(Call<ConventionYear> call, Response<ConventionYear> response) {
-                        if (response.code() == 200)
-                            mListener.onModifyFragmentInteraction();
-                        else {
-                            Toast.makeText(getContext(), "Failed to update convention year.",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ConventionYear> call, Throwable t) {
-                        Toast.makeText(getContext(), "Failed to update convention year, please check your connection and try again.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-                //sqLiteDataSource.update(mConventionYear);
-            }
+            mPresenter.submit();
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private String getYearFromDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return Integer.toString(calendar.get(Calendar.YEAR));
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mPresenter.removeView(this);
     }
+
+    // Listeners
+
+    private View.OnClickListener mStartButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
+            datePickerDialogFragment.setListener(mStartDateListener);
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            datePickerDialogFragment.show(transaction, "Start Date");
+        }
+    };
+
+    private View.OnClickListener mEndButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
+            datePickerDialogFragment.setListener(mEndDateListener);
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            datePickerDialogFragment.show(transaction, "End Date");
+        }
+    };
 
     private DatePickerDialog.OnDateSetListener mStartDateListener = new
             DatePickerDialog.OnDateSetListener() {
@@ -239,8 +155,7 @@ public class ModifyConventionYearFragment extends Fragment {
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(year, monthOfYear, dayOfMonth);
-                    mStartDate = calendar.getTime();
-                    mStartButton.setText(mDateFormat.format(mStartDate));
+                    mPresenter.setStartDate(calendar.getTime());
                 }
             };
 
@@ -250,12 +165,45 @@ public class ModifyConventionYearFragment extends Fragment {
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(year, monthOfYear, dayOfMonth);
-                    mEndDate = calendar.getTime();
-                    mEndButton.setText(mDateFormat.format(mEndDate));
+                    mPresenter.setFinishDate(calendar.getTime());
                 }
             };
 
+
     public interface OnFragmentInteractionListener {
-        public void onModifyFragmentInteraction();
+        void onModifyFragmentInteraction();
     }
+
+    // ModifyConventionYearView methods
+
+    @Override
+    public String getLocation() {
+        return mLocationEditText.getText().toString();
+    }
+
+    @Override
+    public void displayStartDate(String date) {
+        mStartButton.setText(date);
+    }
+
+    @Override
+    public void displayFinishDate(String date) {
+        mEndButton.setText(date);
+    }
+
+    @Override
+    public void displayLocation(String location) {
+
+    }
+
+    @Override
+    public void displayWarning(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void done() {
+        mListener.onModifyFragmentInteraction();
+    }
+
 }
