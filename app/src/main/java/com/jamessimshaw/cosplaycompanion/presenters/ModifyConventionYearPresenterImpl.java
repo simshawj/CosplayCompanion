@@ -110,7 +110,7 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
         if (mConventionYear == null) {
             ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
                     mConvention.getId(), location, displayName);
-            internalAPI.createConventionYear(conventionYear).enqueue(mCallback);
+            internalAPI.createConventionYear(mConvention.getId(), conventionYear).enqueue(mCallback);
         } else {
             mConventionYear.setStart(mStartDate);
             mConventionYear.setEnd(mEndDate);

@@ -193,7 +193,7 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
 
     @Override
     public void displayLocation(String location) {
-
+        mLocationEditText.setText(location);
     }
 
     @Override

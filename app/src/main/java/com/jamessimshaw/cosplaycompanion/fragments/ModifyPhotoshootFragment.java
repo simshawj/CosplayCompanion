@@ -192,7 +192,7 @@ public class ModifyPhotoshootFragment extends Fragment {
                 Photoshoot photoshoot = new Photoshoot(mSeriesEditText.getText().toString(),
                         mStart.getTime(), mLocationEditText.getText().toString(),
                         mDescriptionEditText.getText().toString(), mConventionYear.getId());
-                internalAPI.createPhotoShoot(photoshoot).enqueue(new Callback<Photoshoot>() {
+                internalAPI.createPhotoShoot(mConventionYear.getId(), photoshoot).enqueue(new Callback<Photoshoot>() {
                     @Override
                     public void onResponse(Call<Photoshoot> call, Response<Photoshoot> response) {
                         if (response.code() == 201)
