@@ -27,6 +27,9 @@ import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponen
 import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenter;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -43,7 +46,7 @@ import retrofit2.Retrofit;
 /**
  * Created by james on 10/4/15.
  */
-public class ModifyConventionFragment extends Fragment {
+public class ModifyConventionFragment extends Fragment implements ModifyConventionView, View.OnClickListener {
     public static final int LOGO = 0;
 
     @Bind(R.id.conventionNameEditText) EditText mNameEditText;
@@ -51,10 +54,8 @@ public class ModifyConventionFragment extends Fragment {
     @Bind(R.id.logoImageView) ImageView mLogoImageView;
     @Bind(R.id.conventionLogoChangeButton) Button mLogoButton;
 
-    @Inject Retrofit mRetrofit;
-
+    ModifyConventionPresenter mPresenter;
     OnFragmentInteractionListener mListener;
-    Uri mLogoUri;
     Convention mConvention;
 
     public static ModifyConventionFragment newInstance() {
@@ -83,9 +84,7 @@ public class ModifyConventionFragment extends Fragment {
         if (getArguments() != null)
             mConvention = getArguments().getParcelable("convention");
 
-        DaggerNetworkComponent.builder()
-                .networkModule(new NetworkModule(getString(R.string.internalAPIBase)))
-                .build().inject(this);
+        mPresenter = new ModifyConventionPresenterImpl(this, mConvention);
     }
 
     @Override
@@ -97,25 +96,12 @@ public class ModifyConventionFragment extends Fragment {
         setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
 
-        mLogoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                if (Build.VERSION.SDK_INT < 19)
-                    intent = new Intent(Intent.ACTION_GET_CONTENT);
-                else
-                    intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.setType("image/*");
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                startActivityForResult(intent, LOGO);
-            }
-        });
+        mLogoButton.setOnClickListener(this);
 
         if (mConvention != null) {
             mNameEditText.setText(mConvention.getName());
             mDescriptionEditText.setText(mConvention.getDescription());
-            mLogoUri = mConvention.getLogoUri();
-            Picasso.with(getContext()).load(mLogoUri).into(mLogoImageView);
+            Picasso.with(getContext()).load(mConvention.getLogoUri()).into(mLogoImageView);
         }
 
         return view;
@@ -143,59 +129,8 @@ public class ModifyConventionFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_submit) {
-            String name = mNameEditText.getText().toString();
-            String description = mDescriptionEditText.getText().toString();
+            mPresenter.submit();
 
-            InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-
-            Bitmap logo = ((BitmapDrawable)mLogoImageView.getDrawable()).getBitmap();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            logo.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-            String logoString = Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP);
-
-            if (mConvention == null) {
-                Convention convention = new Convention(name, description, mLogoUri);
-                convention.setBase64Logo(logoString);
-
-                internalAPI.createConvention(convention).enqueue(new Callback<Convention>() {
-                    @Override
-                    public void onResponse(Call<Convention> call, Response<Convention> response) {
-                        if (response.code() == 201)
-                            mListener.onModifyFragmentInteraction();
-                        else {
-                            Toast.makeText(getContext(), "Failed to create convention.",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Convention> call, Throwable t) {
-                        Toast.makeText(getContext(), "Failed to create convention, please check your connection and try again.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            } else {
-                mConvention.setDescription(description);
-                mConvention.setName(name);
-                mConvention.setLogoUri(mLogoUri);
-                internalAPI.updateConvention(mConvention.getId(), mConvention).enqueue(new Callback<Convention>() {
-                    @Override
-                    public void onResponse(Call<Convention> call, Response<Convention> response) {
-                        if (response.code() == 200)
-                            mListener.onModifyFragmentInteraction();
-                        else {
-                            Toast.makeText(getContext(), "Failed to update convention.",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Convention> call, Throwable t) {
-                        Toast.makeText(getContext(), "Failed to update convention, please check your connection and try again.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -205,6 +140,8 @@ public class ModifyConventionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mPresenter.removeView(this);
+        mPresenter = null;
     }
 
     public interface OnFragmentInteractionListener {
@@ -215,12 +152,52 @@ public class ModifyConventionFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            mLogoUri = data.getData();
+            Uri logoUri = data.getData();
             if (Build.VERSION.SDK_INT >= 19)
                 getContext().getApplicationContext().getContentResolver().takePersistableUriPermission(
-                        mLogoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        logoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 );
-            Picasso.with(getContext()).load(mLogoUri).into(mLogoImageView);
+            Picasso.with(getContext()).load(logoUri).into(mLogoImageView);
         }
+    }
+
+    // View.OnClickListener methods
+    @Override
+    public void onClick(View v) {
+        Intent intent;
+        if (Build.VERSION.SDK_INT < 19)
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+        else
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, LOGO);
+    }
+
+    // ModifyConventionView methods
+
+    @Override
+    public String getName() {
+        return mNameEditText.getText().toString();
+    }
+
+    @Override
+    public String getDescription() {
+        return mDescriptionEditText.getText().toString();
+    }
+
+    @Override
+    public Bitmap getLogo() {
+        return ((BitmapDrawable)mLogoImageView.getDrawable()).getBitmap();
+    }
+
+    @Override
+    public void displayWarning(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void done() {
+        mListener.onModifyFragmentInteraction();
     }
 }
