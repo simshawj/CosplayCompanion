@@ -3,7 +3,6 @@ package com.jamessimshaw.cosplaycompanion.adapters;
 import android.app.Activity;
 import android.net.Uri;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jamessimshaw.cosplaycompanion.BuildConfig;
@@ -59,7 +58,7 @@ public class ConventionRecViewAdapterTest {
         assertEquals("TestConvention", ((TextView) viewHolder.itemView
                 .findViewById(R.id.convention_name)).getText().toString());
         assertEquals("A test Convention", ((TextView) viewHolder.itemView
-                .findViewById(R.id.conDescriptionEditText)).getText().toString());
+                .findViewById(R.id.conDescriptionTextView)).getText().toString());
         assertTrue(((TextView) viewHolder.itemView.findViewById(R.id.conventionEdit))
                 .hasOnClickListeners());
         assertTrue(((TextView) viewHolder.itemView.findViewById(R.id.conventionYearsLink))

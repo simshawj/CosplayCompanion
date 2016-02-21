@@ -15,6 +15,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by james on 10/4/15.
  */
@@ -66,20 +69,16 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mConventionNameTextView;
-        private ImageView mConventionLogoImageView;
-        private TextView mConventionDescriptionTextView;
-        private TextView mConventionEditTextView;
-        private TextView mConventionYearTextView;
+        @Bind(R.id.convention_name) TextView mConventionNameTextView;
+        @Bind(R.id.convention_logo) ImageView mConventionLogoImageView;
+        @Bind(R.id.conDescriptionTextView) TextView mConventionDescriptionTextView;
+        @Bind(R.id.conventionEdit) TextView mConventionEditTextView;
+        @Bind(R.id.conventionYearsLink) TextView mConventionYearTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
-            mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
-            mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionEditText);
-            mConventionYearTextView = (TextView) itemView.findViewById(R.id.conventionYearsLink);
-            mConventionEditTextView = (TextView) itemView.findViewById(R.id.conventionEdit);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

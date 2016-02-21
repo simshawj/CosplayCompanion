@@ -113,7 +113,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             if (mType == TYPE_HEADER) {
                 mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
                 mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
-                mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionEditText);
+                mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionTextView);
                 itemView.findViewById(R.id.options).setVisibility(View.GONE);
                 itemView.findViewById(R.id.horizontalRule).setVisibility(View.GONE);
             } else {
