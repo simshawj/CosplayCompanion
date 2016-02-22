@@ -76,7 +76,7 @@ public class ShowConventionFragment extends Fragment {
         }
 
         DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule(getString(R.string.internalAPIBase)))
+                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
                 .build().inject(this);
     }
 

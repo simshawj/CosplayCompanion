@@ -18,6 +18,9 @@ import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModul
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
+import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +41,12 @@ import retrofit2.Retrofit;
  * Use the {@link ListConventionsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListConventionsFragment extends Fragment {
-    @Inject @Named("conventions") Retrofit mRetrofit;
+public class ListConventionsFragment extends Fragment implements ListConventionsView {
+
 
     private OnFragmentInteractionListener mListener;
-    private ArrayList<Convention> mConventions;
-    private SQLiteDataSource mSQLiteDataSource;
+    private ListConventionsPresenter mPresenter;
+    private ConventionRecViewAdapter mAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -63,9 +66,7 @@ public class ListConventionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule(getString(R.string.internalAPIBase)))
-                .build().inject(this);
+        mPresenter = new ListConventionsPresenterImpl(this);
     }
 
     @Override
@@ -89,25 +90,9 @@ public class ListConventionsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionRecyclerView.setLayoutManager(linearLayoutManager);
 
-        //mSQLiteDataSource = new SQLiteDataSource(getActivity());
-        //mConventions = mSQLiteDataSource.read();
-        mConventions = new ArrayList<>();
-        final ConventionRecViewAdapter adapter = new ConventionRecViewAdapter(mConventions, getActivity());
-        conventionRecyclerView.setAdapter(adapter);
-
-        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.getConventions().enqueue(new Callback<List<Convention>>() {
-            @Override
-            public void onResponse(Call<List<Convention>> call, Response<List<Convention>> response) {
-                mConventions.addAll(response.body());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<Convention>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        mAdapter = new ConventionRecViewAdapter(new ArrayList<Convention>(), getActivity());
+        conventionRecyclerView.setAdapter(mAdapter);
+        mPresenter.requestConventions();
 
         return view;
     }
@@ -141,6 +126,13 @@ public class ListConventionsFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(String event, Object item);
+    }
+
+    // ListConventionsView methods
+
+    @Override
+    public void addConventions(List<Convention> conventions) {
+        mAdapter.addNewConventions(conventions);
     }
 
 }

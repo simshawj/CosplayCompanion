@@ -38,7 +38,7 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
         mConventionYear = conventionYear;
 
         DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule("http://192.168.1.202:3000/"))
+                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
                 .build().inject(this);
     }
 

@@ -4,6 +4,7 @@ import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModul
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
+import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenterImpl;
@@ -15,7 +16,7 @@ import dagger.Component;
 @Singleton
 @Component(modules = {CosplayCompanionAPIModule.class})
 public interface NetworkComponent {
-    void inject(ListConventionsFragment fragment);
+    void inject(ListConventionsPresenterImpl presenter);
     void inject(ModifyConventionPresenterImpl presenter);
     void inject(ModifyConventionYearPresenterImpl presenter);
     void inject(ModifyPhotoshootPresenterImpl presenter);

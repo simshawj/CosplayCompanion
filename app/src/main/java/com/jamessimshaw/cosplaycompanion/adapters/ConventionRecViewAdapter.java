@@ -14,6 +14,7 @@ import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,25 +40,25 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.mConventionNameTextView.setText(mConventions.get(position).getName());
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final Convention convention = mConventions.get(position);
+        holder.mConventionNameTextView.setText(convention.getName());
         Picasso.with(mActivity)
-                .load(mConventions.get(position).getLogoUri()).fit().centerInside()
+                .load(convention.getLogoUri()).fit().centerInside()
                 .into(holder.mConventionLogoImageView);
         holder.mConventionDescriptionTextView.setText(mConventions.get(position).getDescription());
         holder.mConventionYearTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mActivity instanceof MainActivity)
-                    ((MainActivity) mActivity).onFragmentInteraction("show convention", mConventions.get(
-                            position));
+                    ((MainActivity) mActivity).onFragmentInteraction("show convention", convention);
             }
         });
         holder.mConventionEditTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mActivity instanceof  MainActivity)
-                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", mConventions.get(position));
+                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", convention);
             }
         });
     }
@@ -65,6 +66,11 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
     @Override
     public int getItemCount() {
         return mConventions.size();
+    }
+
+    public void addNewConventions(List<Convention> conventionList) {
+        mConventions.addAll(conventionList);
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -13,7 +13,11 @@ android {
         versionName "1.0"
     }
     buildTypes {
+        debug{
+            buildConfigField "String", "CosplayCompanionAPIBase", "\"http://192.168.1.202:3000/\""
+        }
         release {
+            buildConfigField "String", "CosplayCompanionAPIBase", "\"http://192.168.1.202:3000/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

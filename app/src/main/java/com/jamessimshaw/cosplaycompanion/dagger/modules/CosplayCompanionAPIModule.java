@@ -2,6 +2,7 @@ package com.jamessimshaw.cosplaycompanion.dagger.modules;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jamessimshaw.cosplaycompanion.BuildConfig;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.serialization.ConventionDeserializer;
 
@@ -18,8 +19,8 @@ public class CosplayCompanionAPIModule {
 
     String mBaseURL;
 
-    public CosplayCompanionAPIModule(String baseURL) {
-        mBaseURL = baseURL;
+    public CosplayCompanionAPIModule() {
+        mBaseURL = BuildConfig.CosplayCompanionAPIBase;
     }
 
     @Provides
