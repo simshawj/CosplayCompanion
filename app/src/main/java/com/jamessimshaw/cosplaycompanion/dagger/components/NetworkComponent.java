@@ -1,6 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
-import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {NetworkModule.class})
+@Component(modules = {CosplayCompanionAPIModule.class})
 public interface NetworkComponent {
     void inject(ListConventionsFragment fragment);
     void inject(ModifyConventionPresenterImpl presenter);

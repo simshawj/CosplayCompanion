@@ -14,11 +14,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class NetworkModule {
+public class CosplayCompanionAPIModule {
 
     String mBaseURL;
 
-    public NetworkModule(String baseURL) {
+    public CosplayCompanionAPIModule(String baseURL) {
         mBaseURL = baseURL;
     }
 

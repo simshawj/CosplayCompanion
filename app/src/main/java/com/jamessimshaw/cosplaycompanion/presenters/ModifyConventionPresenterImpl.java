@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.util.Base64;
 
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
@@ -33,7 +33,7 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
 
         //TODO: Eliminate hardcoded string
         DaggerNetworkComponent.builder()
-                .networkModule(new NetworkModule("http://192.168.1.202:3000/"))
+                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule("http://192.168.1.202:3000/"))
                 .build().inject(this);
     }
 

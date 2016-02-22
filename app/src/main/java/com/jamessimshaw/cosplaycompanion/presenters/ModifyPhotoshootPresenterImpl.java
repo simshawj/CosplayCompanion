@@ -1,7 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
@@ -35,7 +35,7 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
         mPhotoshoot = photoshoot;
 
         DaggerNetworkComponent.builder()
-                .networkModule(new NetworkModule("http://192.168.1.202:3000/"))
+                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule("http://192.168.1.202:3000/"))
                 .build().inject(this);
     }
 

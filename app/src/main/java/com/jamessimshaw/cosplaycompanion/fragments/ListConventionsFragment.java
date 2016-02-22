@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.NetworkModule;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
@@ -64,7 +64,7 @@ public class ListConventionsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerNetworkComponent.builder()
-                .networkModule(new NetworkModule(getString(R.string.internalAPIBase)))
+                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule(getString(R.string.internalAPIBase)))
                 .build().inject(this);
     }
 
