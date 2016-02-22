@@ -44,7 +44,6 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
 
     ModifyConventionPresenter mPresenter;
     OnFragmentInteractionListener mListener;
-    Convention mConvention;
 
     public static ModifyConventionFragment newInstance() {
         ModifyConventionFragment fragment = new ModifyConventionFragment();
@@ -67,12 +66,12 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mConvention = null;
+        Convention convention = null;
 
         if (getArguments() != null)
-            mConvention = getArguments().getParcelable("convention");
+            convention = getArguments().getParcelable("convention");
 
-        mPresenter = new ModifyConventionPresenterImpl(this, mConvention);
+        mPresenter = new ModifyConventionPresenterImpl(this, convention);
     }
 
     @Override
@@ -85,12 +84,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
         ButterKnife.bind(this, view);
 
         mLogoButton.setOnClickListener(this);
-
-        if (mConvention != null) {
-            mNameEditText.setText(mConvention.getName());
-            mDescriptionEditText.setText(mConvention.getDescription());
-            Picasso.with(getContext()).load(mConvention.getLogoUri()).into(mLogoImageView);
-        }
+        mPresenter.requestInitialData();
 
         return view;
     }
@@ -133,7 +127,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     }
 
     public interface OnFragmentInteractionListener {
-        public void onModifyFragmentInteraction();
+        void onModifyFragmentInteraction();
     }
 
     @Override
@@ -182,6 +176,24 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     @Override
     public void displayWarning(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void displayName(String name) {
+        mNameEditText.setText(name);
+    }
+
+    @Override
+    public void displayDescription(String description) {
+        mDescriptionEditText.setText(description);
+    }
+
+    @Override
+    public void displayLogo(Uri logoUri) {
+        Picasso.with(getContext()).load(logoUri)
+                .placeholder(android.R.drawable.ic_dialog_alert)
+                .error(android.R.drawable.ic_dialog_alert)
+                .into(mLogoImageView);
     }
 
     @Override

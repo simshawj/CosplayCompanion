@@ -8,5 +8,6 @@ import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 public interface ModifyConventionPresenter {
     void setView(ModifyConventionView view);
     void removeView(ModifyConventionView view);
+    void requestInitialData();
     void submit();
 }

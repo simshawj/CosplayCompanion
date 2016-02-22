@@ -31,11 +31,12 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
         mView = view;
         mConvention = convention;
 
-        //TODO: Eliminate hardcoded string
         DaggerNetworkComponent.builder()
                 .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
                 .build().inject(this);
     }
+
+    // ModifyConventionPresenter methods
 
     @Override
     public void setView(ModifyConventionView view) {
@@ -46,6 +47,15 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
     public void removeView(ModifyConventionView view) {
         if (mView.equals(view))
             mView = null;
+    }
+
+    @Override
+    public void requestInitialData() {
+        if (mConvention != null) {
+            mView.displayName(mConvention.getName());
+            mView.displayDescription(mConvention.getDescription());
+            mView.displayLogo(mConvention.getLogoUri());
+        }
     }
 
     @Override
@@ -71,6 +81,8 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             internalAPI.updateConvention(mConvention.getId(), mConvention).enqueue(mConventionCallback);
         }
     }
+
+    // Callbacks
 
     private Callback<Convention> mConventionCallback = new Callback<Convention>() {
         @Override
