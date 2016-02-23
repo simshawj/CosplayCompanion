@@ -52,4 +52,15 @@ public class ListConventionsPresenterImpl implements ListConventionsPresenter {
     public void requestNewConventions() {
 
     }
+
+    @Override
+    public void setView(ListConventionsView view) {
+        mView = view;
+    }
+
+    @Override
+    public void removeView(ListConventionsView view) {
+        if(mView.equals(view))
+            mView = null;
+    }
 }

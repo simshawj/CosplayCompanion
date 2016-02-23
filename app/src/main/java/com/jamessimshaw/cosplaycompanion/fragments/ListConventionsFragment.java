@@ -66,7 +66,10 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new ListConventionsPresenterImpl(this);
+        if(mPresenter == null)
+            mPresenter = new ListConventionsPresenterImpl(this);
+        else
+            mPresenter.setView(this);
     }
 
     @Override
@@ -112,6 +115,8 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mPresenter.removeView(this);
+        mPresenter = null;
     }
 
     /**
