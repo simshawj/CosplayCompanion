@@ -9,11 +9,9 @@ import java.util.Date;
 /**
  * Created by james on 2/18/16.
  */
-public interface ModifyConventionYearPresenter {
-    void setView(ModifyConventionYearView view);
+public interface ModifyConventionYearPresenter extends Presenter<ModifyConventionYearView> {
     void setConvention(Convention convention);
     void setConventionYear(ConventionYear conventionYear);
-    void removeView(ModifyConventionYearView view);
     void requestInitialData();
     void setStartDate(Date date);
     void setFinishDate(Date date);

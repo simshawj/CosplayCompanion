@@ -197,8 +197,8 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     }
 
     @Override
-    public void displayWarning(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    public void displayWarning(String warning) {
+        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
     }
 
     @Override

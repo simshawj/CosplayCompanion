@@ -7,6 +7,6 @@ import java.util.List;
 /**
  * Created by james on 2/21/16.
  */
-public interface ListConventionsView {
+public interface ListConventionsView extends MVPView {
     void addConventions(List<Convention> conventions);
 }

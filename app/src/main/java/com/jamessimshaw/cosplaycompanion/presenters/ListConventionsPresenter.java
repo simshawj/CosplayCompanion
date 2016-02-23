@@ -5,9 +5,7 @@ import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 /**
  * Created by james on 2/21/16.
  */
-public interface ListConventionsPresenter {
+public interface ListConventionsPresenter extends Presenter<ListConventionsView> {
     void requestConventions();
     void requestNewConventions();
-    void setView(ListConventionsView view);
-    void removeView(ListConventionsView view);
 }

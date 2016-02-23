@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
@@ -117,6 +118,16 @@ public class ListConventionsFragment extends Fragment implements ListConventions
         mListener = null;
         mPresenter.removeView(this);
         mPresenter = null;
+    }
+
+    @Override
+    public void displayWarning(String warning) {
+        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void done() {
+        // Nothing until a further version
     }
 
     /**

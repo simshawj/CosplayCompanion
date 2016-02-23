@@ -7,11 +7,9 @@ import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
 /**
  * Created by james on 2/19/16.
  */
-public interface ModifyPhotoshootPresenter {
-    void setView(ModifyPhotoshootView view);
+public interface ModifyPhotoshootPresenter extends Presenter<ModifyPhotoshootView> {
     void setConventionYear(ConventionYear convention);
     void setPhotoshoot(Photoshoot conventionYear);
-    void removeView(ModifyPhotoshootView view);
     void requestInitialData();
     void submit();
     void dateChanged(int year, int month, int day);
