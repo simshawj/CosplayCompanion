@@ -16,7 +16,11 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by james on 10/11/15.
@@ -96,31 +100,32 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             return TYPE_YEAR;
     }
 
+    public void addConventionYears(List<ConventionYear> conventionYears) {
+        mConventionYears.addAll(conventionYears);
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private int mType;
-        private TextView mConventionNameTextView;
-        private TextView mConventionDescriptionTextView;
-        private ImageView mConventionLogoImageView;
-        private TextView mConventionYearYear;
-        private TextView mConventionYearDates;
-        private TextView mPhotoshootLink;
-        private TextView mEditTextView;
+
+        @Bind(R.id.convention_name) TextView mConventionNameTextView;
+        @Bind(R.id.conDescriptionTextView) TextView mConventionDescriptionTextView;
+        @Bind(R.id.convention_logo) ImageView mConventionLogoImageView;
+        @Bind(R.id.convention_year) TextView mConventionYearYear;
+        @Bind(R.id.convention_dates) TextView mConventionYearDates;
+        @Bind(R.id.photoshoots) TextView mPhotoshootLink;
+        @Bind(R.id.yearEditText) TextView mEditTextView;
 
         public ViewHolder(View itemView, int itemType) {
             super(itemView);
 
             mType = itemType;
+
+            ButterKnife.bind(this, itemView);
+
             if (mType == TYPE_HEADER) {
-                mConventionNameTextView = (TextView) itemView.findViewById(R.id.convention_name);
-                mConventionLogoImageView = (ImageView) itemView.findViewById(R.id.convention_logo);
-                mConventionDescriptionTextView = (TextView) itemView.findViewById(R.id.conDescriptionTextView);
                 itemView.findViewById(R.id.options).setVisibility(View.GONE);
                 itemView.findViewById(R.id.horizontalRule).setVisibility(View.GONE);
-            } else {
-                mConventionYearYear = (TextView) itemView.findViewById(R.id.convention_year);
-                mConventionYearDates = (TextView) itemView.findViewById(R.id.convention_dates);
-                mPhotoshootLink = (TextView) itemView.findViewById(R.id.photoshoots);
-                mEditTextView = (TextView) itemView.findViewById(R.id.yearEditText);
             }
         }
     }
