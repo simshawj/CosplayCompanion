@@ -23,7 +23,7 @@ public class ListConventionsPresenterImpl implements ListConventionsPresenter {
 
     @Inject @Named("conventions") Retrofit mRetrofit;
 
-    ListConventionsView mView;
+    private ListConventionsView mView;
 
     public ListConventionsPresenterImpl(ListConventionsView view) {
         mView = view;
