@@ -47,6 +47,7 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
     private ListConventionYearsPresenterImpl mYearsPresenter;
     private OnFragmentInteractionListener mListener;
     private Convention mConvention;
+    private ConYearRecViewAdapter mAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -98,9 +99,9 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        ConYearRecViewAdapter adapter = new ConYearRecViewAdapter(mConvention, new ArrayList<ConventionYear>(),
+        mAdapter = new ConYearRecViewAdapter(mConvention, new ArrayList<ConventionYear>(),
                 getActivity());
-        conventionDetailsRecyclerView.setAdapter(adapter);
+        conventionDetailsRecyclerView.setAdapter(mAdapter);
 
         mYearsPresenter.requestConventionYears();
 
@@ -144,7 +145,7 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
 
     @Override
     public void addConventionYears(List<ConventionYear> conventionYears) {
-
+        mAdapter.addConventionYears(conventionYears);
     }
 
     @Override

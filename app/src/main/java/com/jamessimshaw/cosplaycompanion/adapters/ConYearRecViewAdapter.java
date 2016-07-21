@@ -1,6 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,13 +109,13 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private int mType;
 
-        @Bind(R.id.convention_name) TextView mConventionNameTextView;
-        @Bind(R.id.conDescriptionTextView) TextView mConventionDescriptionTextView;
-        @Bind(R.id.convention_logo) ImageView mConventionLogoImageView;
-        @Bind(R.id.convention_year) TextView mConventionYearYear;
-        @Bind(R.id.convention_dates) TextView mConventionYearDates;
-        @Bind(R.id.photoshoots) TextView mPhotoshootLink;
-        @Bind(R.id.yearEditText) TextView mEditTextView;
+        @Nullable @Bind(R.id.convention_name) TextView mConventionNameTextView;
+        @Nullable @Bind(R.id.conDescriptionTextView) TextView mConventionDescriptionTextView;
+        @Nullable @Bind(R.id.convention_logo) ImageView mConventionLogoImageView;
+        @Nullable @Bind(R.id.convention_year) TextView mConventionYearYear;
+        @Nullable @Bind(R.id.convention_dates) TextView mConventionYearDates;
+        @Nullable @Bind(R.id.photoshoots) TextView mPhotoshootLink;
+        @Nullable @Bind(R.id.yearEditText) TextView mEditTextView;
 
         public ViewHolder(View itemView, int itemType) {
             super(itemView);
