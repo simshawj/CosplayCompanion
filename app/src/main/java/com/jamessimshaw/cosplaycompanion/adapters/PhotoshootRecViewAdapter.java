@@ -15,6 +15,7 @@ import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -80,6 +81,11 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
             return TYPE_HEADER;
         else
             return TYPE_PHOTOSHOOT;
+    }
+
+    public void addConventionYears(List<Photoshoot> photoshoots) {
+        mPhotoshoots.addAll(photoshoots);
+        notifyDataSetChanged();
     }
 
     @Override

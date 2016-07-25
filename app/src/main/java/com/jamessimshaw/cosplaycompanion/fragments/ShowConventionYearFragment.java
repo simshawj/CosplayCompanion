@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
@@ -19,6 +20,9 @@ import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
+import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenter;
+import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +42,12 @@ import retrofit2.Retrofit;
  * Use the {@link ShowConventionYearFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShowConventionYearFragment extends Fragment {
+public class ShowConventionYearFragment extends Fragment implements ListPhotoshootsView {
     private static final String ARG_PARAM2 = "conventionYear";
 
-    @Inject Retrofit mRetrofit;
-
+    private ListPhotoshootsPresenter mPresenter;
     private ConventionYear mConventionYear;
-    private SQLiteDataSource mSQLiteDataSource;
-    private ArrayList<Photoshoot> mPhotoshoots;
-
+    private PhotoshootRecViewAdapter mAdapter;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -75,9 +76,7 @@ public class ShowConventionYearFragment extends Fragment {
             mConventionYear = getArguments().getParcelable(ARG_PARAM2);
         }
 
-        DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
-                .build().inject(this);
+        mPresenter = new ListPhotoshootsPresenterImpl(this, mConventionYear);
     }
 
     @Override
@@ -101,26 +100,10 @@ public class ShowConventionYearFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mSQLiteDataSource = new SQLiteDataSource(getActivity());
-        //mPhotoshoots = mSQLiteDataSource.read(mConventionYear);
-        mPhotoshoots = new ArrayList<>();
-        final PhotoshootRecViewAdapter adapter = new PhotoshootRecViewAdapter(mConventionYear,
-                mPhotoshoots, getActivity());
-        conventionYearDetailsRecyclerView.setAdapter(adapter);
+        mAdapter = new PhotoshootRecViewAdapter(mConventionYear, new ArrayList<Photoshoot>(), getActivity());
+        conventionYearDetailsRecyclerView.setAdapter(mAdapter);
 
-        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.getPhotoShoots(mConventionYear.getId()).enqueue(new Callback<List<Photoshoot>>() {
-            @Override
-            public void onResponse(Call<List<Photoshoot>> call, Response<List<Photoshoot>> response) {
-                mPhotoshoots.addAll(response.body());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<Photoshoot>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        mPresenter.requestPhotoshoots();
 
         return view;
     }
@@ -140,7 +123,10 @@ public class ShowConventionYearFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mPresenter.removeView(this);
+        mPresenter = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -154,6 +140,23 @@ public class ShowConventionYearFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(String event, Object item);
+    }
+
+    // ListPhotoshootsView Methods
+
+    @Override
+    public void addConventionYears(List<Photoshoot> photoshoots) {
+        mAdapter.addConventionYears(photoshoots);
+    }
+
+    @Override
+    public void displayWarning(String warning) {
+        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void done() {
+
     }
 
 }
