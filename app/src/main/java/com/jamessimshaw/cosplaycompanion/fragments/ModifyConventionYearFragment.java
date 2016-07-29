@@ -26,7 +26,7 @@ import com.jamessimshaw.cosplaycompanion.views.ModifyConventionYearView;
 import java.util.Calendar;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -36,9 +36,9 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     private OnFragmentInteractionListener mListener;
     private ModifyConventionYearPresenter mPresenter;
 
-    @Bind(R.id.conventionLocation) EditText mLocationEditText;
-    @Bind(R.id.startDateButton) Button mStartButton;
-    @Bind(R.id.endDateButton) Button mEndButton;
+    @BindView(R.id.conventionLocation) EditText mLocationEditText;
+    @BindView(R.id.startDateButton) Button mStartButton;
+    @BindView(R.id.endDateButton) Button mEndButton;
 
     public static ModifyConventionYearFragment newInstance(Convention convention) {
         ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();

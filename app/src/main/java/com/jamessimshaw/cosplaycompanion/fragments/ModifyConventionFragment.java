@@ -28,7 +28,7 @@ import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenterImp
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -37,10 +37,10 @@ import butterknife.ButterKnife;
 public class ModifyConventionFragment extends Fragment implements ModifyConventionView, View.OnClickListener {
     public static final int LOGO = 0;
 
-    @Bind(R.id.conventionNameEditText) EditText mNameEditText;
-    @Bind(R.id.descriptionEditText) EditText mDescriptionEditText;
-    @Bind(R.id.logoImageView) ImageView mLogoImageView;
-    @Bind(R.id.conventionLogoChangeButton) Button mLogoButton;
+    @BindView(R.id.conventionNameEditText) EditText mNameEditText;
+    @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
+    @BindView(R.id.logoImageView) ImageView mLogoImageView;
+    @BindView(R.id.conventionLogoChangeButton) Button mLogoButton;
 
     ModifyConventionPresenter mPresenter;
     OnFragmentInteractionListener mListener;

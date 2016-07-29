@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -109,13 +109,13 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private int mType;
 
-        @Nullable @Bind(R.id.convention_name) TextView mConventionNameTextView;
-        @Nullable @Bind(R.id.conDescriptionTextView) TextView mConventionDescriptionTextView;
-        @Nullable @Bind(R.id.convention_logo) ImageView mConventionLogoImageView;
-        @Nullable @Bind(R.id.convention_year) TextView mConventionYearYear;
-        @Nullable @Bind(R.id.convention_dates) TextView mConventionYearDates;
-        @Nullable @Bind(R.id.photoshoots) TextView mPhotoshootLink;
-        @Nullable @Bind(R.id.yearEditText) TextView mEditTextView;
+        @Nullable @BindView(R.id.convention_name) TextView mConventionNameTextView;
+        @Nullable @BindView(R.id.conDescriptionTextView) TextView mConventionDescriptionTextView;
+        @Nullable @BindView(R.id.convention_logo) ImageView mConventionLogoImageView;
+        @Nullable @BindView(R.id.convention_year) TextView mConventionYearYear;
+        @Nullable @BindView(R.id.convention_dates) TextView mConventionYearDates;
+        @Nullable @BindView(R.id.photoshoots) TextView mPhotoshootLink;
+        @Nullable @BindView(R.id.yearEditText) TextView mEditTextView;
 
         public ViewHolder(View itemView, int itemType) {
             super(itemView);

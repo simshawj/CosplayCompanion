@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -100,13 +100,13 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
     public class ViewHolder extends RecyclerView.ViewHolder {
         private int mType;
 
-        @Nullable @Bind(R.id.convention_year) TextView mConventionYearYear;
-        @Nullable @Bind(R.id.convention_dates) TextView mConventionYearDates;
-        @Nullable @Bind(R.id.seriesTextView) TextView mPhotoshootSeries;
-        @Nullable @Bind(R.id.dateTextView) TextView mPhotoshootDate;
-        @Nullable @Bind(R.id.locationTextView) TextView mPhotoshootLocation;
-        @Nullable @Bind(R.id.descriptionTextView) TextView mPhotoshootDescription;
-        @Nullable @Bind(R.id.editPhotoshoot) TextView mEditPhotoshoot;
+        @Nullable @BindView(R.id.convention_year) TextView mConventionYearYear;
+        @Nullable @BindView(R.id.convention_dates) TextView mConventionYearDates;
+        @Nullable @BindView(R.id.seriesTextView) TextView mPhotoshootSeries;
+        @Nullable @BindView(R.id.dateTextView) TextView mPhotoshootDate;
+        @Nullable @BindView(R.id.locationTextView) TextView mPhotoshootLocation;
+        @Nullable @BindView(R.id.descriptionTextView) TextView mPhotoshootDescription;
+        @Nullable @BindView(R.id.editPhotoshoot) TextView mEditPhotoshoot;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);

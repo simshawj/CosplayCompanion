@@ -25,7 +25,7 @@ import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenter;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -41,11 +41,11 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
 
     private ModifyPhotoshootPresenter mPresenter;
 
-    @Bind(R.id.dateButton) Button mStartDateButton;
-    @Bind(R.id.timeButton) Button mStartTimeButton;
-    @Bind(R.id.locationEditText) EditText mLocationEditText;
-    @Bind(R.id.seriesEditText) EditText mSeriesEditText;
-    @Bind(R.id.descriptionEditText) EditText mDescriptionEditText;
+    @BindView(R.id.dateButton) Button mStartDateButton;
+    @BindView(R.id.timeButton) Button mStartTimeButton;
+    @BindView(R.id.locationEditText) EditText mLocationEditText;
+    @BindView(R.id.seriesEditText) EditText mSeriesEditText;
+    @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
 
     private OnFragmentInteractionListener mListener;
 
