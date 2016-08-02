@@ -42,8 +42,8 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     @BindView(R.id.logoImageView) ImageView mLogoImageView;
     @BindView(R.id.conventionLogoChangeButton) Button mLogoButton;
 
-    ModifyConventionPresenter mPresenter;
-    OnFragmentInteractionListener mListener;
+    private ModifyConventionPresenter mPresenter;
+    private OnFragmentInteractionListener mListener;
 
     public static ModifyConventionFragment newInstance() {
         ModifyConventionFragment fragment = new ModifyConventionFragment();

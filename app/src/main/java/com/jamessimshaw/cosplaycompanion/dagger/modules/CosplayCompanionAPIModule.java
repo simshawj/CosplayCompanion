@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class CosplayCompanionAPIModule {
 
-    String mBaseURL;
+    private String mBaseURL;
 
     public CosplayCompanionAPIModule() {
         mBaseURL = BuildConfig.CosplayCompanionAPIBase;

@@ -20,10 +20,10 @@ import static org.junit.Assert.*;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ConventionTest {
 
-    Convention mConvention;
-    Convention mNoIdConvention;
-    Convention mEqualConvention;
-    Convention mDifferentConvention;
+    private Convention mConvention;
+    private Convention mNoIdConvention;
+    private Convention mEqualConvention;
+    private Convention mDifferentConvention;
 
     @Before
     public void setup() {

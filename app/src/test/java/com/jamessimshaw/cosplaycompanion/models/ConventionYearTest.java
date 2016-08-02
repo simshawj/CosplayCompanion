@@ -22,9 +22,9 @@ import static org.junit.Assert.*;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ConventionYearTest {
 
-    ConventionYear mConventionYear;
-    ConventionYear mEqualConventionYear;
-    ConventionYear mNotEqualConventionYear;
+    private ConventionYear mConventionYear;
+    private ConventionYear mEqualConventionYear;
+    private ConventionYear mNotEqualConventionYear;
 
     @Before
     public void setUp() throws Exception {

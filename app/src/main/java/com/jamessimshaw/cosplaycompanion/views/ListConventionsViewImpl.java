@@ -32,7 +32,7 @@ public class ListConventionsViewImpl extends View implements ListConventionsView
         init(context);
     }
 
-    public void init(Context context) {
+    private void init(Context context) {
         mContext = context;
     }
 

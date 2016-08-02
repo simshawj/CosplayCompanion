@@ -29,10 +29,10 @@ import static org.junit.Assert.*;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class SQLiteDataSourceTest {
 
-    SQLiteDataSource mDataSource;
-    Convention mConvention;
-    ConventionYear mConventionYear;
-    Photoshoot mPhotoshoot;
+    private SQLiteDataSource mDataSource;
+    private Convention mConvention;
+    private ConventionYear mConventionYear;
+    private Photoshoot mPhotoshoot;
 
     @Before
     public void setup() {
