@@ -10,24 +10,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
-import com.jamessimshaw.cosplaycompanion.serialization.ConventionDeserializer;
+import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
+import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,11 +42,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Use the {@link ListConventionsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListConventionsFragment extends Fragment {
+public class ListConventionsFragment extends Fragment implements ListConventionsView {
+
 
     private OnFragmentInteractionListener mListener;
-    private ArrayList<Convention> mConventions;
-    private SQLiteDataSource mSQLiteDataSource;
+    private ListConventionsPresenter mPresenter;
+    private ConventionRecViewAdapter mAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -61,6 +67,10 @@ public class ListConventionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(mPresenter == null)
+            mPresenter = new ListConventionsPresenterImpl(this);
+        else
+            mPresenter.setView(this);
     }
 
     @Override
@@ -84,34 +94,9 @@ public class ListConventionsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionRecyclerView.setLayoutManager(linearLayoutManager);
 
-        //mSQLiteDataSource = new SQLiteDataSource(getActivity());
-        //mConventions = mSQLiteDataSource.read();
-        mConventions = new ArrayList<>();
-        final ConventionRecViewAdapter adapter = new ConventionRecViewAdapter(mConventions, getActivity());
-        conventionRecyclerView.setAdapter(adapter);
-
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Convention.class, new ConventionDeserializer(getContext()))
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.internalAPIBase))
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        InternalAPI internalAPI = retrofit.create(InternalAPI.class);
-        internalAPI.getConventions().enqueue(new Callback<List<Convention>>() {
-            @Override
-            public void onResponse(Call<List<Convention>> call, Response<List<Convention>> response) {
-                mConventions.addAll(response.body());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<Convention>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        mAdapter = new ConventionRecViewAdapter(new ArrayList<Convention>(), getActivity());
+        conventionRecyclerView.setAdapter(mAdapter);
+        mPresenter.requestConventions();
 
         return view;
     }
@@ -131,6 +116,18 @@ public class ListConventionsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mPresenter.removeView(this);
+        mPresenter = null;
+    }
+
+    @Override
+    public void displayWarning(String warning) {
+        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void done() {
+        // Nothing until a further version
     }
 
     /**
@@ -145,6 +142,13 @@ public class ListConventionsFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(String event, Object item);
+    }
+
+    // ListConventionsView methods
+
+    @Override
+    public void addConventions(List<Convention> conventions) {
+        mAdapter.addNewConventions(conventions);
     }
 
 }

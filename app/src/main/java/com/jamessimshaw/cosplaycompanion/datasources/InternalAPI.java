@@ -33,8 +33,8 @@ public interface InternalAPI {
     @GET("conventions/{id}/convention_years.json")
     Call<List<ConventionYear>> getConventionYears(@Path("id") long id);
 
-    @POST("convention_years.json")
-    Call<ConventionYear> createConventionYear(@Body ConventionYear conventionYear);
+    @POST("conventions/{id}/convention_years.json")
+    Call<ConventionYear> createConventionYear(@Path("id") long id, @Body ConventionYear conventionYear);
 
     @PATCH("convention_years/{id}.json")
     Call<ConventionYear> updateConventionYear(@Path("id") long id, @Body ConventionYear conventionYear);
@@ -42,8 +42,8 @@ public interface InternalAPI {
     @GET("convention_years/{id}/photo_shoots.json")
     Call<List<Photoshoot>> getPhotoShoots(@Path("id") long id);
 
-    @POST("photo_shoots.json")
-    Call<Photoshoot> createPhotoShoot(@Body Photoshoot photoshoot);
+    @POST("convention_years/{id}/photo_shoots.json")
+    Call<Photoshoot> createPhotoShoot(@Path("id") long id, @Body Photoshoot photoshoot);
 
     @PATCH("photo_shoots/{id}.json")
     Call<Photoshoot> updatePhotoShoot(@Path("id") long id, @Body Photoshoot photoshoot);

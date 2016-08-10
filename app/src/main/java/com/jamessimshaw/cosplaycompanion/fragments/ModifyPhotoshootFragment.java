@@ -18,23 +18,15 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.R;
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
-import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenter;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,17 +36,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Use the {@link ModifyPhotoshootFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModifyPhotoshootFragment extends Fragment {
+public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotoshootView {
     private static final String ARG_PARAM1 = "param1";
 
-    private ConventionYear mConventionYear;
-    private Photoshoot mPhotoshoot;
-    private Calendar mStart;
-    private Button mStartDateButton;
-    private Button mStartTimeButton;
-    private EditText mLocationEditText;
-    private EditText mSeriesEditText;
-    private EditText mDescriptionEditText;
+    private ModifyPhotoshootPresenter mPresenter;
+
+    @BindView(R.id.dateButton) Button mStartDateButton;
+    @BindView(R.id.timeButton) Button mStartTimeButton;
+    @BindView(R.id.locationEditText) EditText mLocationEditText;
+    @BindView(R.id.seriesEditText) EditText mSeriesEditText;
+    @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
 
     private OnFragmentInteractionListener mListener;
 
@@ -95,10 +86,19 @@ public class ModifyPhotoshootFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPhotoshoot = null;
+        Photoshoot photoshoot = null;
+        ConventionYear conventionYear = null;
         if (getArguments() != null) {
-            mConventionYear = getArguments().getParcelable(ARG_PARAM1);
-            mPhotoshoot = getArguments().getParcelable("photoshoot");
+            conventionYear = getArguments().getParcelable(ARG_PARAM1);
+            photoshoot = getArguments().getParcelable("photoshoot");
+        }
+
+        if (mPresenter == null)
+            mPresenter = new ModifyPhotoshootPresenterImpl(this, conventionYear, photoshoot);
+        else {
+            mPresenter.setView(this);
+            mPresenter.setConventionYear(conventionYear);
+            mPresenter.setPhotoshoot(photoshoot);
         }
     }
 
@@ -106,50 +106,13 @@ public class ModifyPhotoshootFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_photoshoot, container, false);
-
         setHasOptionsMenu(true);
-
-        mStartDateButton = (Button) view.findViewById(R.id.dateButton);
-        mStartTimeButton = (Button) view.findViewById(R.id.timeButton);
-        mLocationEditText = (EditText) view.findViewById(R.id.locationEditText);
-        mSeriesEditText = (EditText) view.findViewById(R.id.seriesEditText);
-        mDescriptionEditText = (EditText) view.findViewById(R.id.descriptionEditText);
-
-        populateView();
-
-        mStartDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialogFragment fragment = new DatePickerDialogFragment();
-                fragment.setListener(mDateListener);
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                fragment.show(transaction, "Start Date");
-            }
-        });
-
-        mStartTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialogFragment fragment = new TimePickerDialogFragment();
-                fragment.setListener(mTimeListener);
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                fragment.show(transaction, "Start Time");
-            }
-        });
+        ButterKnife.bind(this, view);
+        mPresenter.requestInitialData();
+        mStartDateButton.setOnClickListener(mDateOnClickListener);
+        mStartTimeButton.setOnClickListener(mTimeOnClickListener);
 
         return view;
-    }
-
-    private void populateView() {
-        mStart = Calendar.getInstance();
-        if(mPhotoshoot != null) {
-            mStart.setTime(mPhotoshoot.getStart());
-            mLocationEditText.setText(mPhotoshoot.getLocation());
-            mSeriesEditText.setText(mPhotoshoot.getSeries());
-            mDescriptionEditText.setText(mPhotoshoot.getDescription());
-        }
-
-        updateDateAndTimeButtons();
     }
 
     @Override
@@ -167,6 +130,8 @@ public class ModifyPhotoshootFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mPresenter.removeView(this);
+        mPresenter = null;
     }
 
     @Override
@@ -180,94 +145,101 @@ public class ModifyPhotoshootFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_submit) {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(getString(R.string.internalAPIBase))
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build();
-
-            InternalAPI internalAPI = retrofit.create(InternalAPI.class);
-            //SQLiteDataSource sqLiteDataSource = new SQLiteDataSource(getContext());
-            if (mPhotoshoot == null) {
-                Photoshoot photoshoot = new Photoshoot(mSeriesEditText.getText().toString(),
-                        mStart.getTime(), mLocationEditText.getText().toString(),
-                        mDescriptionEditText.getText().toString(), mConventionYear.getId());
-                internalAPI.createPhotoShoot(photoshoot).enqueue(new Callback<Photoshoot>() {
-                    @Override
-                    public void onResponse(Call<Photoshoot> call, Response<Photoshoot> response) {
-                        if (response.code() == 201)
-                            mListener.onModifyFragmentInteraction();
-                        else {
-                            Toast.makeText(getContext(), "Failed to create photo shoot.",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Photoshoot> call, Throwable t) {
-                        Toast.makeText(getContext(), "Failed to create photo shoot, please check your connection and try again.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-                //sqLiteDataSource.create(photoshoot);
-            } else {
-                mPhotoshoot.setDescription(mDescriptionEditText.getText().toString());
-                mPhotoshoot.setLocation(mLocationEditText.getText().toString());
-                mPhotoshoot.setSeries(mSeriesEditText.getText().toString());
-                mPhotoshoot.setStart(mStart.getTime());
-                //sqLiteDataSource.update(mPhotoshoot);
-                internalAPI.updatePhotoShoot(mPhotoshoot.getId(), mPhotoshoot).enqueue(new Callback<Photoshoot>() {
-                    @Override
-                    public void onResponse(Call<Photoshoot> call, Response<Photoshoot> response) {
-                        if (response.code() == 200)
-                            mListener.onModifyFragmentInteraction();
-                        else {
-                            Toast.makeText(getContext(), "Failed to update photo shoot.",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Photoshoot> call, Throwable t) {
-                        Toast.makeText(getContext(), "Failed to update photo shoot, please check your connection and try again.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
+            mPresenter.submit();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private View.OnClickListener mDateOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+            fragment.setListener(mDateListener);
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            fragment.show(transaction, "Start Date");
+        }
+    };
+
+    private View.OnClickListener mTimeOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TimePickerDialogFragment fragment = new TimePickerDialogFragment();
+            fragment.setListener(mTimeListener);
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            fragment.show(transaction, "Start Time");
+        }
+    };
+
     private TimePickerDialog.OnTimeSetListener mTimeListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            mStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            mStart.set(Calendar.MINUTE, minute);
-
-            updateDateAndTimeButtons();
+            mPresenter.timeChanged(hourOfDay, minute);
         }
     };
 
     private DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            mStart.set(year, monthOfYear, dayOfMonth);
-
-            updateDateAndTimeButtons();
+            mPresenter.dateChanged(year, monthOfYear, dayOfMonth);
         }
     };
 
-    private void updateDateAndTimeButtons() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM dd", Locale.getDefault());
-        mStartDateButton.setText(dateFormat.format(mStart.getTime()));
-
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
-        mStartTimeButton.setText(timeFormat.format(mStart.getTime()));
-    }
-
     public interface OnFragmentInteractionListener {
-        public void onModifyFragmentInteraction();
+        void onModifyFragmentInteraction();
     }
+
+    // ModifyPhotoshootView methods
+
+    @Override
+    public void displayWarning(String warning) {
+        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void updateDate(String date) {
+        mStartDateButton.setText(date);
+    }
+
+    @Override
+    public void updateTime(String time) {
+        mStartTimeButton.setText(time);
+    }
+
+    @Override
+    public void done() {
+        mListener.onModifyFragmentInteraction();
+    }
+
+    @Override
+    public String getLocation() {
+        return mLocationEditText.getText().toString();
+    }
+
+    @Override
+    public String getSeries() {
+        return mSeriesEditText.getText().toString();
+    }
+
+    @Override
+    public String getDescription() {
+        return mDescriptionEditText.getText().toString();
+    }
+
+    @Override
+    public void displayLocation(String location) {
+        mLocationEditText.setText(location);
+    }
+
+    @Override
+    public void displaySeries(String series) {
+        mSeriesEditText.setText(series);
+    }
+
+    @Override
+    public void displayDescription(String description) {
+        mDescriptionEditText.setText(description);
+    }
+
 
 }

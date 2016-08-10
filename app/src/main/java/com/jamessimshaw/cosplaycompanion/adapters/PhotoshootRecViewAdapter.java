@@ -1,6 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,11 @@ import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by james on 10/16/15.
@@ -82,6 +87,11 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
             return TYPE_PHOTOSHOOT;
     }
 
+    public void addConventionYears(List<Photoshoot> photoshoots) {
+        mPhotoshoots.addAll(photoshoots);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mPhotoshoots.size() + 1;
@@ -89,29 +99,25 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private int mType;
-        private TextView mConventionYearYear;
-        private TextView mConventionYearDates;
-        private TextView mPhotoshootSeries;
-        private TextView mPhotoshootDate;
-        private TextView mPhotoshootLocation;
-        private TextView mPhotoshootDescription;
-        private TextView mEditPhotoshoot;
+
+        @Nullable @BindView(R.id.convention_year) TextView mConventionYearYear;
+        @Nullable @BindView(R.id.convention_dates) TextView mConventionYearDates;
+        @Nullable @BindView(R.id.seriesTextView) TextView mPhotoshootSeries;
+        @Nullable @BindView(R.id.dateTextView) TextView mPhotoshootDate;
+        @Nullable @BindView(R.id.locationTextView) TextView mPhotoshootLocation;
+        @Nullable @BindView(R.id.descriptionTextView) TextView mPhotoshootDescription;
+        @Nullable @BindView(R.id.editPhotoshoot) TextView mEditPhotoshoot;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
 
             mType = viewType;
+
+            ButterKnife.bind(this, itemView);
+            
             if (mType == TYPE_HEADER) {
-                mConventionYearYear = (TextView) itemView.findViewById(R.id.convention_year);
-                mConventionYearDates = (TextView) itemView.findViewById(R.id.convention_dates);
                 itemView.findViewById(R.id.options).setVisibility(View.GONE);   //Removes options
                 itemView.findViewById(R.id.horizontalRule).setVisibility(View.GONE);
-            } else {
-                mPhotoshootSeries = (TextView) itemView.findViewById(R.id.seriesTextView);
-                mPhotoshootDate = (TextView) itemView.findViewById(R.id.dateTextView);
-                mPhotoshootLocation = (TextView) itemView.findViewById(R.id.locationTextView);
-                mPhotoshootDescription = (TextView) itemView.findViewById(R.id.descriptionTextView);
-                mEditPhotoshoot = (TextView) itemView.findViewById(R.id.editPhotoshoot);
             }
         }
     }

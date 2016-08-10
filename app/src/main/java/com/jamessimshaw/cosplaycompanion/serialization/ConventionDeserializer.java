@@ -17,10 +17,9 @@ import java.lang.reflect.Type;
  * Created by james on 11/27/15.
  */
 public class ConventionDeserializer implements JsonDeserializer<Convention> {
-    Context mContext;
 
-    public ConventionDeserializer(Context context) {
-        mContext = context;
+    public ConventionDeserializer() {
+
     }
 
     @Override
@@ -34,7 +33,7 @@ public class ConventionDeserializer implements JsonDeserializer<Convention> {
         JsonElement urlElement = logoObject.get("url");
         String logo = "";
         if (!urlElement.isJsonNull())
-            logo = mContext.getString(R.string.internalAPIBase) + logoObject.get("url").getAsString();
+            logo = logoObject.get("url").getAsString();
 
         Convention convention = new Convention(id, name, description, Uri.parse(logo));
         return convention;

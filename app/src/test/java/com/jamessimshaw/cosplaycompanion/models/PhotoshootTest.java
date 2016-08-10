@@ -22,9 +22,9 @@ import static org.junit.Assert.*;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class PhotoshootTest {
 
-    Photoshoot mPhotoshoot;
-    Photoshoot mEqualPhotoshoot;
-    Photoshoot mNotEqualPhotoshoot;
+    private Photoshoot mPhotoshoot;
+    private Photoshoot mEqualPhotoshoot;
+    private Photoshoot mNotEqualPhotoshoot;
 
     @Before
     public void setUp() throws Exception {
