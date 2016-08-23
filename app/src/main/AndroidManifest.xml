@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jamessimshaw.cosplaycompanion" >
+    package="com.jamessimshaw.cosplaycompanion">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -8,11 +8,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,15 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName=".activities.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jamessimshaw.cosplaycompanion.activities.LoginActivity" />
         </activity>
     </application>
 

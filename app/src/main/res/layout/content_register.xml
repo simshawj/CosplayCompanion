@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.jamessimshaw.cosplaycompanion.activities.RegisterActivity"
+    tools:showIn="@layout/activity_register">
+
+    <TextView
+        android:id="@+id/register_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"/>
+
+    <EditText
+        android:id="@+id/register_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:layout_below="@id/register_text"
+        android:hint="E-mail"/>
+
+    <EditText
+        android:id="@+id/register_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/register_email"
+        android:hint="Username"/>
+
+    <EditText
+        android:id="@+id/register_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:layout_below="@id/register_username"
+        android:hint="Password"/>
+
+    <EditText
+        android:id="@+id/register_verify_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:layout_below="@id/register_password"
+        android:hint="Verify Password"/>
+
+    <Button
+        android:id="@+id/register_register_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/register_verify_password"
+        android:text="Register"/>
+
+</RelativeLayout>

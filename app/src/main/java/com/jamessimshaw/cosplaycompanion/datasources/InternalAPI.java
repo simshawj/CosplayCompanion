@@ -3,6 +3,7 @@ package com.jamessimshaw.cosplaycompanion.datasources;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
+import com.jamessimshaw.cosplaycompanion.models.User;
 
 import java.util.List;
 
@@ -21,6 +22,14 @@ import retrofit2.http.Path;
  * Created by james on 11/15/15.
  */
 public interface InternalAPI {
+    // Registration
+    @FormUrlEncoded
+    @POST("auth")
+    Call<User> register(@Field("email") String email, @Field("password") String password,
+                        @Field("password_confirmation") String passwordVerify,
+                        @Field("username") String username);
+
+    // Convention Calls
     @GET("conventions.json")
     Call<List<Convention>> getConventions();
 
@@ -30,6 +39,7 @@ public interface InternalAPI {
     @PATCH("conventions/{id}.json")
     Call<Convention> updateConvention(@Path("id") long id, @Body Convention convention);
 
+    // Convention Year Calls
     @GET("conventions/{id}/convention_years.json")
     Call<List<ConventionYear>> getConventionYears(@Path("id") long id);
 
@@ -39,6 +49,7 @@ public interface InternalAPI {
     @PATCH("convention_years/{id}.json")
     Call<ConventionYear> updateConventionYear(@Path("id") long id, @Body ConventionYear conventionYear);
 
+    // Photoshoot Calls
     @GET("convention_years/{id}/photo_shoots.json")
     Call<List<Photoshoot>> getPhotoShoots(@Path("id") long id);
 
