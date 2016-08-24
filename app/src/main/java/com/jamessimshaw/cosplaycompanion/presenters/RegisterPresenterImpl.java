@@ -5,6 +5,7 @@ import android.util.Log;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
+import com.jamessimshaw.cosplaycompanion.models.User;
 import com.jamessimshaw.cosplaycompanion.views.RegisterView;
 
 import javax.inject.Inject;
@@ -41,15 +42,20 @@ public class RegisterPresenterImpl implements RegisterPresenter {
         String password = mView.getPassword();
         String passwordVerify = mView.getPasswordVerification();
         InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.register(email, password, passwordVerify, username).enqueue(new Callback() {
+        internalAPI.register(email, password, passwordVerify, username).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() != 201) {
+                    mView.displayWarning("Failed to register");
+                } else {
+                    mView.done();
+                }
 
             }
 
             @Override
-            public void onFailure(Call call, Throwable t) {
-
+            public void onFailure(Call<User> call, Throwable t) {
+                mView.displayWarning("Failed to register");
             }
         });
     }
