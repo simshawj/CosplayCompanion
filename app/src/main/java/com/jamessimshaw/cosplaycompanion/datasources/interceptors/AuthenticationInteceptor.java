@@ -1,8 +1,11 @@
 package com.jamessimshaw.cosplaycompanion.datasources.interceptors;
 
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerUserComponent;
 import com.jamessimshaw.cosplaycompanion.models.User;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -14,10 +17,10 @@ import okhttp3.Response;
 
 // TODO: May or may not go with this approach, more research is needed
 public class AuthenticationInteceptor implements Interceptor {
-    private User mUser;
+    @Inject User mUser;
 
-    public AuthenticationInteceptor(User user) {
-        mUser = user;
+    public AuthenticationInteceptor() {
+        DaggerUserComponent.builder().build().inject(this);
     }
 
     @Override
