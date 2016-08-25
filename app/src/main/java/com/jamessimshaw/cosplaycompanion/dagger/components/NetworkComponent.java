@@ -1,7 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
 import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
-import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionYearsPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenterImpl;
