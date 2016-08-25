@@ -22,12 +22,16 @@ import retrofit2.http.Path;
  * Created by james on 11/15/15.
  */
 public interface InternalAPI {
-    // Registration
+    // User Management
     @FormUrlEncoded
     @POST("auth")
     Call<User> register(@Field("email") String email, @Field("password") String password,
                         @Field("password_confirmation") String passwordVerify,
                         @Field("username") String username);
+
+    @FormUrlEncoded
+    @POST("auth/sign_in")
+    Call<User> sign_in(@Field("email") String email, @Field("password") String password);
 
     // Convention Calls
     @GET("conventions.json")
