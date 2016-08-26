@@ -16,10 +16,10 @@ import okhttp3.Response;
  */
 
 // TODO: May or may not go with this approach, more research is needed
-public class AuthenticationInteceptor implements Interceptor {
+public class AuthenticationInterceptor implements Interceptor {
     @Inject User mUser;
 
-    public AuthenticationInteceptor() {
+    public AuthenticationInterceptor() {
         DaggerUserComponent.builder().build().inject(this);
     }
 
