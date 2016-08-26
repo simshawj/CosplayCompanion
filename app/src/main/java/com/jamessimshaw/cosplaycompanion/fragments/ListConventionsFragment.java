@@ -14,10 +14,6 @@ import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
-import com.jamessimshaw.cosplaycompanion.datasources.SQLiteDataSource;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenterImpl;
@@ -25,14 +21,6 @@ import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
