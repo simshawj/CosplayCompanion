@@ -13,5 +13,5 @@ import dagger.Component;
 @Singleton
 @Component(modules = {UserModule.class})
 public interface UserComponent {
-    void inject(AuthenticationInterceptor inteceptor);
+
 }

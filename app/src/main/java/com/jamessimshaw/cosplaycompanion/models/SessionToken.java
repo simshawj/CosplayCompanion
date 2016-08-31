@@ -7,6 +7,14 @@ public class SessionToken {
     private String mAccessToken;
     private String mClient;
     private String mExpiry;
+    private String mUid;
+
+    public SessionToken() {
+        mAccessToken = "";
+        mClient = "";
+        mExpiry = "";
+        mUid = "";
+    }
 
     public String getAccessToken() {
         return mAccessToken;
@@ -30,5 +38,13 @@ public class SessionToken {
 
     public void setExpiry(String expiry) {
         mExpiry = expiry;
+    }
+
+    public String getUid() {
+        return mUid;
+    }
+
+    public void setUid(String uid) {
+        mUid = uid;
     }
 }

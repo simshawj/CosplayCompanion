@@ -1,7 +1,8 @@
 package com.jamessimshaw.cosplaycompanion.datasources.interceptors;
 
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerUserComponent;
-import com.jamessimshaw.cosplaycompanion.models.User;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerTokenManagerComponent;
+import com.jamessimshaw.cosplaycompanion.datasources.TokenManager;
+import com.jamessimshaw.cosplaycompanion.models.SessionToken;
 
 import java.io.IOException;
 
@@ -17,25 +18,36 @@ import okhttp3.Response;
 
 // TODO: May or may not go with this approach, more research is needed
 public class AuthenticationInterceptor implements Interceptor {
-    @Inject User mUser;
+    @Inject TokenManager mTokenManager;
 
     public AuthenticationInterceptor() {
-        DaggerUserComponent.builder().build().inject(this);
+        DaggerTokenManagerComponent.builder().build().inject(this);
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
+        SessionToken token = mTokenManager.load();
 
         // Create header for devise_token_auth gem
         request = request.newBuilder()
-                .addHeader("access-token", mUser.getToken().getAccessToken())
+                .addHeader("access-token", token.getAccessToken())
                 .addHeader("token-type", "Bearer")
-                .addHeader("client", mUser.getToken().getClient())
-                .addHeader("expiry", mUser.getToken().getExpiry())
-                .addHeader("uid", mUser.getUid()).build();
+                .addHeader("client", token.getClient())
+                .addHeader("expiry", token.getExpiry())
+                .addHeader("uid", token.getUid()).build();
 
         Response response = chain.proceed(request);
+
+        SessionToken responseToken = new SessionToken();
+
+        // If there are no new headers, use the old values
+        responseToken.setAccessToken(response.header("access-token", token.getAccessToken()));
+        responseToken.setClient(response.header("client", token.getClient()));
+        responseToken.setExpiry(response.header("expiry", token.getExpiry()));
+        responseToken.setUid(response.header("uid", token.getUid()));
+
+        mTokenManager.save(responseToken);
 
         return response;
     }
