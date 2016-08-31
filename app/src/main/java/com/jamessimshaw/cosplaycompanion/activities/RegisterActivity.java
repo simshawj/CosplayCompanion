@@ -1,5 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -90,6 +91,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
     @Override
     public void done() {
-
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

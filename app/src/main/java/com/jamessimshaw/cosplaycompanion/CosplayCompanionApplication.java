@@ -16,7 +16,7 @@ import com.jamessimshaw.cosplaycompanion.dagger.modules.ApplicationModule;
 public class CosplayCompanionApplication extends Application {
     NetworkComponent mNetworkComponent;
     UserComponent mUserComponent;
-    static PreferenceComponent mPreferenceComponent;
+    static PreferenceComponent mPreferenceComponent; //TODO: Find a better way
 
     @Override
     public void onCreate() {

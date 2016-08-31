@@ -45,10 +45,10 @@ public class RegisterPresenterImpl implements RegisterPresenter {
         internalAPI.register(email, password, passwordVerify, username).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if (response.code() != 201) {
-                    mView.displayWarning("Failed to register");
-                } else {
+                if (response.code() == 201 || response.code() == 200) {
                     mView.done();
+                } else {
+                    mView.displayWarning("Failed to register, but received result");
                 }
 
             }
