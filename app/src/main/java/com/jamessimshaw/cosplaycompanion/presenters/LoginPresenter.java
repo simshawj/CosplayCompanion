@@ -7,4 +7,5 @@ import com.jamessimshaw.cosplaycompanion.views.LoginView;
  */
 public interface LoginPresenter extends Presenter<LoginView> {
     void login();
+    void verifyToken();
 }

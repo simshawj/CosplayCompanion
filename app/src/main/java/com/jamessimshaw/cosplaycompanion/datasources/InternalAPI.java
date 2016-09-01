@@ -17,6 +17,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by james on 11/15/15.
@@ -32,6 +33,13 @@ public interface InternalAPI {
     @FormUrlEncoded
     @POST("auth/sign_in")
     Call<User> sign_in(@Field("email") String email, @Field("password") String password);
+
+    @GET("auth/validate_token")
+    Call<User> validate_token(
+            @Query("uid") String uid,
+            @Query("client") String client,
+            @Query("access-token") String token
+    );
 
     // Convention Calls
     @GET("conventions.json")

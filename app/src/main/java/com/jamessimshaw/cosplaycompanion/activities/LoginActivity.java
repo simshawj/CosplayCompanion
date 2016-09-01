@@ -37,6 +37,7 @@ public class LoginActivity extends Activity implements LoginView {
 
         mPresenter = new LoginPresenterImpl();
         mPresenter.setView(this);
+        mPresenter.verifyToken();
     }
 
     @Override
