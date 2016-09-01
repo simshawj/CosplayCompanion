@@ -51,7 +51,7 @@ public class LoginActivity extends Activity implements LoginView {
 
     @OnClick(R.id.login_btn_forgot_password)
     public void forgotPassword() {
-
+        Toast.makeText(this, "This feature is not yet implemented", Toast.LENGTH_LONG).show();
     }
 
     @OnClick(R.id.login_btn_register)
@@ -62,7 +62,7 @@ public class LoginActivity extends Activity implements LoginView {
 
     @OnClick(R.id.login_btn_sign_in)
     public void login() {
-
+        mPresenter.login();
     }
 
     // LoginView Methods
