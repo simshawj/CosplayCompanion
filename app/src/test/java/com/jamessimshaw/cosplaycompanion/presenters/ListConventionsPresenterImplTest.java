@@ -4,6 +4,7 @@ import com.jamessimshaw.cosplaycompanion.BuildConfig;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
@@ -26,5 +27,10 @@ public class ListConventionsPresenterImplTest {
         mView = mock(ListConventionsView.class);
 
         mPresenter = new ListConventionsPresenterImpl(mView);
+    }
+
+    @Test
+    public void testRequestConventions() throws Exception {
+
     }
 }
