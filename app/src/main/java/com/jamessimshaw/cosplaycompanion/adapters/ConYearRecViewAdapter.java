@@ -70,18 +70,19 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             String dateString = dateFormat.format(conventionYear.getStartDate()) + " to " +
                     dateFormat.format(conventionYear.getEndDate());
             holder.mConventionYearDates.setText(dateString);
-            holder.mPhotoshootLink.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     if (mActivity instanceof MainActivity)
                         ((MainActivity) mActivity).onFragmentInteraction("show conventionYear", conventionYear);
                 }
             });
-            holder.mEditTextView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
-                   if (mActivity instanceof MainActivity)
-                       ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", conventionYear);
+                public boolean onLongClick(View view) {
+                    if (mActivity instanceof MainActivity)
+                        ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", conventionYear);
+                    return true;
                 }
             });
         }
@@ -114,8 +115,6 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
         @Nullable @BindView(R.id.convention_logo) ImageView mConventionLogoImageView;
         @Nullable @BindView(R.id.convention_year) TextView mConventionYearYear;
         @Nullable @BindView(R.id.convention_dates) TextView mConventionYearDates;
-        @Nullable @BindView(R.id.photoshoots) TextView mPhotoshootLink;
-        @Nullable @BindView(R.id.yearEditText) TextView mEditTextView;
 
         public ViewHolder(View itemView, int itemType) {
             super(itemView);

@@ -30,34 +30,6 @@
             android:layout_height="1dp"
             android:background="#AA8FB2A9" />
 
-        <RelativeLayout
-            android:id="@+id/options"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/photoshoots"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Photoshoots"/>
-
-            <TextView
-                android:id="@+id/yearEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/photoshoots"
-                android:layout_toEndOf="@+id/photoshoots"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"/>
-
-        </RelativeLayout>
-
 
     </LinearLayout>
 

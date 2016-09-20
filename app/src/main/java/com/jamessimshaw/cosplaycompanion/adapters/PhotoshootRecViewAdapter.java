@@ -69,11 +69,12 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM dd yyyy @ hh:mm aa",
                     Locale.getDefault());
             holder.mPhotoshootDate.setText(dateFormat.format(photoshoot.getStart()));
-            holder.mEditPhotoshoot.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onLongClick(View view) {
                     if (mActivity instanceof MainActivity)
                         ((MainActivity) mActivity).onFragmentInteraction("edit photoshoot", photoshoot);
+                    return true;
                 }
             });
         }
@@ -106,7 +107,6 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
         @Nullable @BindView(R.id.dateTextView) TextView mPhotoshootDate;
         @Nullable @BindView(R.id.locationTextView) TextView mPhotoshootLocation;
         @Nullable @BindView(R.id.descriptionTextView) TextView mPhotoshootDescription;
-        @Nullable @BindView(R.id.editPhotoshoot) TextView mEditPhotoshoot;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
@@ -114,11 +114,6 @@ public class PhotoshootRecViewAdapter extends RecyclerView.Adapter<PhotoshootRec
             mType = viewType;
 
             ButterKnife.bind(this, itemView);
-            
-            if (mType == TYPE_HEADER) {
-                itemView.findViewById(R.id.options).setVisibility(View.GONE);   //Removes options
-                itemView.findViewById(R.id.horizontalRule).setVisibility(View.GONE);
-            }
         }
     }
 }
