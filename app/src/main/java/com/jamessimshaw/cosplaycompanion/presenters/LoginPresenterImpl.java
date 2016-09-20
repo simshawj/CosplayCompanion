@@ -47,7 +47,7 @@ public class LoginPresenterImpl implements LoginPresenter {
                 if (response.code() == 200) {
                     mView.done();
                 } else {
-                    mView.displayWarning("Failed to register, but received result");
+                    mView.displayWarning("Failed to login, but received result");
                 }
             }
 
