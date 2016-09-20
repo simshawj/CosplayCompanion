@@ -123,11 +123,6 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
             mType = itemType;
 
             ButterKnife.bind(this, itemView);
-
-            if (mType == TYPE_HEADER) {
-                itemView.findViewById(R.id.options).setVisibility(View.GONE);
-                itemView.findViewById(R.id.horizontalRule).setVisibility(View.GONE);
-            }
         }
     }
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
@@ -47,18 +48,19 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
                 .load(convention.getLogoUri()).fit().centerInside()
                 .into(holder.mConventionLogoImageView);
         holder.mConventionDescriptionTextView.setText(mConventions.get(position).getDescription());
-        holder.mConventionYearTextView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 if (mActivity instanceof MainActivity)
                     ((MainActivity) mActivity).onFragmentInteraction("show convention", convention);
             }
         });
-        holder.mConventionEditTextView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onLongClick(View view) {
                 if (mActivity instanceof  MainActivity)
                     ((MainActivity) mActivity).onFragmentInteraction("edit convention", convention);
+                return true;
             }
         });
     }
@@ -78,8 +80,6 @@ public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRec
         @BindView(R.id.convention_name) TextView mConventionNameTextView;
         @BindView(R.id.convention_logo) ImageView mConventionLogoImageView;
         @BindView(R.id.conDescriptionTextView) TextView mConventionDescriptionTextView;
-        @BindView(R.id.conventionEdit) TextView mConventionEditTextView;
-        @BindView(R.id.conventionYearsLink) TextView mConventionYearTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
