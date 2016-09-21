@@ -4,6 +4,7 @@ import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModul
 import com.jamessimshaw.cosplaycompanion.dagger.modules.TokenManagerModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.UserManagerModule;
 import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.presenters.RegisterPresenterImpl;
 
 import javax.inject.Singleton;
 
@@ -20,4 +21,5 @@ import dagger.Component;
 })
 public interface LoginComponents {
     void inject(LoginPresenterImpl presenter);
+    void inject(RegisterPresenterImpl presenter);
 }

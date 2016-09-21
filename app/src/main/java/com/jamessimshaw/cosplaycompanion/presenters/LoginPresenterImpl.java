@@ -45,6 +45,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 200) {
+                    mUserManager.setUser(response.body());
                     mView.done();
                 } else {
                     mView.displayWarning("Failed to login, but received result");

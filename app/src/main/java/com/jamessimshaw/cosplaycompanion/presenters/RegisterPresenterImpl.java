@@ -2,9 +2,11 @@ package com.jamessimshaw.cosplaycompanion.presenters;
 
 import android.util.Log;
 
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerLoginComponents;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
+import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
 import com.jamessimshaw.cosplaycompanion.models.User;
 import com.jamessimshaw.cosplaycompanion.views.RegisterView;
 
@@ -21,11 +23,12 @@ import retrofit2.Retrofit;
 public class RegisterPresenterImpl implements RegisterPresenter {
 
     @Inject Retrofit mRetrofit;
+    @Inject UserManager mUserManager;
 
     RegisterView mView;
 
     public RegisterPresenterImpl() {
-        DaggerNetworkComponent.builder()
+        DaggerLoginComponents.builder()
                 .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
                 .build().inject(this);
     }
@@ -46,6 +49,7 @@ public class RegisterPresenterImpl implements RegisterPresenter {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 201 || response.code() == 200) {
+                    mUserManager.setUser(response.body());
                     mView.done();
                 } else {
                     mView.displayWarning("Failed to register, but received result");

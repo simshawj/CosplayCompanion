@@ -23,5 +23,4 @@ public interface NetworkComponent {
     void inject(ModifyPhotoshootPresenterImpl presenter);
     void inject(ListConventionYearsPresenterImpl presenter);
     void inject(ListPhotoshootsPresenterImpl presenter);
-    void inject(RegisterPresenterImpl presenter);
 }
