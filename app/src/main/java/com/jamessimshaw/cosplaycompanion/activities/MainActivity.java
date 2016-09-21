@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity
         ShowConventionYearFragment.OnFragmentInteractionListener,
         ModifyPhotoshootFragment.OnFragmentInteractionListener {
 
-    private static String CONVENTIONS_FRAGMENT = "conventions";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
