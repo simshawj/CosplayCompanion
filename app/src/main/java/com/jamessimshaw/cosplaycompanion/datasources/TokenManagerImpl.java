@@ -14,7 +14,6 @@ import javax.inject.Inject;
 public class TokenManagerImpl implements TokenManager {
     @Inject SharedPreferences mSharedPreferences;
 
-    @Inject
     public TokenManagerImpl() {
         CosplayCompanionApplication.getPreferenceComponent().inject(this);
     }

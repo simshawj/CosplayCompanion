@@ -15,5 +15,4 @@ import dagger.Component;
 @Component(modules = {TokenManagerModule.class})
 public interface TokenManagerComponent {
     void inject(AuthenticationInterceptor authenticationInterceptor);
-    //void inject(LoginPresenter presenter);
 }
