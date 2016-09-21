@@ -1,10 +1,11 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerTokenManagerComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerLoginComponents;
+import com.jamessimshaw.cosplaycompanion.dagger.components.LoginComponents;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.TokenManager;
 import com.jamessimshaw.cosplaycompanion.datasources.TokenManagerImpl;
+import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
 import com.jamessimshaw.cosplaycompanion.models.SessionToken;
 import com.jamessimshaw.cosplaycompanion.models.User;
 import com.jamessimshaw.cosplaycompanion.views.LoginView;
@@ -21,14 +22,13 @@ import retrofit2.Retrofit;
  */
 public class LoginPresenterImpl implements LoginPresenter {
     @Inject Retrofit mRetrofit;
-
-    private TokenManager mTokenManager;  //TODO: Figure out why I cannot inject this
+    @Inject UserManager mUserManager;
+    @Inject TokenManager mTokenManager;
 
     private LoginView mView;
 
     public LoginPresenterImpl() {
-        mTokenManager = new TokenManagerImpl();
-        DaggerNetworkComponent.builder().build().inject(this);
+        DaggerLoginComponents.builder().build().inject(this);
     }
 
     // LoginPresenter methods
