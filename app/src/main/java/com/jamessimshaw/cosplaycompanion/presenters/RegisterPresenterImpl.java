@@ -8,6 +8,7 @@ import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModul
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
 import com.jamessimshaw.cosplaycompanion.models.User;
+import com.jamessimshaw.cosplaycompanion.models.UserResponse;
 import com.jamessimshaw.cosplaycompanion.views.RegisterView;
 
 import javax.inject.Inject;
@@ -45,11 +46,11 @@ public class RegisterPresenterImpl implements RegisterPresenter {
         String password = mView.getPassword();
         String passwordVerify = mView.getPasswordVerification();
         InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.register(email, password, passwordVerify, username).enqueue(new Callback<User>() {
+        internalAPI.register(email, password, passwordVerify, username).enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.code() == 201 || response.code() == 200) {
-                    mUserManager.setUser(response.body());
+                    mUserManager.setUser(response.body().getUser());
                     mView.done();
                 } else {
                     mView.displayWarning("Failed to register, but received result");
@@ -58,7 +59,7 @@ public class RegisterPresenterImpl implements RegisterPresenter {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserResponse> call, Throwable t) {
                 mView.displayWarning("Failed to register");
             }
         });

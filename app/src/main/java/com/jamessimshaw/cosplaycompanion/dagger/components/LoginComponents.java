@@ -1,6 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
 import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.PreferenceModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.TokenManagerModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.UserManagerModule;
 import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenterImpl;

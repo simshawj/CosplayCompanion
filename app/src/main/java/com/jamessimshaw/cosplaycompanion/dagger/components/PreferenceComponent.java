@@ -7,6 +7,7 @@ package com.jamessimshaw.cosplaycompanion.dagger.components;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.ApplicationModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.PreferenceModule;
 import com.jamessimshaw.cosplaycompanion.datasources.TokenManagerImpl;
+import com.jamessimshaw.cosplaycompanion.datasources.UserManagerImpl;
 
 import javax.inject.Singleton;
 
@@ -16,4 +17,5 @@ import dagger.Component;
 @Component(modules = {PreferenceModule.class} )
 public interface PreferenceComponent {
     void inject(TokenManagerImpl tokenManager);
+    void inject(UserManagerImpl userManager);
 }

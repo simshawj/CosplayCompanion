@@ -8,5 +8,4 @@ import com.jamessimshaw.cosplaycompanion.models.User;
 public interface UserManager {
     void setUser(User user);
     User retrieveUser();
-    void removeUser();
 }

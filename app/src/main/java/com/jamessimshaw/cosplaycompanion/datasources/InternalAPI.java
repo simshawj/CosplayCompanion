@@ -4,6 +4,7 @@ import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.models.User;
+import com.jamessimshaw.cosplaycompanion.models.UserResponse;
 
 import java.util.List;
 
@@ -26,16 +27,16 @@ public interface InternalAPI {
     // User Management
     @FormUrlEncoded
     @POST("auth")
-    Call<User> register(@Field("email") String email, @Field("password") String password,
-                        @Field("password_confirmation") String passwordVerify,
-                        @Field("username") String username);
+    Call<UserResponse> register(@Field("email") String email, @Field("password") String password,
+                                @Field("password_confirmation") String passwordVerify,
+                                @Field("username") String username);
 
     @FormUrlEncoded
     @POST("auth/sign_in")
-    Call<User> sign_in(@Field("email") String email, @Field("password") String password);
+    Call<UserResponse> sign_in(@Field("email") String email, @Field("password") String password);
 
     @GET("auth/validate_token")
-    Call<User> validate_token(
+    Call<UserResponse> validate_token(
             @Query("uid") String uid,
             @Query("client") String client,
             @Query("access-token") String token

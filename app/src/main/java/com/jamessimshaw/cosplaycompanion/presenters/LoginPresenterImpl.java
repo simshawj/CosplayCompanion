@@ -1,5 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
+import android.util.Log;
+
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerLoginComponents;
 import com.jamessimshaw.cosplaycompanion.dagger.components.LoginComponents;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
@@ -8,6 +10,7 @@ import com.jamessimshaw.cosplaycompanion.datasources.TokenManagerImpl;
 import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
 import com.jamessimshaw.cosplaycompanion.models.SessionToken;
 import com.jamessimshaw.cosplaycompanion.models.User;
+import com.jamessimshaw.cosplaycompanion.models.UserResponse;
 import com.jamessimshaw.cosplaycompanion.views.LoginView;
 
 import javax.inject.Inject;
@@ -41,11 +44,11 @@ public class LoginPresenterImpl implements LoginPresenter {
         String email = mView.getLoginName();
         String password = mView.getPassword();
         InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.sign_in(email, password).enqueue(new Callback<User>() {
+        internalAPI.sign_in(email, password).enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.code() == 200) {
-                    mUserManager.setUser(response.body());
+                    mUserManager.setUser(response.body().getUser());
                     mView.done();
                 } else {
                     mView.displayWarning("Failed to login, but received result");
@@ -53,7 +56,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserResponse> call, Throwable t) {
                 mView.displayWarning("Failed to login");
             }
         });
@@ -67,15 +70,17 @@ public class LoginPresenterImpl implements LoginPresenter {
         String access = token.getAccessToken();
         if (!(uid.isEmpty() || client.isEmpty() || access.isEmpty())) {
             InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-            internalAPI.validate_token(uid, client, access).enqueue(new Callback<User>() {
+            internalAPI.validate_token(uid, client, access).enqueue(new Callback<UserResponse>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.code() == 200)
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    if (response.code() == 200) {
+                        mUserManager.setUser(response.body().getUser());
                         mView.done();
+                    }
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(Call<UserResponse> call, Throwable t) {
 
                 }
             });

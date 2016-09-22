@@ -6,13 +6,22 @@ import com.google.gson.annotations.SerializedName;
  * Created by james on 8/23/16.
  */
 public class User {
-    @SerializedName("username")
-    private String mUsername;
+    @SerializedName("id")
+    private int mId;
     @SerializedName("email")
     private String mEmail;
+    @SerializedName("username")
+    private String mUsername;
     @SerializedName("uid")
     private String mUid;
-    private SessionToken mToken;
+
+
+    public User(int id, String email, String username, String uid) {
+        mUsername = username;
+        mEmail = email;
+        mUid = uid;
+        mId = id;
+    }
 
     public String getUsername() {
         return mUsername;
@@ -38,11 +47,11 @@ public class User {
         mUid = uid;
     }
 
-    public SessionToken getToken() {
-        return mToken;
+    public int getId() {
+        return mId;
     }
 
-    public void setToken(SessionToken token) {
-        mToken = token;
+    public void setId(int id) {
+        mId = id;
     }
 }

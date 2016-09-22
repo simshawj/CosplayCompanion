@@ -9,8 +9,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerUserManagerComponent;
+import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionYearFragment;
@@ -21,6 +25,8 @@ import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListConventionsFragment.OnFragmentInteractionListener,
@@ -30,9 +36,14 @@ public class MainActivity extends AppCompatActivity
         ShowConventionYearFragment.OnFragmentInteractionListener,
         ModifyPhotoshootFragment.OnFragmentInteractionListener {
 
+    @Inject UserManager mUserManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        DaggerUserManagerComponent.builder().build().inject(this);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,6 +56,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+
+        TextView usernameTextView = (TextView) headerView.findViewById(R.id.username);
+        TextView emailTextView = (TextView) headerView.findViewById(R.id.email);
+        usernameTextView.setText(mUserManager.retrieveUser().getUsername());
+        emailTextView.setText(mUserManager.retrieveUser().getEmail());
 
         if (savedInstanceState != null)
             return;
