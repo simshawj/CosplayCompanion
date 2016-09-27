@@ -24,6 +24,7 @@
 
         <EditText
             android:layout_width="fill_parent"
+            android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
             android:id="@+id/login_edit_username"
             android:hint="@string/username_hint"/>
