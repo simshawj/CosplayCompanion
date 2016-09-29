@@ -9,6 +9,14 @@
         <item name="colorButtonNormal">@color/secondary</item>
     </style>
 
+    <style name="AppTheme.TextHeader">
+        <item name="android:paddingBottom">@dimen/text_header_padding_bottom</item>
+    </style>
+
+    <style name="AppTheme.FormSingleButton">
+        <item name="android:layout_marginTop">@dimen/form_button_margin_top</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
