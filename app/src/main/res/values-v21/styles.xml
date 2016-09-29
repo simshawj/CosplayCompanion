@@ -1,4 +1,12 @@
-<resources>>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textColorHint">@color/primary</item>
+        <item name="android:editTextColor">@color/primary</item>
+        <item name="android:colorButtonNormal">@color/secondary</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
