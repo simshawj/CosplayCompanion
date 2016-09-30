@@ -51,7 +51,7 @@
         android:layout_below="@id/register_password"
         android:hint="Verify Password"/>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/register_register_button"
         style="@style/AppTheme.FormSingleButton"
         android:layout_width="match_parent"

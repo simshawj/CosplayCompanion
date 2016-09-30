@@ -39,7 +39,7 @@
             android:id="@+id/login_edit_password"
             android:hint="@string/password_hint"/>
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sign_in_button_text"
@@ -50,14 +50,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/register_button_text"
                 android:id="@+id/login_btn_register"
                 android:layout_weight="1"/>
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/forgot_password_button_text"
