@@ -51,12 +51,27 @@
         android:layout_below="@id/register_password"
         android:hint="Verify Password"/>
 
+    <CheckBox
+        android:id="@+id/terms_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:layout_below="@id/register_verify_password"/>
+
+    <TextView
+        android:id="@+id/terms_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/register_verify_password"
+        android:layout_toEndOf="@id/terms_checkbox"
+        android:layout_toRightOf="@id/terms_checkbox"/>
+
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/register_register_button"
         style="@style/AppTheme.FormSingleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/register_verify_password"
+        android:layout_below="@id/terms_checkbox"
         android:text="Register"/>
 
 </RelativeLayout>

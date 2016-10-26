@@ -41,6 +41,11 @@ public class RegisterPresenterImpl implements RegisterPresenter {
         if (mView == null)
             return;     // TODO: Implement better error routine
 
+        if (!mView.getAgreementStatus()) {
+            mView.displayWarning("You must accept the Terms of Use and Privacy Policy to register");
+            return;
+        }
+
         String email = mView.getEmail();
         String username = mView.getUsername();
         String password = mView.getPassword();

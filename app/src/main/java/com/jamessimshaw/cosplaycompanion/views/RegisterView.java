@@ -8,4 +8,5 @@ public interface RegisterView extends MVPView {
     String getUsername();
     String getPassword();
     String getPasswordVerification();
+    boolean getAgreementStatus();
 }

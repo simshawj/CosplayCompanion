@@ -1,13 +1,18 @@
 package com.jamessimshaw.cosplaycompanion.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.R;
@@ -26,6 +31,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     @BindView(R.id.register_username) EditText mUsernameEditText;
     @BindView(R.id.register_password) EditText mPassword;
     @BindView(R.id.register_verify_password) EditText mPasswordVerify;
+    @BindView(R.id.terms_checkbox) CheckBox mTermsCheckBox;
+    @BindView(R.id.terms_textview) TextView mTermsTextView;
 
     private RegisterPresenter mPresenter;
 
@@ -39,6 +46,18 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
+
+        //TODO: Extract this out to a resource
+        String htmlString = "I agree to the <a href='http://www.jamessimshaw.com/cc_tou.html'>Terms of Use</a>"
+                + " and the <a href='http://www.jamessimshaw.com/cc_privacy.html'>Privacy Policy</a>";
+
+        if (Build.VERSION.SDK_INT > 23)
+            mTermsTextView.setText(Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY));
+        else
+            mTermsTextView.setText(Html.fromHtml(htmlString));
+
+        mTermsTextView.setClickable(true);
+        mTermsTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
@@ -82,6 +101,11 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     @Override
     public String getPasswordVerification() {
         return mPasswordVerify.getText().toString();
+    }
+
+    @Override
+    public boolean getAgreementStatus() {
+        return mTermsCheckBox.isChecked();
     }
 
     @Override
