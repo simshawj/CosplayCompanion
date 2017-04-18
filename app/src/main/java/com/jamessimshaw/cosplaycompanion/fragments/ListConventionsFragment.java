@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
@@ -21,6 +22,8 @@ import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +37,7 @@ public class ListConventionsFragment extends Fragment implements ListConventions
 
 
     private OnFragmentInteractionListener mListener;
-    private ListConventionsPresenter mPresenter;
+    @Inject ListConventionsPresenter mPresenter;
     private ConventionRecViewAdapter mAdapter;
 
     /**
@@ -55,10 +58,9 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(mPresenter == null)
-            mPresenter = new ListConventionsPresenterImpl(this);
-        else
-            mPresenter.setView(this);
+        ((CosplayCompanionApplication)(getActivity().getApplication())).getListConventionsComponent()
+                .inject(this);
+        mPresenter.setView(this);
     }
 
     @Override

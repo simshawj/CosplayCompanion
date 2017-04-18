@@ -26,7 +26,7 @@ public class ListConventionsPresenterImplTest {
     public void setup() {
         mView = mock(ListConventionsView.class);
 
-        mPresenter = new ListConventionsPresenterImpl(mView);
+        //mPresenter = new ListConventionsPresenterImpl(mView);
     }
 
     @Test

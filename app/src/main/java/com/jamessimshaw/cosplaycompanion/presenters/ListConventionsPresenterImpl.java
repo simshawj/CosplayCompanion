@@ -21,15 +21,13 @@ import retrofit2.Retrofit;
  */
 public class ListConventionsPresenterImpl implements ListConventionsPresenter {
 
-    @Inject @Named("conventions") Retrofit mRetrofit;
+    private Retrofit mRetrofit;
 
     private ListConventionsView mView;
 
-    public ListConventionsPresenterImpl(ListConventionsView view) {
-        mView = view;
-        DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
-                .build().inject(this);
+    @Inject //@Named("conventions")
+    public ListConventionsPresenterImpl(Retrofit retrofit) {
+        mRetrofit = retrofit;
     }
 
     @Override
