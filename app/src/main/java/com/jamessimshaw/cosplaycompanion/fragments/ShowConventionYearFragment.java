@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
@@ -22,6 +23,8 @@ import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +37,7 @@ import java.util.List;
 public class ShowConventionYearFragment extends Fragment implements ListPhotoshootsView {
     private static final String ARG_PARAM2 = "conventionYear";
 
-    private ListPhotoshootsPresenter mPresenter;
+    @Inject ListPhotoshootsPresenter mPresenter;
     private ConventionYear mConventionYear;
     private PhotoshootRecViewAdapter mAdapter;
     private OnFragmentInteractionListener mListener;
@@ -64,8 +67,10 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
         if (getArguments() != null) {
             mConventionYear = getArguments().getParcelable(ARG_PARAM2);
         }
-
-        mPresenter = new ListPhotoshootsPresenterImpl(this, mConventionYear);
+        ((CosplayCompanionApplication)getActivity().getApplication()).getListPhotoshootsComponent()
+                .inject(this);
+        mPresenter.setView(this);
+        mPresenter.setConventionYear(mConventionYear);
     }
 
     @Override

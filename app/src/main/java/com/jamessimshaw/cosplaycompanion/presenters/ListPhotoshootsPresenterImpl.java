@@ -22,18 +22,13 @@ import retrofit2.Retrofit;
 public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
 
 
-    @Inject Retrofit mRetrofit;
+    private Retrofit mRetrofit;
 
     private ListPhotoshootsView mView;
     private ConventionYear mConventionYear;
 
-    public ListPhotoshootsPresenterImpl(ListPhotoshootsView view, ConventionYear conventionYear) {
-        mView = view;
-        mConventionYear = conventionYear;
-
-        DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
-                .build().inject(this);
+    public ListPhotoshootsPresenterImpl(Retrofit retrofit) {
+        mRetrofit = retrofit;
     }
 
     @Override
