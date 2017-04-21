@@ -32,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     @BindView(R.id.register_password) EditText mPassword;
     @BindView(R.id.register_verify_password) EditText mPasswordVerify;
     @BindView(R.id.terms_checkbox) CheckBox mTermsCheckBox;
-    @BindView(R.id.terms_textview) TextView mTermsTextView;
 
     private RegisterPresenter mPresenter;
 
@@ -47,17 +46,15 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
         ButterKnife.bind(this);
 
-        //TODO: Extract this out to a resource
-        String htmlString = "I agree to the <a href='http://www.jamessimshaw.com/cc_tou.html'>Terms of Use</a>"
-                + " and the <a href='http://www.jamessimshaw.com/cc_privacy.html'>Privacy Policy</a>";
+        String htmlString = getString(R.string.terms_privacy_agreement);
 
         if (Build.VERSION.SDK_INT > 23)
-            mTermsTextView.setText(Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY));
+            mTermsCheckBox.setText(Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY));
         else
-            mTermsTextView.setText(Html.fromHtml(htmlString));
+            mTermsCheckBox.setText(Html.fromHtml(htmlString));
 
-        mTermsTextView.setClickable(true);
-        mTermsTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        mTermsCheckBox.setClickable(true);
+        mTermsCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
