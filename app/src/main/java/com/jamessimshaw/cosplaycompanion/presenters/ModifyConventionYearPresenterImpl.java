@@ -23,7 +23,7 @@ import retrofit2.Retrofit;
  * Created by james on 2/18/16.
  */
 public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPresenter {
-    @Inject Retrofit mRetrofit;
+    private Retrofit mRetrofit;
 
     private ModifyConventionYearView mView;
     private Convention mConvention;
@@ -32,14 +32,9 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
     private Date mStartDate;
     private Date mEndDate;
 
-    public ModifyConventionYearPresenterImpl(ModifyConventionYearView view, Convention convention, ConventionYear conventionYear) {
-        mView = view;
-        mConvention = convention;
-        mConventionYear = conventionYear;
-
-        DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
-                .build().inject(this);
+    @Inject
+    public ModifyConventionYearPresenterImpl(Retrofit retrofit) {
+        mRetrofit = retrofit;
     }
 
     @Override
@@ -106,8 +101,9 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
 
         InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
 
-        String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
+        // TODO: Do we want to change the display name?  Make it customizable?
         if (mConventionYear == null) {
+            String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
             ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
                     mConvention.getId(), location, displayName);
             internalAPI.createConventionYear(mConvention.getId(), conventionYear).enqueue(mCallback);

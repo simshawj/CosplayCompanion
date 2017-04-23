@@ -3,12 +3,12 @@ package com.jamessimshaw.cosplaycompanion;
 import android.app.Application;
 
 import com.jamessimshaw.cosplaycompanion.dagger.components.ConventionsComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerConventionYearsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerConventionsComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerListConventionYearsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerListPhotoshootsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerPreferenceComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.components.ListConventionYearsComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.components.ConventionYearsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.ListPhotoshootsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.NetworkComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.PreferenceComponent;
@@ -26,7 +26,7 @@ public class CosplayCompanionApplication extends Application {
     private NetworkComponent mNetworkComponent;
     private static PreferenceComponent mPreferenceComponent; //TODO: Find a better way
     private ConventionsComponent mConventionsComponent;
-    private ListConventionYearsComponent mListConventionYearsComponent;
+    private ConventionYearsComponent mConventionYearsComponent;
     private ListPhotoshootsComponent mListPhotoshootsComponent;
 
     @Override
@@ -38,7 +38,7 @@ public class CosplayCompanionApplication extends Application {
         mConventionsComponent = DaggerConventionsComponent.builder()
                 .conventionsModule(new ConventionsModule())
                 .cosplayCompanionAPIModule(new CosplayCompanionAPIModule()).build();
-        mListConventionYearsComponent = DaggerListConventionYearsComponent.builder()
+        mConventionYearsComponent = DaggerConventionYearsComponent.builder()
                 .cosplayCompanionAPIModule(new CosplayCompanionAPIModule()).build();
         mListPhotoshootsComponent = DaggerListPhotoshootsComponent.builder()
                 .listPhotoshootsModule(new ListPhotoshootsModule())
@@ -57,8 +57,8 @@ public class CosplayCompanionApplication extends Application {
         return mConventionsComponent;
     }
 
-    public ListConventionYearsComponent getListConventionYearsComponent() {
-        return mListConventionYearsComponent;
+    public ConventionYearsComponent getConventionYearsComponent() {
+        return mConventionYearsComponent;
     }
 
     public ListPhotoshootsComponent getListPhotoshootsComponent() {

@@ -67,7 +67,7 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
         if (getArguments() != null) {
             mConvention = getArguments().getParcelable(ARG_PARAM1);
         }
-        ((CosplayCompanionApplication)getActivity().getApplication()).getListConventionYearsComponent()
+        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent()
                 .inject(this);
         mYearsPresenter.setView(this);
         mYearsPresenter.setConvention(mConvention);

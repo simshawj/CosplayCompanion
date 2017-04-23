@@ -2,6 +2,8 @@ package com.jamessimshaw.cosplaycompanion.dagger.modules;
 
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionYearsPresenter;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionYearsPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenter;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenterImpl;
 
 import javax.inject.Singleton;
 
@@ -16,9 +18,9 @@ import retrofit2.Retrofit;
  */
 
 @Module
-public class ListConventionYearsModule {
+public class ConventionYearsModule {
 
-    public ListConventionYearsModule() {
+    public ConventionYearsModule() {
 
     }
 
@@ -26,5 +28,11 @@ public class ListConventionYearsModule {
     @Singleton
     public ListConventionYearsPresenter providePresenter(Retrofit retrofit) {
         return new ListConventionYearsPresenterImpl(retrofit);
+    }
+
+    @Provides
+    @Singleton
+    public ModifyConventionYearPresenter providesModifyPresenter(Retrofit retrofit) {
+        return  new ModifyConventionYearPresenterImpl(retrofit);
     }
 }

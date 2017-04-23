@@ -16,15 +16,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenter;
-import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionYearView;
 
 import java.util.Calendar;
-import java.util.Date;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +35,7 @@ import butterknife.ButterKnife;
  */
 public class ModifyConventionYearFragment extends Fragment implements ModifyConventionYearView {
     private OnFragmentInteractionListener mListener;
-    private ModifyConventionYearPresenter mPresenter;
+    @Inject ModifyConventionYearPresenter mPresenter;
 
     @BindView(R.id.conventionLocation) EditText mLocationEditText;
     @BindView(R.id.startDateButton) Button mStartButton;
@@ -69,13 +70,13 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
             convention = getArguments().getParcelable("convention");
             conventionYear = getArguments().getParcelable("conventionYear");
         }
-        if(mPresenter == null)
-            mPresenter = new ModifyConventionYearPresenterImpl(this, convention, conventionYear);
-        else {
-            mPresenter.setView(this);
-            mPresenter.setConvention(convention);
-            mPresenter.setConventionYear(conventionYear);
-        }
+
+        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent()
+                .inject(this);
+
+        mPresenter.setView(this);
+        mPresenter.setConvention(convention);
+        mPresenter.setConventionYear(conventionYear);
     }
 
     @Override
