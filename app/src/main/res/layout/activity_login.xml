@@ -9,16 +9,7 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context=".activities.LoginActivity">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/fullLogoImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/ic_full_logo"
-        />
+
 
     <EditText
         android:id="@+id/login_edit_username"
@@ -29,6 +20,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:hint="@string/username_hint"
         android:inputType="textEmailAddress"/>
+
+    <!-- TODO: Check Ratio -->
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/fullLogoImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/login_edit_username"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="715:400"
+        android:contentDescription="@string/app_name"
+        app:srcCompat="@drawable/ic_full_logo"
+        app:layout_constraintVertical_bias="0.0"/>
 
     <EditText
         android:id="@+id/login_edit_password"
