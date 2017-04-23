@@ -3,8 +3,6 @@ package com.jamessimshaw.cosplaycompanion.presenters;
 import android.graphics.Bitmap;
 import android.util.Base64;
 
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;

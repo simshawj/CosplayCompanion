@@ -1,7 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
@@ -9,8 +7,6 @@ import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,7 +21,7 @@ public class ListConventionsPresenterImpl implements ListConventionsPresenter {
 
     private ListConventionsView mView;
 
-    @Inject //@Named("conventions")
+    @Inject
     public ListConventionsPresenterImpl(Retrofit retrofit) {
         mRetrofit = retrofit;
     }

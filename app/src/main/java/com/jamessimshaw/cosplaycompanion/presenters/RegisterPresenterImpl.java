@@ -3,7 +3,6 @@ package com.jamessimshaw.cosplaycompanion.presenters;
 import android.util.Log;
 
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerLoginComponents;
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerNetworkComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
