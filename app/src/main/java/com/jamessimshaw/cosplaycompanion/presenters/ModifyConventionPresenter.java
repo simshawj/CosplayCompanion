@@ -1,5 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
+import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 
 /**
@@ -8,4 +9,5 @@ import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 public interface ModifyConventionPresenter extends Presenter<ModifyConventionView> {
     void requestInitialData();
     void submit();
+    void setConvention(Convention convention);
 }

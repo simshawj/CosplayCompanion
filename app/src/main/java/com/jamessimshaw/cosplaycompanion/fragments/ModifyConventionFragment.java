@@ -21,12 +21,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenter;
-import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 import com.squareup.picasso.Picasso;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +44,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     @BindView(R.id.logoImageView) ImageView mLogoImageView;
     @BindView(R.id.conventionLogoChangeButton) Button mLogoButton;
 
-    private ModifyConventionPresenter mPresenter;
+    @Inject ModifyConventionPresenter mPresenter;
     private OnFragmentInteractionListener mListener;
 
     public static ModifyConventionFragment newInstance() {
@@ -71,7 +73,11 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
         if (getArguments() != null)
             convention = getArguments().getParcelable("convention");
 
-        mPresenter = new ModifyConventionPresenterImpl(this, convention);
+        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent()
+                .inject(this);
+
+        mPresenter.setConvention(convention);
+        mPresenter.setView(this);
     }
 
     @Override

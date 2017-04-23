@@ -19,21 +19,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
- * Created by james on 2/18/16.
+ * Prensenter for creating or editing a convention.
+ *
+ * @author James Simshaw
  */
 public class ModifyConventionPresenterImpl implements ModifyConventionPresenter {
-    @Inject Retrofit mRetrofit;
+    private Retrofit mRetrofit;
 
     private Convention mConvention;
     private ModifyConventionView mView;
 
-    public ModifyConventionPresenterImpl(ModifyConventionView view, Convention convention) {
-        mView = view;
-        mConvention = convention;
-
-        DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
-                .build().inject(this);
+    @Inject
+    public ModifyConventionPresenterImpl(Retrofit retrofit) {
+        mRetrofit = retrofit;
     }
 
     // ModifyConventionPresenter methods
@@ -56,6 +54,11 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             mView.displayDescription(mConvention.getDescription());
             mView.displayLogo(mConvention.getLogoUri());
         }
+    }
+
+    @Override
+    public void setConvention(Convention convention) {
+        mConvention = convention;
     }
 
     @Override

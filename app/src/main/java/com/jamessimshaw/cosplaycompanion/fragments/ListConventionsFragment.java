@@ -17,7 +17,6 @@ import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
-import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CosplayCompanionApplication)(getActivity().getApplication())).getListConventionsComponent()
+        ((CosplayCompanionApplication)(getActivity().getApplication())).getConventionsComponent()
                 .inject(this);
         mPresenter.setView(this);
     }

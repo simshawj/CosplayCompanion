@@ -20,7 +20,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:hint="@string/username_hint"
         android:inputType="textEmailAddress"/>
-    
+
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/fullLogoImageView"
         app:layout_constraintTop_toTopOf="parent"
