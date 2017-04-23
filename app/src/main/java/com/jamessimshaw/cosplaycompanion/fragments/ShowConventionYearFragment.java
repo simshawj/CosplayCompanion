@@ -18,7 +18,6 @@ import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenter;
-import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
 
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
         if (getArguments() != null) {
             mConventionYear = getArguments().getParcelable(ARG_PARAM2);
         }
-        ((CosplayCompanionApplication)getActivity().getApplication()).getListPhotoshootsComponent()
+        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
                 .inject(this);
         mPresenter.setView(this);
         mPresenter.setConventionYear(mConventionYear);

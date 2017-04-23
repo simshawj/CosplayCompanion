@@ -22,21 +22,16 @@ import retrofit2.Retrofit;
  * Created by james on 2/19/16.
  */
 public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter {
-    @Inject Retrofit mRetrofit;
+    private Retrofit mRetrofit;
 
     private ModifyPhotoshootView mView;
     private Photoshoot mPhotoshoot;
     private ConventionYear mConventionYear;
     private Calendar mStart;
 
-    public ModifyPhotoshootPresenterImpl(ModifyPhotoshootView view, ConventionYear conventionYear, Photoshoot photoshoot) {
-        mView = view;
-        mConventionYear = conventionYear;
-        mPhotoshoot = photoshoot;
-
-        DaggerNetworkComponent.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
-                .build().inject(this);
+    @Inject
+    public ModifyPhotoshootPresenterImpl(Retrofit retrofit) {
+        mRetrofit = retrofit;
     }
 
     // ModifyPhotoshootPresenter methods

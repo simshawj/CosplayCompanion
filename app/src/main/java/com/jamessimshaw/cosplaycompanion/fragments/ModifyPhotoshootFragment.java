@@ -18,12 +18,14 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenter;
-import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +41,7 @@ import butterknife.ButterKnife;
 public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotoshootView {
     private static final String ARG_PARAM1 = "param1";
 
-    private ModifyPhotoshootPresenter mPresenter;
+    @Inject ModifyPhotoshootPresenter mPresenter;
 
     @BindView(R.id.dateButton) Button mStartDateButton;
     @BindView(R.id.timeButton) Button mStartTimeButton;
@@ -93,13 +95,12 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
             photoshoot = getArguments().getParcelable("photoshoot");
         }
 
-        if (mPresenter == null)
-            mPresenter = new ModifyPhotoshootPresenterImpl(this, conventionYear, photoshoot);
-        else {
-            mPresenter.setView(this);
-            mPresenter.setConventionYear(conventionYear);
-            mPresenter.setPhotoshoot(photoshoot);
-        }
+        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
+                .inject(this);
+
+        mPresenter.setView(this);
+        mPresenter.setConventionYear(conventionYear);
+        mPresenter.setPhotoshoot(photoshoot);
     }
 
     @Override

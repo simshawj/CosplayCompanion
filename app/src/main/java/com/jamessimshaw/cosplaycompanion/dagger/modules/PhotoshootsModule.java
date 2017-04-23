@@ -2,6 +2,8 @@ package com.jamessimshaw.cosplaycompanion.dagger.modules;
 
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenter;
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenterImpl;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenter;
+import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenterImpl;
 
 import javax.inject.Singleton;
 
@@ -16,9 +18,9 @@ import retrofit2.Retrofit;
  */
 
 @Module
-public class ListPhotoshootsModule {
+public class PhotoshootsModule {
 
-    public ListPhotoshootsModule() {
+    public PhotoshootsModule() {
 
     }
 
@@ -26,5 +28,11 @@ public class ListPhotoshootsModule {
     @Singleton
     public ListPhotoshootsPresenter providePresenter(Retrofit retrofit) {
         return new ListPhotoshootsPresenterImpl(retrofit);
+    }
+
+    @Provides
+    @Singleton
+    public ModifyPhotoshootPresenter provideModifyPresenter(Retrofit retrofit) {
+        return new ModifyPhotoshootPresenterImpl(retrofit);
     }
 }
