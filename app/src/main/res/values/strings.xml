@@ -17,4 +17,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_register">Register</string>
     <string name="terms_privacy_agreement"><![CDATA[I agree to the <a href=\'http://www.jamessimshaw.com/cc_tou.html\'>Terms of Use</a> and the <a href=\'http://www.jamessimshaw.com/cc_privacy.html\'>Privacy Policy</a>]]></string>
+    <string name="convention_logo">Convention Logo</string>
+    <string name="name">Name</string>
+    <string name="change_logo">Change logo...</string>
+    <string name="description">Description</string>
 </resources>

@@ -1,37 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                 android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name: "/>
         <EditText
             android:id="@+id/conventionNameEditText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:maxLines="1"/>
+            android:hint="@string/name"
+            android:maxLines="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:text="Logo: "/>
         <ImageView
             android:id="@+id/logoImageView"
             android:layout_width="wrap_content"
@@ -42,28 +29,34 @@
             android:paddingTop="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
-            android:src="@android:drawable/ic_dialog_alert"/>
+            android:contentDescription="@string/convention_logo"
+            android:src="@android:drawable/ic_dialog_alert"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conventionNameEditText"/>
+
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/conventionLogoChangeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:text="Change logo..."/>
+            android:text="@string/change_logo"
+            app:layout_constraintLeft_toRightOf="@id/logoImageView"
+            app:layout_constraintTop_toBottomOf="@id/conventionNameEditText"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/descriptionEditText"
+            app:layout_constraintHorizontal_bias="0.23"/>
 
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description: "/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/descriptionEditText"/>
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/descriptionEditText"
+            android:hint="@string/description"
+            app:layout_constraintTop_toBottomOf="@id/logoImageView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
 
-</LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
