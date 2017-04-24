@@ -21,4 +21,9 @@
     <string name="name">Name</string>
     <string name="change_logo">Change logo...</string>
     <string name="description">Description</string>
+    <string name="end">End:</string>
+    <string name="sample_date">Thursday Oct. 15 2015</string>
+    <string name="location">Location</string>
+    <string name="sample_start_date">Thursday Oct. 15 2015</string>
+    <string name="start">Start:</string>
 </resources>
