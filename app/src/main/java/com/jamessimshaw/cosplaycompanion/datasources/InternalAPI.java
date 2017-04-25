@@ -3,6 +3,7 @@ package com.jamessimshaw.cosplaycompanion.datasources;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
+import com.jamessimshaw.cosplaycompanion.models.SignoutResponse;
 import com.jamessimshaw.cosplaycompanion.models.User;
 import com.jamessimshaw.cosplaycompanion.models.UserResponse;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -41,6 +43,9 @@ public interface InternalAPI {
             @Query("client") String client,
             @Query("access-token") String token
     );
+
+    @DELETE("auth/sign_out")
+    Call<SignoutResponse> sign_out();
 
     // Convention Calls
     @GET("conventions.json")

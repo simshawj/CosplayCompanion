@@ -1,15 +1,9 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import android.util.Log;
-
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerLoginComponents;
-import com.jamessimshaw.cosplaycompanion.dagger.components.LoginComponents;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.TokenManager;
-import com.jamessimshaw.cosplaycompanion.datasources.TokenManagerImpl;
 import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
 import com.jamessimshaw.cosplaycompanion.models.SessionToken;
-import com.jamessimshaw.cosplaycompanion.models.User;
 import com.jamessimshaw.cosplaycompanion.models.UserResponse;
 import com.jamessimshaw.cosplaycompanion.views.LoginView;
 
@@ -24,14 +18,17 @@ import retrofit2.Retrofit;
  * Created by james on 8/19/16.
  */
 public class LoginPresenterImpl implements LoginPresenter {
-    @Inject Retrofit mRetrofit;
-    @Inject UserManager mUserManager;
-    @Inject TokenManager mTokenManager;
+    private Retrofit mRetrofit;
+    private UserManager mUserManager;
+    private TokenManager mTokenManager;
 
     private LoginView mView;
 
-    public LoginPresenterImpl() {
-        DaggerLoginComponents.builder().build().inject(this);
+    @Inject
+    public LoginPresenterImpl(Retrofit retrofit, UserManager userManager, TokenManager tokenManager) {
+        mRetrofit = retrofit;
+        mUserManager = userManager;
+        mTokenManager = tokenManager;
     }
 
     // LoginPresenter methods

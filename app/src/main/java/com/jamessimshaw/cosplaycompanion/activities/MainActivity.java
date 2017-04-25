@@ -12,8 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerUserManagerComponent;
 import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionFragment;
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         ShowConventionFragment.OnFragmentInteractionListener,
         ModifyConventionYearFragment.OnFragmentInteractionListener,
         ShowConventionYearFragment.OnFragmentInteractionListener,
-        ModifyPhotoshootFragment.OnFragmentInteractionListener {
+        ModifyPhotoshootFragment.OnFragmentInteractionListener, SignedOut {
 
     @Inject UserManager mUserManager;
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DaggerUserManagerComponent.builder().build().inject(this);
+        ((CosplayCompanionApplication)getApplication()).getUserManagerComponent().inject(this);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -82,7 +82,11 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                mUserManager.sign_out(this);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -161,5 +165,10 @@ public class MainActivity extends AppCompatActivity
 
         if (fragment != null)
             gotoFragment(fragment);
+    }
+
+    @Override
+    public void signedOut() {
+        super.onBackPressed();
     }
 }

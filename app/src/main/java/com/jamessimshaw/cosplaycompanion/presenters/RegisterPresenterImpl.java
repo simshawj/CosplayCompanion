@@ -1,12 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import android.util.Log;
-
-import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerLoginComponents;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
-import com.jamessimshaw.cosplaycompanion.models.User;
 import com.jamessimshaw.cosplaycompanion.models.UserResponse;
 import com.jamessimshaw.cosplaycompanion.views.RegisterView;
 
@@ -18,19 +13,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
- * Created by james on 8/19/16.
+ * Presenter for registering.
+ *
+ * @author James Simshaw
  */
 public class RegisterPresenterImpl implements RegisterPresenter {
 
-    @Inject Retrofit mRetrofit;
-    @Inject UserManager mUserManager;
+    private Retrofit mRetrofit;
+    private UserManager mUserManager;
 
     RegisterView mView;
 
-    public RegisterPresenterImpl() {
-        DaggerLoginComponents.builder()
-                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule())
-                .build().inject(this);
+    @Inject
+    public RegisterPresenterImpl(Retrofit retrofit, UserManager userManager) {
+        mRetrofit = retrofit;
+        mUserManager = userManager;
     }
 
     // RegisterPresenter methods

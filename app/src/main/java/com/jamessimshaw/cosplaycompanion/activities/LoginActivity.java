@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenter;
 import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.LoginView;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +24,7 @@ public class LoginActivity extends Activity implements LoginView {
     @BindView(R.id.login_edit_username) EditText mLoginNameEditText;
     @BindView(R.id.login_edit_password) EditText mPasswordEditText;
 
-    private LoginPresenter mPresenter;
+    @Inject LoginPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class LoginActivity extends Activity implements LoginView {
     protected void onStart() {
         super.onStart();
 
-        mPresenter = new LoginPresenterImpl();
+        ((CosplayCompanionApplication)getApplication()).getLoginComponent().inject(this);
         mPresenter.setView(this);
         mPresenter.verifyToken();
     }
@@ -59,6 +62,7 @@ public class LoginActivity extends Activity implements LoginView {
     @OnClick(R.id.login_btn_register)
     public void register() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 

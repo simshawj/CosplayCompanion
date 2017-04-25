@@ -15,11 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.presenters.RegisterPresenter;
 import com.jamessimshaw.cosplaycompanion.presenters.RegisterPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.RegisterView;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     @BindView(R.id.register_verify_password) EditText mPasswordVerify;
     @BindView(R.id.terms_checkbox) CheckBox mTermsCheckBox;
 
-    private RegisterPresenter mPresenter;
+    @Inject RegisterPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     protected void onStart() {
         super.onStart();
 
-        mPresenter = new RegisterPresenterImpl();
+        ((CosplayCompanionApplication)getApplication()).getLoginComponent().inject(this);
         mPresenter.setView(this);
     }
 
@@ -113,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     @Override
     public void done() {
         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 }
