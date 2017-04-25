@@ -43,7 +43,6 @@
             app:layout_constraintLeft_toRightOf="@id/logoImageView"
             app:layout_constraintTop_toBottomOf="@id/conventionNameEditText"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/descriptionEditText"
             app:layout_constraintHorizontal_bias="0.23"/>
 
         <EditText
