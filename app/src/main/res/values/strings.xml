@@ -26,4 +26,6 @@
     <string name="location">Location</string>
     <string name="sample_start_date">Thursday Oct. 15 2015</string>
     <string name="start">Start:</string>
+    <string name="sample_start_time">11:45PM</string>
+    <string name="series">Series</string>
 </resources>
