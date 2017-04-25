@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenter;
@@ -209,6 +210,7 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
 
     @Override
     public void done() {
+        KeyboardHelper.hideKeyboard(getActivity());
         mListener.onModifyFragmentInteraction();
     }
 

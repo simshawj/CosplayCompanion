@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
@@ -204,6 +205,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
 
     @Override
     public void done() {
+        KeyboardHelper.hideKeyboard(getActivity());
         mListener.onModifyFragmentInteraction();
     }
 }

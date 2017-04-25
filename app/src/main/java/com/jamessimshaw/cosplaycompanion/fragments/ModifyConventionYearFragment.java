@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenter;
@@ -204,6 +205,7 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
 
     @Override
     public void done() {
+        KeyboardHelper.hideKeyboard(getActivity());
         mListener.onModifyFragmentInteraction();
     }
 
