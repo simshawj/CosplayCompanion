@@ -9,7 +9,7 @@ import android.net.Uri;
 public interface ModifyConventionView extends MVPView {
     String getName();
     String getDescription();
-    Bitmap getLogo();  //TODO: Is it possible to use a non-Android class here?
+    String getLogo();
     void displayName(String name);
     void displayDescription(String description);
     void displayLogo(Uri logoUri);

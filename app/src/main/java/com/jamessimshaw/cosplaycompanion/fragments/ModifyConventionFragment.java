@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +31,10 @@ import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -43,10 +49,11 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     @BindView(R.id.conventionNameEditText) EditText mNameEditText;
     @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
     @BindView(R.id.logoImageView) ImageView mLogoImageView;
-    @BindView(R.id.conventionLogoChangeButton) Button mLogoButton;
+    //@BindView(R.id.conventionLogoChangeButton) Button mLogoButton;
 
     @Inject ModifyConventionPresenter mPresenter;
     private OnFragmentInteractionListener mListener;
+    private Uri mLogoUri;
 
     public static ModifyConventionFragment newInstance() {
         ModifyConventionFragment fragment = new ModifyConventionFragment();
@@ -90,7 +97,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
         setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
 
-        mLogoButton.setOnClickListener(this);
+        mLogoImageView.setOnClickListener(this);
         mPresenter.requestInitialData();
 
         return view;
@@ -141,12 +148,12 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            Uri logoUri = data.getData();
+            mLogoUri = data.getData();
             if (Build.VERSION.SDK_INT >= 19)
                 getContext().getApplicationContext().getContentResolver().takePersistableUriPermission(
-                        logoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        mLogoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 );
-            Picasso.with(getContext()).load(logoUri).into(mLogoImageView);
+            displayLogo(mLogoUri);
         }
     }
 
@@ -176,8 +183,25 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     }
 
     @Override
-    public Bitmap getLogo() {
-        return ((BitmapDrawable)mLogoImageView.getDrawable()).getBitmap();
+    public String getLogo() {
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(mLogoUri);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            // TODO: Get off main thread
+            int readBytes;
+            byte[] bytes = new byte[4096];
+
+            while((readBytes = inputStream.read(bytes, 0, bytes.length)) != -1) {
+                outputStream.write(bytes, 0, readBytes);
+            }
+            outputStream.flush();
+            return Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP);
+        } catch (IOException e) {
+            return "";     // Should never happen since we just got the Uri, but send place
+        } catch (NullPointerException e) {
+            return "";     // Do not have an image, send placeholder
+        }
     }
 
     @Override
@@ -200,6 +224,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
         Picasso.with(getContext()).load(logoUri)
                 .placeholder(android.R.drawable.ic_dialog_alert)
                 .error(android.R.drawable.ic_dialog_alert)
+                .resize(mLogoImageView.getWidth(),0)
                 .into(mLogoImageView);
     }
 

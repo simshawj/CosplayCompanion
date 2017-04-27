@@ -1,13 +1,8 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import android.graphics.Bitmap;
-import android.util.Base64;
-
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
-
-import java.io.ByteArrayOutputStream;
 
 import javax.inject.Inject;
 
@@ -64,12 +59,8 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
         InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
         String name = mView.getName();
         String description = mView.getDescription();
-        Bitmap logo = mView.getLogo();
+        String logoString = mView.getLogo();
 
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        logo.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-        String logoString = Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP);
 
         if (mConvention == null) {
             Convention convention = new Convention(name, description, null);
@@ -78,6 +69,7 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
         } else {
             mConvention.setDescription(description);
             mConvention.setName(name);
+            mConvention.setBase64Logo(logoString);
             //mConvention.setLogoUri(mLogoUri);
             internalAPI.updateConvention(mConvention.getId(), mConvention).enqueue(mConventionCallback);
         }
