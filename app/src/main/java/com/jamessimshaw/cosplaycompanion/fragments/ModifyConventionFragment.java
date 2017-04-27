@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -98,7 +99,19 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
         ButterKnife.bind(this, view);
 
         mLogoImageView.setOnClickListener(this);
-        mPresenter.requestInitialData();
+        ViewTreeObserver observer = mLogoImageView.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                ViewTreeObserver observer = mLogoImageView.getViewTreeObserver();
+                if (Build.VERSION.SDK_INT < 16) {
+                    observer.removeGlobalOnLayoutListener(this);
+                } else {
+                    observer.removeOnGlobalLayoutListener(this);
+                }
+                mPresenter.requestInitialData();
+            }
+        });
 
         return view;
     }
