@@ -83,13 +83,13 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             if (response.code() == 200 || response.code() == 201)
                 mView.done();
             else {
-                mView.displayWarning("Failed to update convention.");
+                mView.displayWarning("Failed to modify convention.");
             }
         }
 
         @Override
         public void onFailure(Call<Convention> call, Throwable t) {
-            mView.displayWarning("Failed to update convention, please check your connection and try again.");
+            mView.displayWarning("Failed to modify convention, please check your connection and try again.");
         }
     };
 }

@@ -114,13 +114,13 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
             if (response.code() == 200 || response.code() == 201)
                 mView.done();
             else {
-                mView.displayWarning("Failed to create photo shoot.");
+                mView.displayWarning("Failed to modify photo shoot.");
             }
         }
 
         @Override
         public void onFailure(Call<Photoshoot> call, Throwable t) {
-            mView.displayWarning("Failed to create photo shoot, please check your connection and try again.");
+            mView.displayWarning("Failed to modify photo shoot, please check your connection and try again.");
         }
     };
 }

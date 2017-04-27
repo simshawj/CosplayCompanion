@@ -125,13 +125,13 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
             if (response.code() == 200 || response.code() == 201)
                 mView.done();
             else {
-                mView.displayWarning("Failed to create convention year.");
+                mView.displayWarning("Failed to modify convention year.");
             }
         }
 
         @Override
         public void onFailure(Call<ConventionYear> call, Throwable t) {
-            mView.displayWarning("Failed to create convention year, please check your connection and try again.");
+            mView.displayWarning("Failed to modify convention year, please check your connection and try again.");
         }
     };
 }
