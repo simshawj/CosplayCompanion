@@ -28,4 +28,7 @@
     <string name="start">Start:</string>
     <string name="sample_start_time">11:45PM</string>
     <string name="series">Series</string>
+    <string name="conventions">Conventions</string>
+    <string name="feedback">Feedback</string>
+    <string name="logout">Logout</string>
 </resources>

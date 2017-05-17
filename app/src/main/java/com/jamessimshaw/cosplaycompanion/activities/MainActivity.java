@@ -1,8 +1,11 @@
 package com.jamessimshaw.cosplaycompanion.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -90,19 +93,33 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
-            // Handle the camera action
+        switch (id) {
+            case R.id.nav_conventions:
+                clearBackStack();
+                break;
+            case R.id.nav_feedback:
+                break;
+            case R.id.nav_logout:
+                mUserManager.sign_out(this);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void clearBackStack() {
+        FragmentManager fm = getSupportFragmentManager();
+        int entries = fm.getBackStackEntryCount();
+        for (int i = 0; i < entries; i++) {
+            fm.popBackStack();
+        }
     }
 
     private void gotoFragment(Fragment fragment) {
@@ -169,6 +186,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void signedOut() {
-        super.onBackPressed();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }
