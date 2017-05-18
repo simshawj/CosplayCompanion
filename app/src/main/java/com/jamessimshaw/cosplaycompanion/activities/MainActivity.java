@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
+import com.jamessimshaw.cosplaycompanion.fragments.CreateSuggestionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionYearFragment;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity
         ShowConventionFragment.OnFragmentInteractionListener,
         ModifyConventionYearFragment.OnFragmentInteractionListener,
         ShowConventionYearFragment.OnFragmentInteractionListener,
-        ModifyPhotoshootFragment.OnFragmentInteractionListener, SignedOut {
+        ModifyPhotoshootFragment.OnFragmentInteractionListener,
+        CreateSuggestionFragment.OnFragmentInteractionListener, SignedOut {
 
     @Inject UserManager mUserManager;
 
@@ -103,6 +105,8 @@ public class MainActivity extends AppCompatActivity
                 clearBackStack();
                 break;
             case R.id.nav_feedback:
+                Fragment fragment = CreateSuggestionFragment.newInstance();
+                gotoFragment(fragment);
                 break;
             case R.id.nav_logout:
                 mUserManager.sign_out(this);

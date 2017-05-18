@@ -9,10 +9,12 @@ import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerLoginComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerPhotoshootsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerPreferenceComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.ConventionYearsComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerSuggestionsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.DaggerUserManagerComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.LoginComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.PhotoshootsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.PreferenceComponent;
+import com.jamessimshaw.cosplaycompanion.dagger.components.SuggestionsComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.components.UserManagerComponent;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.ApplicationModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.ConventionYearsModule;
@@ -20,6 +22,7 @@ import com.jamessimshaw.cosplaycompanion.dagger.modules.ConventionsModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.PhotoshootsModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.PreferenceModule;
+import com.jamessimshaw.cosplaycompanion.dagger.modules.SuggestionModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.UserManagerModule;
 
 /**
@@ -34,6 +37,7 @@ public class CosplayCompanionApplication extends Application {
     private PhotoshootsComponent mPhotoshootsComponent;
     private LoginComponent mLoginComponent;
     private UserManagerComponent mUserManagerComponent;
+    private SuggestionsComponent mSuggestionsComponent;
 
     @Override
     public void onCreate() {
@@ -58,6 +62,9 @@ public class CosplayCompanionApplication extends Application {
                 .cosplayCompanionAPIModule(new CosplayCompanionAPIModule()).build();
         mPhotoshootsComponent = DaggerPhotoshootsComponent.builder()
                 .photoshootsModule(new PhotoshootsModule())
+                .cosplayCompanionAPIModule(new CosplayCompanionAPIModule()).build();
+        mSuggestionsComponent = DaggerSuggestionsComponent.builder()
+                .suggestionModule(new SuggestionModule())
                 .cosplayCompanionAPIModule(new CosplayCompanionAPIModule()).build();
     }
 
@@ -85,4 +92,7 @@ public class CosplayCompanionApplication extends Application {
         return mPhotoshootsComponent;
     }
 
+    public SuggestionsComponent getSuggestionsComponent() {
+        return mSuggestionsComponent;
+    }
 }

@@ -2,9 +2,9 @@ package com.jamessimshaw.cosplaycompanion.datasources;
 
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+import com.jamessimshaw.cosplaycompanion.models.Suggestion;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.models.SignoutResponse;
-import com.jamessimshaw.cosplaycompanion.models.User;
 import com.jamessimshaw.cosplaycompanion.models.UserResponse;
 
 import java.util.List;
@@ -15,10 +15,8 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -76,4 +74,8 @@ public interface InternalAPI {
 
     @PATCH("photo_shoots/{id}.json")
     Call<Photoshoot> updatePhotoShoot(@Path("id") long id, @Body Photoshoot photoshoot);
+
+    // Suggestion Calls
+    @POST("suggestions.json")
+    Call<Suggestion> createSuggestion(@Body Suggestion suggestion);
 }
