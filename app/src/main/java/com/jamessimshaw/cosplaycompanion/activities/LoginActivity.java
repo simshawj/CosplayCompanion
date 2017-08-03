@@ -9,10 +9,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenter;
@@ -36,13 +44,17 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Googl
     @Inject LoginPresenter mPresenter;
 
     private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -58,17 +70,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Googl
     protected void onStart() {
         super.onStart();
 
-        ((CosplayCompanionApplication)getApplication()).getLoginComponent().inject(this);
-        mPresenter.setView(this);
-        mPresenter.verifyToken();
+//        ((CosplayCompanionApplication)getApplication()).getLoginComponent().inject(this);
+//        mPresenter.setView(this);
+//        mPresenter.verifyToken();
+
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        verifyUser(user);
+    }
+
+    private void verifyUser(FirebaseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        mPresenter.removeView(this);
-        mPresenter = null;
+//        mPresenter.removeView(this);
+//        mPresenter = null;
     }
 
     // Button onClicks
@@ -103,6 +126,22 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Googl
 
         if (requestCode == SIGN_IN_REQUEST_CODE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                GoogleSignInAccount googleAccount = result.getSignInAccount();
+                AuthCredential authCredential = GoogleAuthProvider.getCredential(googleAccount.getIdToken(), null);
+                mFirebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                            verifyUser(user);
+                        }
+                    }
+                });
+
+            } else {
+                Toast.makeText(this, "Unable to sign in", Toast.LENGTH_SHORT).show();
+            }
             //handleSignInResult(result);
         }
 
