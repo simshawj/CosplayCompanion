@@ -1,5 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
@@ -21,10 +23,12 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
 
     private Convention mConvention;
     private ModifyConventionView mView;
+    private DatabaseReference mDatabaseReference;
 
     @Inject
     public ModifyConventionPresenterImpl(Retrofit retrofit) {
         mRetrofit = retrofit;
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("conventions");
     }
 
     // ModifyConventionPresenter methods
@@ -66,6 +70,7 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             Convention convention = new Convention(name, description, null);
             convention.setBase64Logo(logoString);
             internalAPI.createConvention(convention).enqueue(mConventionCallback);
+            mDatabaseReference.child(convention.getName()).setValue(convention);
         } else {
             mConvention.setDescription(description);
             mConvention.setName(name);

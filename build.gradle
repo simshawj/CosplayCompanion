@@ -31,5 +31,5 @@ ext {
     butterKnifeVersion = "8.5.1"
     daggerVersion = "2.10"
     junitVersion = "4.12"
-    firebaseVersion = "2.1.1"
+    firebaseVersion = "11.0.4"
 }
