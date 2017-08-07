@@ -1,6 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,10 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenter;
-import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.LoginView;
 
 import javax.inject.Inject;
@@ -90,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Googl
     protected void onStop() {
         super.onStop();
 
-//        mPresenter.removeView(this);
+//        mPresenter.detachView(this);
 //        mPresenter = null;
     }
 

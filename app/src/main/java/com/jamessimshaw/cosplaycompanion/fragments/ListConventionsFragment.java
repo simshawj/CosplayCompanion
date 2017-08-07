@@ -102,7 +102,7 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.removeView(this);
+        mPresenter.detachView();
         mPresenter = null;
     }
 

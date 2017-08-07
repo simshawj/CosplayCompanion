@@ -50,9 +50,8 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
     }
 
     @Override
-    public void removeView(ModifyPhotoshootView view) {
-        if (mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 
     @Override

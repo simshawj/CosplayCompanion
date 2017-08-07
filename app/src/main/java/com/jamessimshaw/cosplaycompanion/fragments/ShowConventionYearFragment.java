@@ -116,7 +116,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.removeView(this);
+        mPresenter.detachView();
         mPresenter = null;
     }
 

@@ -1,7 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -11,14 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
-import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.SuggestionPresenter;
 import com.jamessimshaw.cosplaycompanion.views.SuggestionView;
 
@@ -103,7 +100,7 @@ public class CreateSuggestionFragment extends Fragment implements SuggestionView
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.removeView(this);
+        mPresenter.detachView();
         mPresenter = null;
     }
 

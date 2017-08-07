@@ -7,8 +7,6 @@ import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,8 +59,7 @@ public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
     }
 
     @Override
-    public void removeView(ListPhotoshootsView view) {
-        if(mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 }

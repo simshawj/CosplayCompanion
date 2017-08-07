@@ -7,5 +7,5 @@ import com.jamessimshaw.cosplaycompanion.views.MVPView;
  */
 public interface Presenter<V extends MVPView> {
     void setView(V view);
-    void removeView(V view);
+    void detachView();
 }

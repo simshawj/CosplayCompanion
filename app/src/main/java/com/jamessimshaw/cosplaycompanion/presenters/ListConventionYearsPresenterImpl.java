@@ -2,16 +2,10 @@ package com.jamessimshaw.cosplaycompanion.presenters;
 
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
-import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -61,8 +55,7 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
     }
 
     @Override
-    public void removeView(ListConventionYearsView view) {
-        if(mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 }

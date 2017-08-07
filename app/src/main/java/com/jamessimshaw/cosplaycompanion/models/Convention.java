@@ -17,7 +17,7 @@ public class Convention implements Parcelable {
     private String mLogoUriString;
 
     public Convention() {
-
+        // Required empty constructor
     }
 
     public Convention(String name, String description, String logoUriString) {

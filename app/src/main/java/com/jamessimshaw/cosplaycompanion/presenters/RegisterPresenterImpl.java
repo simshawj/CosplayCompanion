@@ -72,8 +72,7 @@ public class RegisterPresenterImpl implements RegisterPresenter {
     }
 
     @Override
-    public void removeView(RegisterView view) {
-        if(mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 }

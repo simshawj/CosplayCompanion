@@ -51,12 +51,10 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
     }
 
     @Override
-    public void removeView(ModifyConventionYearView view) {
-        if (mView.equals(view)) {
-            mView = null;
-            mConvention = null;
-            mConventionYear = null;
-        }
+    public void detachView() {
+        mView = null;
+        mConvention = null;
+        mConventionYear = null;
     }
 
     @Override

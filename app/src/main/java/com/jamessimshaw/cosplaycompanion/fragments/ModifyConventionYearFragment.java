@@ -126,7 +126,7 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.removeView(this);
+        mPresenter.detachView();
     }
 
     // Listeners

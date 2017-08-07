@@ -42,9 +42,8 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
     }
 
     @Override
-    public void removeView(ModifyConventionView view) {
-        if (mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 
     @Override

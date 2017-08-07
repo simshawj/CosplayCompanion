@@ -18,36 +18,14 @@ public class ListConventionsPresenterImpl implements ListConventionsPresenter {
         mConventionsReference = FirebaseDatabase.getInstance().getReference("conventions");
     }
 
-//    @Override
-//    public void requestConventions() {
-//        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-//        internalAPI.getConventions().enqueue(new Callback<List<Convention>>() {
-//            @Override
-//            public void onResponse(Call<List<Convention>> call, Response<List<Convention>> response) {
-//                mView.addConventions(response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Convention>> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-//    }
-//
-//    @Override
-//    public void requestNewConventions() {
-//
-//    }
-
     @Override
     public void setView(ListConventionsView view) {
         mView = view;
     }
 
     @Override
-    public void removeView(ListConventionsView view) {
-        if(mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 
     @Override

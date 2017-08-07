@@ -132,7 +132,7 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.removeView(this);
+        mPresenter.detachView();
         mPresenter = null;
     }
 

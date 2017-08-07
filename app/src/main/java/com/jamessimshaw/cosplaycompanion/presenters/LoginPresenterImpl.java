@@ -90,8 +90,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     }
 
     @Override
-    public void removeView(LoginView view) {
-        if(mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 }

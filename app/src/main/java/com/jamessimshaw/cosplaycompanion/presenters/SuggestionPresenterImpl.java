@@ -54,8 +54,7 @@ public class SuggestionPresenterImpl implements SuggestionPresenter {
     }
 
     @Override
-    public void removeView(SuggestionView view) {
-        if (mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 }

@@ -118,7 +118,7 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mYearsPresenter.removeView(this);
+        mYearsPresenter.detachView();
         mYearsPresenter = null;
     }
 
