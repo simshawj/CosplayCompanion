@@ -86,7 +86,7 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
     }
 
     private void storeConvention(String name, String description, Uri logo) {
-        String logoUriString = logo.toString();
+        String logoUriString = logo != null ? logo.toString() : mConvention.getLogoUriString();
         if (mConvention == null) {
             mConvention = new Convention(name, description, logoUriString);
 
@@ -97,5 +97,6 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             //mConvention.setName(name);
         }
         mDatabaseReference.child(mConvention.getName()).setValue(mConvention);
+        mView.done();
     }
 }

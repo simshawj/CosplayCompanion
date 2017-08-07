@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
@@ -21,7 +19,6 @@ import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -80,13 +77,11 @@ public class ListConventionsFragment extends Fragment implements ListConventions
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Conventions");
 
-        DatabaseReference conventionsReference = FirebaseDatabase.getInstance().getReference("conventions");
-
         RecyclerView conventionRecyclerView = (RecyclerView)view.findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new ConventionRecViewAdapter(Convention.class, R.layout.row_convention, ConventionRecViewAdapter.ViewHolder.class, conventionsReference ,getActivity());
+        mAdapter = new ConventionRecViewAdapter(Convention.class, R.layout.row_convention, ConventionRecViewAdapter.ViewHolder.class, mPresenter.getFirebaseReference() ,getActivity());
         conventionRecyclerView.setAdapter(mAdapter);
 
         return view;

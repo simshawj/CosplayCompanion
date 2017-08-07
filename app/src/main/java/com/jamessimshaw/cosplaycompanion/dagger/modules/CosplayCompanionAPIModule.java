@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jamessimshaw.cosplaycompanion.BuildConfig;
 import com.jamessimshaw.cosplaycompanion.datasources.interceptors.AuthenticationInterceptor;
-import com.jamessimshaw.cosplaycompanion.models.Convention;
-import com.jamessimshaw.cosplaycompanion.serialization.ConventionDeserializer;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -50,24 +47,24 @@ public class CosplayCompanionAPIModule {
                 .build();
     }
 
-    @Provides
-    @Singleton
-    @Named("conventions")
-    Gson provideConventionGson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(Convention.class, new ConventionDeserializer())
-                .create();
-    }
-
-
-    @Provides
-    @Singleton
-    @Named("conventions")
-    Retrofit provideConventionRetrofit(@Named("conventions") Gson gson, OkHttpClient client) {
-        return new Retrofit.Builder()
-                .baseUrl(mBaseURL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(client)
-                .build();
-    }
+//    @Provides
+//    @Singleton
+//    @Named("conventions")
+//    Gson provideConventionGson() {
+//        return new GsonBuilder()
+//                .registerTypeAdapter(Convention.class, new ConventionDeserializer())
+//                .create();
+//    }
+//
+//
+//    @Provides
+//    @Singleton
+//    @Named("conventions")
+//    Retrofit provideConventionRetrofit(@Named("conventions") Gson gson, OkHttpClient client) {
+//        return new Retrofit.Builder()
+//                .baseUrl(mBaseURL)
+//                .addConverterFactory(GsonConverterFactory.create(gson))
+//                .client(client)
+//                .build();
+//    }
 }
