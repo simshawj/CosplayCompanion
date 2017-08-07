@@ -60,7 +60,7 @@ public class ConYearRecViewAdapter extends RecyclerView.Adapter<ConYearRecViewAd
         if (holder.mType == TYPE_HEADER) {
             holder.mConventionNameTextView.setText(mConvention.getName());
             Picasso.with(mActivity)
-                    .load(mConvention.getLogoUri())
+                    .load(mConvention.getLogoUriString())
                     .into(holder.mConventionLogoImageView);
             holder.mConventionDescriptionTextView.setText(mConvention.getDescription());
         } else {

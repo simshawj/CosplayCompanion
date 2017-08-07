@@ -104,11 +104,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
             @Override
             public void onGlobalLayout() {
                 ViewTreeObserver observer = mLogoImageView.getViewTreeObserver();
-                if (Build.VERSION.SDK_INT < 16) {
-                    observer.removeGlobalOnLayoutListener(this);
-                } else {
-                    observer.removeOnGlobalLayoutListener(this);
-                }
+                observer.removeOnGlobalLayoutListener(this);
                 mPresenter.requestInitialData();
             }
         });
@@ -196,24 +192,13 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     }
 
     @Override
-    public String getLogo() {
+    public InputStream getLogo() {
         try {
-            InputStream inputStream = getContext().getContentResolver().openInputStream(mLogoUri);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-            // TODO: Get off main thread
-            int readBytes;
-            byte[] bytes = new byte[4096];
-
-            while((readBytes = inputStream.read(bytes, 0, bytes.length)) != -1) {
-                outputStream.write(bytes, 0, readBytes);
-            }
-            outputStream.flush();
-            return Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP);
+            return getContext().getContentResolver().openInputStream(mLogoUri);
         } catch (IOException e) {
-            return "";     // Should never happen since we just got the Uri, but send place
+            return null;     // Should never happen since we just got the Uri, but send place
         } catch (NullPointerException e) {
-            return "";     // Do not have an image, send placeholder
+            return null;     // Do not have an image, send placeholder
         }
     }
 

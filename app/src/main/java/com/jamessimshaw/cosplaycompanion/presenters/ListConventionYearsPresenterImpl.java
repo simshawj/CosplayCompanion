@@ -32,17 +32,17 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
     @Override
     public void requestConventionYears() {
         InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.getConventionYears(mConvention.getId()).enqueue(new Callback<List<ConventionYear>>() {
-            @Override
-            public void onResponse(Call<List<ConventionYear>> call, Response<List<ConventionYear>> response) {
-                mView.addConventionYears(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<ConventionYear>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+//        internalAPI.getConventionYears(mConvention.getId()).enqueue(new Callback<List<ConventionYear>>() {
+//            @Override
+//            public void onResponse(Call<List<ConventionYear>> call, Response<List<ConventionYear>> response) {
+//                mView.addConventionYears(response.body());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<ConventionYear>> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
     }
 
     @Override

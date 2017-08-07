@@ -10,6 +10,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        resConfigs "auto"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -31,12 +32,16 @@ dependencies {
     compile "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
     compile "com.android.support:cardview-v7:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:customtabs:$supportLibraryVersion"
+    compile "com.android.support:palette-v7:$supportLibraryVersion"
 
     // Network Communications
     // Firebase
     compile "com.google.firebase:firebase-auth:$firebaseVersion"
     compile "com.google.firebase:firebase-database:$firebaseVersion"
+    compile "com.google.firebase:firebase-storage:$firebaseVersion"
     compile "com.google.android.gms:play-services-auth:$firebaseVersion"
+    compile "com.firebaseui:firebase-ui-database:$firebaseUiVersion"
 
     // Picasso
     compile "com.squareup.picasso:picasso:$picassoVersion"

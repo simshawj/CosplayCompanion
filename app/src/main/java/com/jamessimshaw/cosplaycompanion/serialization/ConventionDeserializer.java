@@ -35,7 +35,7 @@ public class ConventionDeserializer implements JsonDeserializer<Convention> {
         if (!urlElement.isJsonNull())
             logo = logoObject.get("url").getAsString();
 
-        Convention convention = new Convention(id, name, description, Uri.parse(logo));
-        return convention;
+        //Convention convention = new Convention(id, name, description, Uri.parse(logo));
+        return null;
     }
 }

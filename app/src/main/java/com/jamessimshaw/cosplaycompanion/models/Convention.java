@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,35 +16,23 @@ public class Convention implements Parcelable {
     @SerializedName("name")
     @Expose
     private String mName;
+
     @SerializedName("description")
     @Expose
     private String mDescription;
-    @SerializedName("logo.url")
-    private Uri mLogoUri;
-    @SerializedName("id")
-    private long mId;
-    @SerializedName("logo64")
-    @Expose
-    private String mBase64Logo;
 
-    public Convention(long id, String name, String description, Uri logoUri) {
-        mId = id;
+    private String mLogoUriString;
+
+    public Convention(String name, String description, String logoUriString) {
         mName = name;
         mDescription = description;
-        mLogoUri = logoUri;
+        mLogoUriString = logoUriString;
     }
 
-    public Convention(String name, String description, Uri logoUri) {
-        mName = name;
-        mDescription = description;
-        mLogoUri = logoUri;
-    }
-
+    // TODO: Fixme!!!
     public Convention (Parcel in) {
         mName = in.readString();
-        mLogoUri = in.readParcelable(Bitmap.class.getClassLoader());
         mDescription = in.readString();
-        mId = in.readLong();
     }
 
     public String getDescription() {
@@ -58,32 +47,16 @@ public class Convention implements Parcelable {
         return mName;
     }
 
+    public String getLogoUriString() {
+        return mLogoUriString;
+    }
+
+    public void setLogoUriString(String logoUriString) {
+        mLogoUriString = logoUriString;
+    }
+
     public void setName(String name) {
         mName = name;
-    }
-
-    public Uri getLogoUri() {
-        return mLogoUri;
-    }
-
-    public void setLogoUri(Uri logoUri) {
-        mLogoUri = logoUri;
-    }
-
-    public long getId() {
-        return mId;
-    }
-
-    public void setId(long id) {
-        mId = id;
-    }
-
-    public String getBase64Logo() {
-        return mBase64Logo;
-    }
-
-    public void setBase64Logo(String base64Logo) {
-        mBase64Logo = base64Logo;
     }
 
     @Override
@@ -94,9 +67,7 @@ public class Convention implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
-        dest.writeParcelable(mLogoUri, 0);
         dest.writeString(mDescription);
-        dest.writeLong(mId);
     }
 
     public static final Parcelable.Creator<Convention> CREATOR
@@ -113,6 +84,7 @@ public class Convention implements Parcelable {
         }
     };
 
+    // TODO: FIXME!!!!
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -123,19 +95,16 @@ public class Convention implements Parcelable {
         Convention otherConvention = (Convention) o;
 
         return mName.equals(otherConvention.mName) &&
-                mDescription.equals(otherConvention.mDescription) &&
-                mLogoUri.equals(otherConvention.mLogoUri) &&
-                (mId == otherConvention.mId);
+                mDescription.equals(otherConvention.mDescription);
     }
 
+    // TODO: FIXME!!!!
     @Override
     public int hashCode() {
         int result = 17;
 
         result = 37 * result + mName.hashCode();
         result = 37 * result + mDescription.hashCode();
-        result = 37 * result + mLogoUri.hashCode();
-        result = 37 * result + (int) (mId ^ (mId >>> 32));
 
         return result;
     }

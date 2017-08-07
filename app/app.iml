@@ -130,13 +130,19 @@
     <orderEntry type="library" exported="" name="converter-gson-2.2.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="sqlite4java-0.282" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="asm-tree-5.0.1" level="project" />
+    <orderEntry type="library" exported="" name="palette-v7-26.0.0" level="project" />
+    <orderEntry type="library" exported="" name="firebase-storage-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-26.0.0" level="project" />
+    <orderEntry type="library" exported="" name="firebase-storage-common-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-11.0.4" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="robolectric-3.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-common-11.0.4" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="maven-ant-tasks-2.1.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="ant-1.8.0" level="project" />
+    <orderEntry type="library" exported="" name="common-1.0.0-alpha5" level="project" />
+    <orderEntry type="library" exported="" name="1_common-1.0.0-alpha5" level="project" />
     <orderEntry type="library" exported="" name="play-services-auth-11.0.4" level="project" />
+    <orderEntry type="library" exported="" name="extensions-1.0.0-alpha5" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="constraint-layout-1.0.2" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="accessibility-test-framework-1.0" level="project" />
@@ -149,6 +155,7 @@
     <orderEntry type="library" exported="" name="play-services-basement-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="transition-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-11.0.4" level="project" />
+    <orderEntry type="library" exported="" name="customtabs-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-annotations-8.5.1" level="project" />
     <orderEntry type="library" exported="" name="constraint-layout-solver-1.0.2" level="project" />
@@ -156,6 +163,8 @@
     <orderEntry type="library" exported="" scope="TEST" name="robolectric-annotations-3.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.7" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="runtime-1.0.0-alpha5" level="project" />
+    <orderEntry type="library" exported="" name="1_runtime-1.0.0-alpha5" level="project" />
     <orderEntry type="library" exported="" name="okio-1.11.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-auth-base-11.0.4" level="project" />
@@ -170,6 +179,7 @@
     <orderEntry type="library" exported="" name="firebase-analytics-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-impl-11.0.4" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
+    <orderEntry type="library" exported="" name="firebase-ui-database-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-8.5.1" level="project" />
   </component>
 </module>

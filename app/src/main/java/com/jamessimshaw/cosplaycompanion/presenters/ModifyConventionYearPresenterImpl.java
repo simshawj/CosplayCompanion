@@ -102,9 +102,9 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
         // TODO: Do we want to change the display name?  Make it customizable?
         if (mConventionYear == null) {
             String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
-            ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
-                    mConvention.getId(), location, displayName);
-            internalAPI.createConventionYear(mConvention.getId(), conventionYear).enqueue(mCallback);
+//            ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
+//                    mConvention.getId(), location, displayName);
+//            internalAPI.createConventionYear(mConvention.getId(), conventionYear).enqueue(mCallback);
         } else {
             mConventionYear.setStart(mStartDate);
             mConventionYear.setEnd(mEndDate);
