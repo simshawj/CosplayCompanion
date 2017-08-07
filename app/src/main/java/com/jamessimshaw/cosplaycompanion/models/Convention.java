@@ -13,12 +13,9 @@ import com.google.gson.annotations.SerializedName;
  * Created by james on 9/25/15.
  */
 public class Convention implements Parcelable {
-    @SerializedName("name")
-    @Expose
+    @Exclude
     private String mName;
 
-    @SerializedName("description")
-    @Expose
     private String mDescription;
 
     private String mLogoUriString;

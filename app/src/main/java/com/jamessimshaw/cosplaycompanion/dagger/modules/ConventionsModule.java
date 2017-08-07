@@ -31,8 +31,8 @@ public class ConventionsModule {
 
     @Provides
     @Singleton
-    public ModifyConventionPresenter provideModifyConventionPresenter(@Named("conventions") Retrofit retrofit) {
-        return new ModifyConventionPresenterImpl(retrofit);
+    public ModifyConventionPresenter provideModifyConventionPresenter() {
+        return new ModifyConventionPresenterImpl();
     }
 
 }
