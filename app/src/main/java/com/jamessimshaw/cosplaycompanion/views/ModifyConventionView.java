@@ -1,8 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.views;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import java.io.InputStream;
 
 /**
@@ -14,5 +11,5 @@ public interface ModifyConventionView extends MVPView {
     InputStream getLogo();
     void displayName(String name);
     void displayDescription(String description);
-    void displayLogo(Uri logoUri);
+    void displayLogo(String logoUri);
 }

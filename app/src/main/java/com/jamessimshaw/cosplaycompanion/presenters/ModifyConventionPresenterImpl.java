@@ -52,7 +52,7 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
         if (mConvention != null) {
             mView.displayName(mConvention.getName());
             mView.displayDescription(mConvention.getDescription());
-            mView.displayLogo(Uri.parse(mConvention.getLogoUriString()));
+            mView.displayLogo(mConvention.getLogoUriString());
         }
     }
 
@@ -86,7 +86,18 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
     }
 
     private void storeConvention(String name, String description, Uri logo) {
-        String logoUriString = logo != null ? logo.toString() : mConvention.getLogoUriString();
+        String logoUriString;
+        if (name == null || name.equals("")) {
+            mView.displayWarning("Name must be set");
+            return;
+        }
+        if (logo != null) {
+           logoUriString = logo.toString();
+        } else if (mConvention != null) {
+            logoUriString = mConvention.getLogoUriString();
+        } else {
+            logoUriString = null;
+        }
         if (mConvention == null) {
             mConvention = new Convention(name, description, logoUriString);
 

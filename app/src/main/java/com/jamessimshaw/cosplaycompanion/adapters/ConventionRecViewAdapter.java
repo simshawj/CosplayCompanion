@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
@@ -40,6 +39,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
     @Override
     protected void populateViewHolder(ViewHolder viewHolder, final Convention convention, int position) {
         viewHolder.conventionNameTextView.setText(convention.getName());
+        // TODO: Create a error and placeholder images
         Picasso.with(mActivity)
                 .load(convention.getLogoUriString()).fit().centerInside()
                 .into(viewHolder.conventionLogoImageView);

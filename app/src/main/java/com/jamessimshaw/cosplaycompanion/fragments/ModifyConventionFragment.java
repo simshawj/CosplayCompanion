@@ -3,15 +3,11 @@ package com.jamessimshaw.cosplaycompanion.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,7 +27,6 @@ import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -162,7 +156,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
                 getContext().getApplicationContext().getContentResolver().takePersistableUriPermission(
                         mLogoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 );
-            displayLogo(mLogoUri);
+            displayLogo(mLogoUri.toString());
         }
     }
 
@@ -218,7 +212,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     }
 
     @Override
-    public void displayLogo(Uri logoUri) {
+    public void displayLogo(String logoUri) {
         Picasso.with(getContext()).load(logoUri)
                 .placeholder(android.R.drawable.ic_dialog_alert)
                 .error(android.R.drawable.ic_dialog_alert)
