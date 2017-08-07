@@ -1,13 +1,9 @@
 package com.jamessimshaw.cosplaycompanion.models;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by james on 9/25/15.
@@ -30,10 +26,10 @@ public class Convention implements Parcelable {
         mLogoUriString = logoUriString;
     }
 
-    // TODO: Fixme!!!
     public Convention (Parcel in) {
         mName = in.readString();
         mDescription = in.readString();
+        mLogoUriString = in.readString();
     }
 
     public String getDescription() {
@@ -69,6 +65,7 @@ public class Convention implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
         dest.writeString(mDescription);
+        dest.writeString(mLogoUriString);
     }
 
     public static final Parcelable.Creator<Convention> CREATOR
@@ -85,7 +82,6 @@ public class Convention implements Parcelable {
         }
     };
 
-    // TODO: FIXME!!!!
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -96,16 +92,17 @@ public class Convention implements Parcelable {
         Convention otherConvention = (Convention) o;
 
         return mName.equals(otherConvention.mName) &&
-                mDescription.equals(otherConvention.mDescription);
+                mDescription.equals(otherConvention.mDescription) &&
+                mLogoUriString.equals(otherConvention.mLogoUriString);
     }
 
-    // TODO: FIXME!!!!
     @Override
     public int hashCode() {
         int result = 17;
 
         result = 37 * result + mName.hashCode();
         result = 37 * result + mDescription.hashCode();
+        result = 37 * result + mLogoUriString.hashCode();
 
         return result;
     }
