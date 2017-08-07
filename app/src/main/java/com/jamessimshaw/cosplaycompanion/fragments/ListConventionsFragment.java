@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
@@ -78,14 +80,14 @@ public class ListConventionsFragment extends Fragment implements ListConventions
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Conventions");
 
-        RecyclerView conventionRecyclerView = (RecyclerView)view
-                .findViewById(R.id.list_fragment_recyclerview);
+        DatabaseReference conventionsReference = FirebaseDatabase.getInstance().getReference("conventions");
+
+        RecyclerView conventionRecyclerView = (RecyclerView)view.findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new ConventionRecViewAdapter(new ArrayList<Convention>(), getActivity());
+        mAdapter = new ConventionRecViewAdapter(Convention.class, R.layout.row_convention, ConventionRecViewAdapter.ViewHolder.class, conventionsReference ,getActivity());
         conventionRecyclerView.setAdapter(mAdapter);
-        mPresenter.requestConventions();
 
         return view;
     }
@@ -137,7 +139,7 @@ public class ListConventionsFragment extends Fragment implements ListConventions
 
     @Override
     public void addConventions(List<Convention> conventions) {
-        mAdapter.addNewConventions(conventions);
+        //mAdapter.addNewConventions(conventions);
     }
 
 }

@@ -20,6 +20,10 @@ public class Convention implements Parcelable {
 
     private String mLogoUriString;
 
+    public Convention() {
+
+    }
+
     public Convention(String name, String description, String logoUriString) {
         mName = name;
         mDescription = description;
