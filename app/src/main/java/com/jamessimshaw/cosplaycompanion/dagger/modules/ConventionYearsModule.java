@@ -32,7 +32,7 @@ public class ConventionYearsModule {
 
     @Provides
     @Singleton
-    public ModifyConventionYearPresenter providesModifyPresenter(Retrofit retrofit) {
-        return  new ModifyConventionYearPresenterImpl(retrofit);
+    public ModifyConventionYearPresenter providesModifyPresenter() {
+        return  new ModifyConventionYearPresenterImpl();
     }
 }

@@ -78,9 +78,9 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
         String location = mView.getLocation();
         String description = mView.getDescription();
         if (mPhotoshoot == null) {
-            Photoshoot photoshoot = new Photoshoot(series,
-                    mStart.getTime(), location, description, mConventionYear.getId());
-            internalAPI.createPhotoShoot(mConventionYear.getId(), photoshoot).enqueue(mCallback);
+//            Photoshoot photoshoot = new Photoshoot(series,
+//                    mStart.getTime(), location, description, mConventionYear.getId());
+//            internalAPI.createPhotoShoot(mConventionYear.getId(), photoshoot).enqueue(mCallback);
         } else {
             mPhotoshoot.setDescription(description);
             mPhotoshoot.setLocation(location);

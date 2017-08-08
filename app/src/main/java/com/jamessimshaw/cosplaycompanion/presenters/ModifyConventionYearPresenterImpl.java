@@ -1,6 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionYearView;
@@ -12,27 +13,21 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
 /**
  * Created by james on 2/18/16.
  */
 public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPresenter {
-    private Retrofit mRetrofit;
-
     private ModifyConventionYearView mView;
     private Convention mConvention;
     private ConventionYear mConventionYear;
     private SimpleDateFormat mDateFormat;
     private Date mStartDate;
     private Date mEndDate;
+    private DatabaseReference mDatabaseReference;
 
     @Inject
-    public ModifyConventionYearPresenterImpl(Retrofit retrofit) {
-        mRetrofit = retrofit;
+    public ModifyConventionYearPresenterImpl() {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("convention_years");
     }
 
     @Override
@@ -95,20 +90,19 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
             return;
         }
 
-        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-
         // TODO: Do we want to change the display name?  Make it customizable?
+        String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
+
         if (mConventionYear == null) {
-            String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
-//            ConventionYear conventionYear = new ConventionYear(mStartDate, mEndDate,
-//                    mConvention.getId(), location, displayName);
-//            internalAPI.createConventionYear(mConvention.getId(), conventionYear).enqueue(mCallback);
+            mConventionYear = new ConventionYear(mStartDate, mEndDate, location, displayName);
         } else {
             mConventionYear.setStart(mStartDate);
             mConventionYear.setEnd(mEndDate);
             mConventionYear.setLocation(location);
-            internalAPI.updateConventionYear(mConventionYear.getId(), mConventionYear).enqueue(mCallback);
+            mConventionYear.setDisplayName(displayName);
         }
+        mDatabaseReference.child(mConvention.getName()).child(getYearFromDate(mStartDate)).setValue(mConventionYear);
+        mView.done();
     }
 
     private String getYearFromDate(Date date) {
@@ -116,20 +110,4 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
         calendar.setTime(date);
         return Integer.toString(calendar.get(Calendar.YEAR));
     }
-
-    Callback<ConventionYear> mCallback = new Callback<ConventionYear>() {
-        @Override
-        public void onResponse(Call<ConventionYear> call, Response<ConventionYear> response) {
-            if (response.code() == 200 || response.code() == 201)
-                mView.done();
-            else {
-                mView.displayWarning("Failed to modify convention year.");
-            }
-        }
-
-        @Override
-        public void onFailure(Call<ConventionYear> call, Throwable t) {
-            mView.displayWarning("Failed to modify convention year, please check your connection and try again.");
-        }
-    };
 }

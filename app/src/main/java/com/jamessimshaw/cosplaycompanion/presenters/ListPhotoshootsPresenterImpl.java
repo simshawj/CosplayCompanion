@@ -2,14 +2,8 @@ package com.jamessimshaw.cosplaycompanion.presenters;
 
 import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
-import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -30,17 +24,17 @@ public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
     @Override
     public void requestPhotoshoots() {
         InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.getPhotoShoots(mConventionYear.getId()).enqueue(new Callback<List<Photoshoot>>() {
-            @Override
-            public void onResponse(Call<List<Photoshoot>> call, Response<List<Photoshoot>> response) {
-                mView.addConventionYears(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Photoshoot>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+//        internalAPI.getPhotoShoots(mConventionYear.getId()).enqueue(new Callback<List<Photoshoot>>() {
+//            @Override
+//            public void onResponse(Call<List<Photoshoot>> call, Response<List<Photoshoot>> response) {
+//                mView.addConventionYears(response.body());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Photoshoot>> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
     }
 
     @Override
