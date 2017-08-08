@@ -28,14 +28,6 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
         mActivity = activity;
     }
 
-//    @Override
-//    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_convention,
-//                parent, false);
-//        ViewHolder holder = new ViewHolder(view);
-//        return holder;
-//    }
-
     @Override
     protected void populateViewHolder(ViewHolder viewHolder, final Convention convention, int position) {
         viewHolder.conventionNameTextView.setText(convention.getName());
@@ -60,16 +52,6 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
             }
         });
     }
-
-//    @Override
-//    public int getItemCount() {
-//        return mConventions.size();
-//    }
-//
-//    public void addNewConventions(List<Convention> conventionList) {
-//        mConventions.addAll(conventionList);
-//        notifyDataSetChanged();
-//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
