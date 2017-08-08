@@ -46,25 +46,4 @@ public class CosplayCompanionAPIModule {
                 .client(client)
                 .build();
     }
-
-//    @Provides
-//    @Singleton
-//    @Named("conventions")
-//    Gson provideConventionGson() {
-//        return new GsonBuilder()
-//                .registerTypeAdapter(Convention.class, new ConventionDeserializer())
-//                .create();
-//    }
-//
-//
-//    @Provides
-//    @Singleton
-//    @Named("conventions")
-//    Retrofit provideConventionRetrofit(@Named("conventions") Gson gson, OkHttpClient client) {
-//        return new Retrofit.Builder()
-//                .baseUrl(mBaseURL)
-//                .addConverterFactory(GsonConverterFactory.create(gson))
-//                .client(client)
-//                .build();
-//    }
 }
