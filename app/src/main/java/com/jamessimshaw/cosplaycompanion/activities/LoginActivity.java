@@ -21,24 +21,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.jamessimshaw.cosplaycompanion.R;
-import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenter;
-import com.jamessimshaw.cosplaycompanion.views.LoginView;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginView, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.login_edit_username) EditText mLoginNameEditText;
     @BindView(R.id.login_edit_password) EditText mPasswordEditText;
 
     public static int SIGN_IN_REQUEST_CODE = 2134;
-
-    @Inject LoginPresenter mPresenter;
 
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mFirebaseAuth;
@@ -67,10 +61,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Googl
     protected void onStart() {
         super.onStart();
 
-//        ((CosplayCompanionApplication)getApplication()).getLoginComponent().inject(this);
-//        mPresenter.setView(this);
-//        mPresenter.verifyToken();
-
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         verifyUser(user);
     }
@@ -83,38 +73,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Googl
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-//        mPresenter.detachView(this);
-//        mPresenter = null;
-    }
-
     // Button onClicks
-
-    /* TODO: NYI
-    @OnClick(R.id.login_btn_forgot_password)
-    public void forgotPassword() {
-        Toast.makeText(this, "This feature is not yet implemented", Toast.LENGTH_LONG).show();
-    } */
 
     @OnClick(R.id.login_btn_google)
     public void signin() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, SIGN_IN_REQUEST_CODE);
-    }
-
-    @OnClick(R.id.login_btn_register)
-    public void register() {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-    }
-
-    @OnClick(R.id.login_btn_sign_in)
-    public void login() {
-        mPresenter.login();
     }
 
     @Override
@@ -142,29 +106,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Googl
             //handleSignInResult(result);
         }
 
-    }
-
-    // LoginView Methods
-
-    @Override
-    public String getLoginName() {
-        return mLoginNameEditText.getText().toString();
-    }
-
-    @Override
-    public String getPassword() {
-        return mPasswordEditText.getText().toString();
-    }
-
-    @Override
-    public void displayWarning(String warning) {
-        Toast.makeText(this, warning, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void done() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
     }
 
     // GoogleApiClient.OnConnectionFailedListener method

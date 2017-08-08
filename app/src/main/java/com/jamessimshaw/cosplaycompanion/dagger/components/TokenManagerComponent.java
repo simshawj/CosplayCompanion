@@ -2,7 +2,6 @@ package com.jamessimshaw.cosplaycompanion.dagger.components;
 
 import com.jamessimshaw.cosplaycompanion.dagger.modules.TokenManagerModule;
 import com.jamessimshaw.cosplaycompanion.datasources.interceptors.AuthenticationInterceptor;
-import com.jamessimshaw.cosplaycompanion.presenters.LoginPresenter;
 
 import javax.inject.Singleton;
 
