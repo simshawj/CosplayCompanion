@@ -60,8 +60,8 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
             mStartDate = calendar.getTime();
             mEndDate = calendar.getTime();
         } else {
-            mStartDate = mConventionYear.getStartDate();
-            mEndDate = mConventionYear.getEndDate();
+            mStartDate = new Date(mConventionYear.getStartDate());
+            mEndDate = new Date(mConventionYear.getEndDate());
             mView.displayLocation(mConventionYear.getLocation());
         }
 

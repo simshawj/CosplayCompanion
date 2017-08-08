@@ -18,8 +18,8 @@ public class ConventionYear implements Parcelable {
     @Exclude
     private String mName;
 
-    private Date mStart;
-    private Date mEnd;
+    private long mStart;
+    private long mEnd;
     private String mLocation;
     private String mDisplayName;
 
@@ -28,31 +28,39 @@ public class ConventionYear implements Parcelable {
     }
 
     public ConventionYear(Date start, Date end, String location, String displayName) {
-        mStart = start;
-        mEnd = end;
+        mStart = start.getTime();
+        mEnd = end.getTime();
         mLocation = location;
         mDisplayName = displayName;
     }
 
     public ConventionYear(Parcel in) {
-        mStart = new Date(in.readLong());
-        mEnd = new Date(in.readLong());
+        mStart = in.readLong();
+        mEnd = in.readLong();
         mLocation = in.readString();
     }
 
-    public Date getStartDate() {
+    public long getStartDate() {
         return mStart;
     }
 
     public void setStart(Date start) {
+        mStart = start.getTime();
+    }
+
+    public void setStart(long start) {
         mStart = start;
     }
 
-    public Date getEndDate() {
+    public long getEndDate() {
         return mEnd;
     }
 
     public void setEnd(Date end) {
+        mEnd = end.getTime();
+    }
+
+    public void setEnd(long end) {
         mEnd = end;
     }
 
@@ -80,7 +88,7 @@ public class ConventionYear implements Parcelable {
     @Exclude
     public int getYear() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(mStart);
+        calendar.setTime(new Date(mStart));
         return calendar.get(Calendar.YEAR);
     }
 
@@ -91,8 +99,8 @@ public class ConventionYear implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(mStart.getTime());
-        dest.writeLong(mEnd.getTime());
+        dest.writeLong(mStart);
+        dest.writeLong(mEnd);
         dest.writeString(mLocation);
     }
 
@@ -120,8 +128,8 @@ public class ConventionYear implements Parcelable {
 
         ConventionYear otherYear = (ConventionYear) o;
 
-        return mStart.equals(otherYear.mStart) &&
-                mEnd.equals(otherYear.mEnd) &&
+        return mStart == otherYear.mStart &&
+                mEnd == otherYear.mEnd &&
                 mLocation.equals(otherYear.mLocation);
     }
 
@@ -130,8 +138,8 @@ public class ConventionYear implements Parcelable {
     public int hashCode() {
         int result = 17;
 
-        result = 37 * result + mStart.hashCode();
-        result = 37 * result + mEnd.hashCode();
+//        result = 37 * result + mStart;
+//        result = 37 * result + mEnd;
         result = 37 * result + mLocation.hashCode();
 
         return result;

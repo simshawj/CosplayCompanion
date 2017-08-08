@@ -20,9 +20,6 @@ import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionYearsPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 /**
@@ -70,7 +67,6 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent()
                 .inject(this);
         mYearsPresenter.setView(this);
-        mYearsPresenter.setConvention(mConvention);
     }
 
     @Override
@@ -94,11 +90,9 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new ConYearRecViewAdapter(mConvention, new ArrayList<ConventionYear>(),
-                getActivity());
+        mAdapter = new ConYearRecViewAdapter(ConventionYear.class, R.layout.row_convention_year,
+                ConYearRecViewAdapter.ViewHolder.class, mYearsPresenter.getFirebaseReference(mConvention), getActivity());
         conventionDetailsRecyclerView.setAdapter(mAdapter);
-
-        mYearsPresenter.requestConventionYears();
 
         return view;
     }
@@ -137,11 +131,6 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
     }
 
     // ListConventionYearsView methods
-
-    @Override
-    public void addConventionYears(List<ConventionYear> conventionYears) {
-        mAdapter.addConventionYears(conventionYears);
-    }
 
     @Override
     public void displayWarning(String warning) {
