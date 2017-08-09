@@ -12,12 +12,6 @@ import java.util.Date;
  * Created by james on 9/25/15.
  */
 public class ConventionYear implements Parcelable {
-    @Exclude
-    private String mYear;
-
-    @Exclude
-    private String mName;
-
     private long mStart;
     private long mEnd;
     private String mLocation;
@@ -45,20 +39,12 @@ public class ConventionYear implements Parcelable {
         return mStart;
     }
 
-    public void setStartDate(Date start) {
-        mStart = start.getTime();
-    }
-
     public void setStartDate(long start) {
         mStart = start;
     }
 
     public long getEndDate() {
         return mEnd;
-    }
-
-    public void setEndDate(Date end) {
-        mEnd = end.getTime();
     }
 
     public void setEndDate(long end) {
