@@ -32,7 +32,7 @@ public class PhotoshootsModule {
 
     @Provides
     @Singleton
-    public ModifyPhotoshootPresenter provideModifyPresenter(Retrofit retrofit) {
-        return new ModifyPhotoshootPresenterImpl(retrofit);
+    public ModifyPhotoshootPresenter provideModifyPresenter() {
+        return new ModifyPhotoshootPresenterImpl();
     }
 }

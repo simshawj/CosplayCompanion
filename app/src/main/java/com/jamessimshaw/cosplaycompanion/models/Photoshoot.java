@@ -3,53 +3,33 @@ package com.jamessimshaw.cosplaycompanion.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Date;
 
 /**
  * Created by james on 9/25/15.
  */
 public class Photoshoot implements Parcelable {
-    @SerializedName("series")
     private String mSeries;
-    @SerializedName("start")
-    private Date mStart;
-    @SerializedName("location")
+    private long mStart;
     private String mLocation;
-    @SerializedName("description")
     private String mDescription;
-    @SerializedName("id")
-    private long mId;
-    @SerializedName("convention_year_id")
-    private long mConventionYearId;
 
-    public Photoshoot(long id, String series, Date start, String location, String description,
-                      long conventionYearId) {
-        mSeries = series;
-        mStart = start;
-        mLocation = location;
-        mDescription = description;
-        mId = id;
-        mConventionYearId = conventionYearId;
+    public Photoshoot() {
+        // Required default constructor
     }
 
-    public Photoshoot(String series, Date start, String location, String description,
-                      long conventionYearId) {
+    public Photoshoot(String series, Date start, String location, String description) {
         mSeries = series;
-        mStart = start;
+        mStart = start.getTime();
         mLocation = location;
         mDescription = description;
-        mConventionYearId = conventionYearId;
     }
 
     public Photoshoot(Parcel in) {
         mSeries = in.readString();
-        mStart = new Date(in.readLong());
+        mStart = in.readLong();
         mLocation = in.readString();
         mDescription = in.readString();
-        mId = in.readLong();
-        mConventionYearId = in.readLong();
     }
 
     public String getSeries() {
@@ -60,11 +40,11 @@ public class Photoshoot implements Parcelable {
         mSeries = series;
     }
 
-    public Date getStart() {
+    public long getStart() {
         return mStart;
     }
 
-    public void setStart(Date start) {
+    public void setStart(long start) {
         mStart = start;
     }
 
@@ -84,22 +64,6 @@ public class Photoshoot implements Parcelable {
         mDescription = description;
     }
 
-    public long getId() {
-        return mId;
-    }
-
-    public void setId(long id) {
-        mId = id;
-    }
-
-    public long getConventionYearId() {
-        return mConventionYearId;
-    }
-
-    public void setConventionYearId(long conventionYearId) {
-        mConventionYearId = conventionYearId;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -108,11 +72,9 @@ public class Photoshoot implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mSeries);
-        dest.writeLong(mStart.getTime());
+        dest.writeLong(mStart);
         dest.writeString(mLocation);
         dest.writeString(mDescription);
-        dest.writeLong(mId);
-        dest.writeLong(mConventionYearId);
     }
 
     public static final Parcelable.Creator<Photoshoot> CREATOR = new Creator<Photoshoot>() {
@@ -127,6 +89,7 @@ public class Photoshoot implements Parcelable {
         }
     };
 
+    // TODO: Verify
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -137,23 +100,18 @@ public class Photoshoot implements Parcelable {
         Photoshoot otherPhotoshoot = (Photoshoot) o;
 
         return mSeries.equals(otherPhotoshoot.mSeries) &&
-                mStart.equals(otherPhotoshoot.mStart) &&
                 mLocation.equals(otherPhotoshoot.mLocation) &&
-                mDescription.equals(otherPhotoshoot.mDescription) &&
-                (mConventionYearId == otherPhotoshoot.mConventionYearId) &&
-                (mId == otherPhotoshoot.mId);
+                mDescription.equals(otherPhotoshoot.mDescription);
     }
 
+    // TODO: Verify
     @Override
     public int hashCode() {
         int result = 17;
 
         result = 37 * result + mSeries.hashCode();
-        result = 37 * result + mStart.hashCode();
         result = 37 * result + mLocation.hashCode();
         result = 37 * result + mDescription.hashCode();
-        result = 37 * result + (int) (mConventionYearId ^ (mConventionYearId >>> 32));
-        result = 37 * result + (int) (mId ^ (mId >>> 32));
 
         return result;
     }

@@ -1,35 +1,31 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.inject.Inject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by james on 2/19/16.
  */
 public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter {
-    private Retrofit mRetrofit;
-
     private ModifyPhotoshootView mView;
     private Photoshoot mPhotoshoot;
     private ConventionYear mConventionYear;
     private Calendar mStart;
+    private DatabaseReference mDatabaseReference;
 
     @Inject
-    public ModifyPhotoshootPresenterImpl(Retrofit retrofit) {
-        mRetrofit = retrofit;
+    public ModifyPhotoshootPresenterImpl() {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("photoshoots");
     }
 
     // ModifyPhotoshootPresenter methods
@@ -58,7 +54,7 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
     public void requestInitialData() {
         mStart = Calendar.getInstance();
         if(mPhotoshoot != null) {
-            mStart.setTime(mPhotoshoot.getStart());
+            mStart.setTime(new Date(mPhotoshoot.getStart()));
             mView.displayLocation(mPhotoshoot.getLocation());
             mView.displaySeries(mPhotoshoot.getSeries());
             mView.displayDescription(mPhotoshoot.getDescription());
@@ -73,21 +69,21 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
 
     @Override
     public void submit() {
-        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
         String series = mView.getSeries();
         String location = mView.getLocation();
         String description = mView.getDescription();
         if (mPhotoshoot == null) {
-//            Photoshoot photoshoot = new Photoshoot(series,
-//                    mStart.getTime(), location, description, mConventionYear.getId());
-//            internalAPI.createPhotoShoot(mConventionYear.getId(), photoshoot).enqueue(mCallback);
+            mPhotoshoot = new Photoshoot(series, mStart.getTime(), location, description);
         } else {
             mPhotoshoot.setDescription(description);
             mPhotoshoot.setLocation(location);
             mPhotoshoot.setSeries(series);
-            mPhotoshoot.setStart(mStart.getTime());
-            internalAPI.updatePhotoShoot(mPhotoshoot.getId(), mPhotoshoot).enqueue(mCallback);
+            mPhotoshoot.setStart(mStart.getTimeInMillis());
         }
+        String conYearDisplayName = mConventionYear.getDisplayName();
+        mDatabaseReference.child(conYearDisplayName.substring(0, conYearDisplayName.length()-4))
+                .child(conYearDisplayName.substring(conYearDisplayName.length()-4))
+                .child(mPhotoshoot.getSeries() + " " + mPhotoshoot.getStart()).setValue(mPhotoshoot);
     }
 
     @Override
@@ -104,22 +100,4 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
         mView.updateTime(timeFormat.format(mStart.getTime()));
     }
-
-    // Callbacks
-
-    private Callback<Photoshoot> mCallback = new Callback<Photoshoot>() {
-        @Override
-        public void onResponse(Call<Photoshoot> call, Response<Photoshoot> response) {
-            if (response.code() == 200 || response.code() == 201)
-                mView.done();
-            else {
-                mView.displayWarning("Failed to modify photo shoot.");
-            }
-        }
-
-        @Override
-        public void onFailure(Call<Photoshoot> call, Throwable t) {
-            mView.displayWarning("Failed to modify photo shoot, please check your connection and try again.");
-        }
-    };
 }
