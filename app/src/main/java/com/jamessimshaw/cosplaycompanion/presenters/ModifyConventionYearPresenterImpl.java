@@ -96,8 +96,8 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
         if (mConventionYear == null) {
             mConventionYear = new ConventionYear(mStartDate, mEndDate, location, displayName);
         } else {
-            mConventionYear.setStart(mStartDate);
-            mConventionYear.setEnd(mEndDate);
+            mConventionYear.setStartDate(mStartDate.getTime());
+            mConventionYear.setEndDate(mEndDate.getTime());
             mConventionYear.setLocation(location);
             mConventionYear.setDisplayName(displayName);
         }

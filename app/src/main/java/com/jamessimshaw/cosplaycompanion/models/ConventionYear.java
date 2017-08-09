@@ -44,11 +44,11 @@ public class ConventionYear implements Parcelable {
         return mStart;
     }
 
-    public void setStart(Date start) {
+    public void setStartDate(Date start) {
         mStart = start.getTime();
     }
 
-    public void setStart(long start) {
+    public void setStartDate(long start) {
         mStart = start;
     }
 
@@ -56,11 +56,11 @@ public class ConventionYear implements Parcelable {
         return mEnd;
     }
 
-    public void setEnd(Date end) {
+    public void setEndDate(Date end) {
         mEnd = end.getTime();
     }
 
-    public void setEnd(long end) {
+    public void setEndDate(long end) {
         mEnd = end;
     }
 
