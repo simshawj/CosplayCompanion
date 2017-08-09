@@ -38,6 +38,7 @@ public class ConventionYear implements Parcelable {
         mStart = in.readLong();
         mEnd = in.readLong();
         mLocation = in.readString();
+        mDisplayName = in.readString();
     }
 
     public long getStartDate() {
@@ -102,6 +103,7 @@ public class ConventionYear implements Parcelable {
         dest.writeLong(mStart);
         dest.writeLong(mEnd);
         dest.writeString(mLocation);
+        dest.writeString(mDisplayName);
     }
 
     public static final Parcelable.Creator<ConventionYear> CREATOR
