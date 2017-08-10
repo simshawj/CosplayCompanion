@@ -29,9 +29,6 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    @BindView(R.id.login_edit_username) EditText mLoginNameEditText;
-    @BindView(R.id.login_edit_password) EditText mPasswordEditText;
-
     public static int SIGN_IN_REQUEST_CODE = 2134;
 
     private GoogleApiClient mGoogleApiClient;

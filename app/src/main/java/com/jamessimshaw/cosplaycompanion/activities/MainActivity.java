@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,7 @@ import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -59,10 +61,14 @@ public class MainActivity extends AppCompatActivity
 
         TextView usernameTextView = (TextView) headerView.findViewById(R.id.username);
         TextView emailTextView = (TextView) headerView.findViewById(R.id.email);
+        ImageView avatar = (ImageView) headerView.findViewById(R.id.imageView);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         usernameTextView.setText(user.getDisplayName());
         emailTextView.setText(user.getEmail());
+        Picasso.with(this)
+                .load(user.getPhotoUrl()).fit().centerInside()
+                .into(avatar);
 
         if (savedInstanceState != null)
             return;
