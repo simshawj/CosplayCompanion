@@ -2,7 +2,6 @@ package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -57,8 +56,8 @@ public class ConYearRecViewAdapter extends FirebaseRecyclerAdapter<ConventionYea
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Nullable @BindView(R.id.convention_year) TextView mConventionYearYear;
-        @Nullable @BindView(R.id.convention_dates) TextView mConventionYearDates;
+        @BindView(R.id.convention_year) TextView mConventionYearYear;
+        @BindView(R.id.convention_dates) TextView mConventionYearDates;
 
         public ViewHolder(View itemView) {
             super(itemView);

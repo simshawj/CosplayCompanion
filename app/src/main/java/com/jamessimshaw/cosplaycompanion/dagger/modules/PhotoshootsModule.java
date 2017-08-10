@@ -9,7 +9,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.Retrofit;
 
 /**
  * Module providing the ListPhotoshootPresenter.
@@ -26,8 +25,8 @@ public class PhotoshootsModule {
 
     @Provides
     @Singleton
-    public ListPhotoshootsPresenter providePresenter(Retrofit retrofit) {
-        return new ListPhotoshootsPresenterImpl(retrofit);
+    public ListPhotoshootsPresenter providePresenter() {
+        return new ListPhotoshootsPresenterImpl();
     }
 
     @Provides

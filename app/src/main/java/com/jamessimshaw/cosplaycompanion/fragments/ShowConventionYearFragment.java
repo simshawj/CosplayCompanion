@@ -20,9 +20,6 @@ import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 /**
@@ -69,7 +66,6 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
         ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
                 .inject(this);
         mPresenter.setView(this);
-        mPresenter.setConventionYear(mConventionYear);
     }
 
     @Override
@@ -93,10 +89,8 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new PhotoshootRecViewAdapter(mConventionYear, new ArrayList<Photoshoot>(), getActivity());
+        mAdapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getFirebaseReference(mConventionYear), getActivity());
         conventionYearDetailsRecyclerView.setAdapter(mAdapter);
-
-        mPresenter.requestPhotoshoots();
 
         return view;
     }
@@ -136,11 +130,6 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
     }
 
     // ListPhotoshootsView Methods
-
-    @Override
-    public void addConventionYears(List<Photoshoot> photoshoots) {
-        mAdapter.addConventionYears(photoshoots);
-    }
 
     @Override
     public void displayWarning(String warning) {

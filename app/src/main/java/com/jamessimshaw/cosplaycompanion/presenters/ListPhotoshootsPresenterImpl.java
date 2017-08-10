@@ -1,50 +1,20 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
-
-import retrofit2.Retrofit;
 
 /**
  * Created by james on 7/23/16.
  */
 public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
 
-
-    private Retrofit mRetrofit;
-
     private ListPhotoshootsView mView;
-    private ConventionYear mConventionYear;
+    private DatabaseReference mDatabaseReference;
 
-    public ListPhotoshootsPresenterImpl(Retrofit retrofit) {
-        mRetrofit = retrofit;
-    }
-
-    @Override
-    public void requestPhotoshoots() {
-        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-//        internalAPI.getPhotoShoots(mConventionYear.getId()).enqueue(new Callback<List<Photoshoot>>() {
-//            @Override
-//            public void onResponse(Call<List<Photoshoot>> call, Response<List<Photoshoot>> response) {
-//                mView.addConventionYears(response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Photoshoot>> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-    }
-
-    @Override
-    public void requestNewPhotoshoots() {
-
-    }
-
-    @Override
-    public void setConventionYear(ConventionYear conventionYear) {
-        mConventionYear = conventionYear;
+    public ListPhotoshootsPresenterImpl() {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("photoshoots");
     }
 
     @Override
@@ -55,5 +25,12 @@ public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
     @Override
     public void detachView() {
         mView = null;
+    }
+
+    @Override
+    public DatabaseReference getFirebaseReference(ConventionYear conventionYear) {
+        String displayname = conventionYear.getDisplayName();
+        return mDatabaseReference.child(displayname.substring(0, displayname.length() - 5))
+                .child(displayname.substring(displayname.length() - 4, displayname.length()));
     }
 }
