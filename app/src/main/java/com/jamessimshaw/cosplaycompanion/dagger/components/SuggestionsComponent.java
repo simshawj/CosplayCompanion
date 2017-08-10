@@ -1,6 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
-import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.SuggestionModule;
 import com.jamessimshaw.cosplaycompanion.fragments.CreateSuggestionFragment;
 
@@ -15,7 +14,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {SuggestionModule.class, CosplayCompanionAPIModule.class})
+@Component(modules = {SuggestionModule.class})
 public interface SuggestionsComponent {
     void inject(CreateSuggestionFragment fragment);
 }

@@ -1,7 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
 import com.jamessimshaw.cosplaycompanion.dagger.modules.ConventionsModule;
-import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionFragment;
 
@@ -15,7 +14,7 @@ import dagger.Component;
  * @author James Simshaw
  */
 @Singleton
-@Component(modules = {ConventionsModule.class, CosplayCompanionAPIModule.class})
+@Component(modules = {ConventionsModule.class})
 public interface ConventionsComponent {
     void inject(ListConventionsFragment fragment);
     void inject(ModifyConventionFragment fragment);

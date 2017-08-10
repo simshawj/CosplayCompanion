@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.jamessimshaw.cosplaycompanion.R;
-import com.jamessimshaw.cosplaycompanion.datasources.UserManager;
 import com.jamessimshaw.cosplaycompanion.fragments.CreateSuggestionFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ListConventionsFragment;
 import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionFragment;
@@ -29,8 +29,6 @@ import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
-import javax.inject.Inject;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListConventionsFragment.OnFragmentInteractionListener,
@@ -41,13 +39,9 @@ public class MainActivity extends AppCompatActivity
         ModifyPhotoshootFragment.OnFragmentInteractionListener,
         CreateSuggestionFragment.OnFragmentInteractionListener, SignedOut {
 
-    @Inject UserManager mUserManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((CosplayCompanionApplication)getApplication()).getUserManagerComponent().inject(this);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,8 +60,10 @@ public class MainActivity extends AppCompatActivity
 
         TextView usernameTextView = (TextView) headerView.findViewById(R.id.username);
         TextView emailTextView = (TextView) headerView.findViewById(R.id.email);
-        usernameTextView.setText(mUserManager.retrieveUser().getUsername());
-        emailTextView.setText(mUserManager.retrieveUser().getEmail());
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        usernameTextView.setText(user.getDisplayName());
+        emailTextView.setText(user.getEmail());
 
         if (savedInstanceState != null)
             return;
@@ -88,7 +84,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                mUserManager.sign_out(this);
+                finish();
             } else {
                 super.onBackPressed();
             }
@@ -109,7 +105,8 @@ public class MainActivity extends AppCompatActivity
                 gotoFragment(fragment);
                 break;
             case R.id.nav_logout:
-                mUserManager.sign_out(this);
+                FirebaseAuth.getInstance().signOut();
+                finish();
                 break;
         }
 

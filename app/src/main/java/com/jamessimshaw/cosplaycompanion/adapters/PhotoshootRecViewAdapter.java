@@ -22,11 +22,9 @@ import butterknife.ButterKnife;
  * Created by james on 10/16/15.
  */
 public class PhotoshootRecViewAdapter extends FirebaseRecyclerAdapter<Photoshoot, PhotoshootRecViewAdapter.ViewHolder> {
-
-
     private Activity mActivity;
 
-    public PhotoshootRecViewAdapter(Class<Photoshoot> modelClass, @LayoutRes int modelLayout, Class<PhotoshootRecViewAdapter.ViewHolder> viewHolderClass, DatabaseReference reference, Activity activity) {
+    public PhotoshootRecViewAdapter(Class<Photoshoot> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, DatabaseReference reference, Activity activity) {
         super(modelClass, modelLayout, viewHolderClass, reference);
         mActivity = activity;
     }
@@ -49,14 +47,14 @@ public class PhotoshootRecViewAdapter extends FirebaseRecyclerAdapter<Photoshoot
         });
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.seriesTextView) TextView mPhotoshootSeries;
         @BindView(R.id.dateTextView) TextView mPhotoshootDate;
         @BindView(R.id.locationTextView) TextView mPhotoshootLocation;
         @BindView(R.id.descriptionTextView) TextView mPhotoshootDescription;
 
-        public ViewHolder(View itemView, int viewType) {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
