@@ -1,6 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         ModifyConventionYearFragment.OnFragmentInteractionListener,
         ShowConventionYearFragment.OnFragmentInteractionListener,
         ModifyPhotoshootFragment.OnFragmentInteractionListener,
-        CreateSuggestionFragment.OnFragmentInteractionListener, SignedOut {
+        CreateSuggestionFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,13 +182,5 @@ public class MainActivity extends AppCompatActivity
 
         if (fragment != null)
             gotoFragment(fragment);
-    }
-
-    @Override
-    public void signedOut() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 }
