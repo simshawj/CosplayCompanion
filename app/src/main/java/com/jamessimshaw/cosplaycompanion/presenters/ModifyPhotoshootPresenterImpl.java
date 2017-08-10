@@ -82,7 +82,7 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
         }
         String conYearDisplayName = mConventionYear.getDisplayName();
         mDatabaseReference.child(conYearDisplayName.substring(0, conYearDisplayName.length()-4))
-                .child(conYearDisplayName.substring(conYearDisplayName.length()-4))
+                .child(conYearDisplayName.substring(conYearDisplayName.length() - 5))
                 .child(mPhotoshoot.getSeries() + " " + mPhotoshoot.getStart()).setValue(mPhotoshoot);
     }
 
