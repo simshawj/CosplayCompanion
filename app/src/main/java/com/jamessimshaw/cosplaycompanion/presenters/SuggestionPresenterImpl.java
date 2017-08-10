@@ -28,6 +28,7 @@ public class SuggestionPresenterImpl implements SuggestionPresenter {
         Suggestion suggestion = new Suggestion(mView.getText());
 
         mDatabaseReference.push().setValue(suggestion);
+        mView.done();
     }
 
     @Override
