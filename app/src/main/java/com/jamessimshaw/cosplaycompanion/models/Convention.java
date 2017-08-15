@@ -3,24 +3,24 @@ package com.jamessimshaw.cosplaycompanion.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.database.Exclude;
+import java.util.Map;
 
 /**
  * Created by james on 9/25/15.
  */
 public class Convention implements Parcelable {
-    @Exclude
+
     private String mName;
-
     private String mDescription;
-
     private String mLogoUriString;
+    private String mSubmitted;
+    private Map<String, Boolean> mEvents;
 
     public Convention() {
         // Required empty constructor
     }
 
-    public Convention(String name, String description, String logoUriString) {
+    public Convention(String name, String description, String logoUriString, String submitted) {
         mName = name;
         mDescription = description;
         mLogoUriString = logoUriString;
@@ -56,11 +56,32 @@ public class Convention implements Parcelable {
         mName = name;
     }
 
+    public String getSubmitted() {
+        return mSubmitted;
+    }
+
+    public void setSubmitted(String submitted) {
+        mSubmitted = submitted;
+    }
+
+    public Map<String, Boolean> getEvents() {
+        return mEvents;
+    }
+
+    public void setEvents(Map<String, Boolean> events) {
+        mEvents = events;
+    }
+
+    public void addEvent(String eventId) {
+        mEvents.put(eventId, true);
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
+    // TODO: Verify this
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);

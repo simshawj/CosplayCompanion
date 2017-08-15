@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -98,7 +100,8 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             logoUriString = null;
         }
         if (mConvention == null) {
-            mConvention = new Convention(name, description, logoUriString);
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            mConvention = new Convention(name, description, logoUriString, user.getUid());
 
         } else {
             //TODO: Currently cannot change names as that is the key used.
