@@ -3,6 +3,7 @@ package com.jamessimshaw.cosplaycompanion.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,6 +25,8 @@ public class Convention implements Parcelable {
         mName = name;
         mDescription = description;
         mLogoUriString = logoUriString;
+        mSubmitted = submitted;
+        mEvents = new HashMap<>();
     }
 
     public Convention (Parcel in) {
@@ -60,16 +63,8 @@ public class Convention implements Parcelable {
         return mSubmitted;
     }
 
-    public void setSubmitted(String submitted) {
-        mSubmitted = submitted;
-    }
-
     public Map<String, Boolean> getEvents() {
         return mEvents;
-    }
-
-    public void setEvents(Map<String, Boolean> events) {
-        mEvents = events;
     }
 
     public void addEvent(String eventId) {

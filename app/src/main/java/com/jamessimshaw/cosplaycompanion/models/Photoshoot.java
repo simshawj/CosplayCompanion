@@ -13,16 +13,20 @@ public class Photoshoot implements Parcelable {
     private long mStart;
     private String mLocation;
     private String mDescription;
+    private String mEventId;
+    private String mSubmitted;
 
     public Photoshoot() {
         // Required default constructor
     }
 
-    public Photoshoot(String series, Date start, String location, String description) {
+    public Photoshoot(String series, Date start, String location, String description, String eventId, String user) {
         mSeries = series;
         mStart = start.getTime();
         mLocation = location;
         mDescription = description;
+        mEventId = eventId;
+        mSubmitted = user;
     }
 
     public Photoshoot(Parcel in) {

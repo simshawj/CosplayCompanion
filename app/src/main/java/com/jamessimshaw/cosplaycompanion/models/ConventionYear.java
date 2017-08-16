@@ -7,6 +7,8 @@ import com.google.firebase.database.Exclude;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by james on 9/25/15.
@@ -16,16 +18,22 @@ public class ConventionYear implements Parcelable {
     private long mEnd;
     private String mLocation;
     private String mDisplayName;
+    private String mConventionId;
+    private String mSubmitted;
+    private Map<String, Boolean> mPhotoshoots;
 
     public ConventionYear() {
         // Required Default Constructor
     }
 
-    public ConventionYear(Date start, Date end, String location, String displayName) {
+    public ConventionYear(Date start, Date end, String location, String displayName, String conventionId, String user) {
         mStart = start.getTime();
         mEnd = end.getTime();
         mLocation = location;
         mDisplayName = displayName;
+        mConventionId = conventionId;
+        mSubmitted = user;
+        mPhotoshoots = new HashMap<>();
     }
 
     public ConventionYear(Parcel in) {
@@ -70,6 +78,22 @@ public class ConventionYear implements Parcelable {
     @Exclude
     public String getYearAsString() {
         return Integer.toString(getYear());
+    }
+
+    public String getConventionId() {
+        return mConventionId;
+    }
+
+    public String getSubmitted() {
+        return mSubmitted;
+    }
+
+    public Map<String, Boolean> getPhotoshoots() {
+        return mPhotoshoots;
+    }
+
+    public void addPhotoshoot(String id) {
+        mPhotoshoots.put(id, true);
     }
 
     @Exclude
