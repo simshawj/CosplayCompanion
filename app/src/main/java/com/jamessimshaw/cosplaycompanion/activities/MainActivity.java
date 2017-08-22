@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity
                     fragment = ModifyPhotoshootFragment.newInstance((ConventionYear) item);
                 break;
             case "edit convention":
-                if (item instanceof Convention)
-                    fragment = ModifyConventionFragment.newInstance((Convention) item);
+                if (item instanceof String)
+                    fragment = ModifyConventionFragment.newInstance((String) item);
                 break;
             case "edit conventionYear":
                 if (item instanceof ConventionYear)

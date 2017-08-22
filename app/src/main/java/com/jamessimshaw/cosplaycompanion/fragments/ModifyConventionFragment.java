@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
@@ -55,10 +57,10 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
         return fragment;
     }
 
-    public static ModifyConventionFragment newInstance(Convention convention) {
+    public static ModifyConventionFragment newInstance(String conventionRef) {
         ModifyConventionFragment fragment = new ModifyConventionFragment();
         Bundle params = new Bundle();
-        params.putParcelable("convention", convention);
+        params.putString("convention", conventionRef);
         fragment.setArguments(params);
         return fragment;
     }
@@ -71,14 +73,16 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Convention convention = null;
+        DatabaseReference convention = null;
 
-        if (getArguments() != null)
-            convention = getArguments().getParcelable("convention");
+        if (getArguments() != null) {
+            String reference = getArguments().getString("convention");
+            convention = FirebaseDatabase.getInstance().getReferenceFromUrl(reference);
+        }
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent().inject(this);
 
-        mPresenter.setConvention(null);
+        mPresenter.setConvention(convention);
         mPresenter.setView(this);
     }
 
