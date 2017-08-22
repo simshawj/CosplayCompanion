@@ -32,7 +32,6 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ListConventionsFragment.OnFragmentInteractionListener,
         ModifyConventionFragment.OnFragmentInteractionListener,
         ShowConventionFragment.OnFragmentInteractionListener,
         ModifyConventionYearFragment.OnFragmentInteractionListener,
@@ -99,9 +98,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.nav_conventions:
                 clearBackStack();
                 break;
@@ -159,9 +156,6 @@ public class MainActivity extends AppCompatActivity
             case "show conventionYear":
                 if (item instanceof ConventionYear)
                     fragment = ShowConventionYearFragment.newInstance((ConventionYear) item);
-                break;
-            case "create convention":
-                fragment = ModifyConventionFragment.newInstance();
                 break;
             case "create conventionYear":
                 if (item instanceof Convention)

@@ -1,6 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,8 +18,6 @@ import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 /**
@@ -33,8 +30,6 @@ import javax.inject.Inject;
  */
 public class ListConventionsFragment extends Fragment implements ListConventionsView {
 
-
-    private OnFragmentInteractionListener mListener;
     @Inject ListConventionsPresenter mPresenter;
     private ConventionRecViewAdapter mAdapter;
 
@@ -56,8 +51,7 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CosplayCompanionApplication)(getActivity().getApplication())).getConventionsComponent()
-                .inject(this);
+        ((CosplayCompanionApplication)(getActivity().getApplication())).getConventionsComponent().inject(this);
         mPresenter.setView(this);
     }
 
@@ -70,8 +64,11 @@ public class ListConventionsFragment extends Fragment implements ListConventions
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mListener != null)
-                    mListener.onFragmentInteraction("create convention", null);
+                ModifyConventionFragment fragment = ModifyConventionFragment.newInstance();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container_main, fragment)
+                        .addToBackStack(null)
+                        .commit();;
             }
         });
 
@@ -88,26 +85,14 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (OnFragmentInteractionListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         mPresenter.detachView();
         mPresenter = null;
     }
 
     @Override
-    public void displayWarning(String warning) {
+    public void displayMessage(String warning) {
         Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
     }
 
@@ -128,13 +113,6 @@ public class ListConventionsFragment extends Fragment implements ListConventions
      */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(String event, Object item);
-    }
-
-    // ListConventionsView methods
-
-    @Override
-    public void addConventions(List<Convention> conventions) {
-        //mAdapter.addNewConventions(conventions);
     }
 
 }

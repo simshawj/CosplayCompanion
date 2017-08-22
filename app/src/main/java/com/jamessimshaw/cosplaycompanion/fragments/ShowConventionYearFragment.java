@@ -132,7 +132,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
     // ListPhotoshootsView Methods
 
     @Override
-    public void displayWarning(String warning) {
+    public void displayMessage(String warning) {
         Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
     }
 

@@ -33,4 +33,5 @@ ext {
     junitVersion = "4.12"
     firebaseVersion = "11.0.4"
     firebaseUiVersion = "2.2.0"
+    conductorVersion = "2.1.4"
 }

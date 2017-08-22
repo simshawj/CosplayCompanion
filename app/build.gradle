@@ -50,6 +50,9 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
+    // Conductor
+    compile "com.bluelinelabs:conductor:$conductorVersion"
+
     // Dependency Injection
     // ButterKnife
     compile "com.jakewharton:butterknife:$butterKnifeVersion"

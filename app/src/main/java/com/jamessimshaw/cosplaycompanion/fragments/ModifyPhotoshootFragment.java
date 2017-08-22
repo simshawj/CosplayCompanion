@@ -194,7 +194,7 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
     // ModifyPhotoshootView methods
 
     @Override
-    public void displayWarning(String warning) {
+    public void displayMessage(String warning) {
         Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
     }
 

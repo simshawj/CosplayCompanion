@@ -76,10 +76,9 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
         if (getArguments() != null)
             convention = getArguments().getParcelable("convention");
 
-        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent()
-                .inject(this);
+        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent().inject(this);
 
-        mPresenter.setConvention(convention);
+        mPresenter.setConvention(null);
         mPresenter.setView(this);
     }
 
@@ -197,7 +196,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     }
 
     @Override
-    public void displayWarning(String warning) {
+    public void displayMessage(String warning) {
         Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
     }
 

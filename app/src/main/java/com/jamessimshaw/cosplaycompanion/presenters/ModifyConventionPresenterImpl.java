@@ -7,8 +7,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -27,12 +30,15 @@ import javax.inject.Inject;
 public class ModifyConventionPresenterImpl implements ModifyConventionPresenter {
     private Convention mConvention;
     private ModifyConventionView mView;
-    private DatabaseReference mDatabaseReference;
+    private DatabaseReference mConventionsRef;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mConventionRef;
     private StorageReference mStorageReference;
 
     @Inject
     public ModifyConventionPresenterImpl() {
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("conventions");
+        mConventionsRef = FirebaseDatabase.getInstance().getReference("conventions");
+        mUsersRef = FirebaseDatabase.getInstance().getReference("users");
         mStorageReference = FirebaseStorage.getInstance().getReference("logos");
     }
 
@@ -50,16 +56,31 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
 
     @Override
     public void requestInitialData() {
-        if (mConvention != null) {
-            mView.displayName(mConvention.getName());
-            mView.displayDescription(mConvention.getDescription());
-            mView.displayLogo(mConvention.getLogoUriString());
+        if (mConventionRef != null) {
+            mConventionRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(mView != null) {
+                        mConvention = dataSnapshot.getValue(Convention.class);
+                        mView.displayName(mConvention.getName());
+                        mView.displayDescription(mConvention.getDescription());
+                        mView.displayLogo(mConvention.getLogoUriString());
+                        mView.displayMessage("All fields populated with current data");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
     }
 
     @Override
-    public void setConvention(Convention convention) {
-        mConvention = convention;
+    public void setConvention(DatabaseReference convention) {
+        mConventionRef = convention;
     }
 
     @Override
@@ -75,7 +96,7 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    mView.displayWarning("Failed to upload image");
+                    mView.displayMessage("Failed to upload image");
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -89,7 +110,9 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
     private void storeConvention(String name, String description, Uri logo) {
         String logoUriString;
         if (name == null || name.equals("")) {
-            mView.displayWarning("Name must be set");
+            if (mView != null) {
+                mView.displayMessage("Name must be set");
+            }
             return;
         }
         if (logo != null) {
@@ -102,14 +125,14 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
         if (mConvention == null) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             mConvention = new Convention(name, description, logoUriString, user.getUid());
-
+            mConventionRef = mConventionsRef.push();
+            mUsersRef.child(user.getUid()).child("conventions").child(mConventionRef.getKey()).setValue(true);
         } else {
-            //TODO: Currently cannot change names as that is the key used.
             mConvention.setDescription(description);
             mConvention.setLogoUriString(logoUriString);
-            //mConvention.setName(name);
+            mConvention.setName(name);
         }
-        mDatabaseReference.child(mConvention.getName()).setValue(mConvention);
+        mConventionRef.setValue(mConvention);
         mView.done();
     }
 }

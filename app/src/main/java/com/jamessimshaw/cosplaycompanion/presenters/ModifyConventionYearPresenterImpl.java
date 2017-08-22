@@ -86,7 +86,7 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
         String location = mView.getLocation();
 
         if (mStartDate.after(mEndDate)) {
-            mView.displayWarning("End date must be after the start date");
+            mView.displayMessage("End date must be after the start date");
             return;
         }
 
@@ -94,7 +94,7 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
         String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
 
         if (mConventionYear == null) {
-            mConventionYear = new ConventionYear(mStartDate, mEndDate, location, displayName);
+            //mConventionYear = new ConventionYear(mStartDate, mEndDate, location, displayName);
         } else {
             mConventionYear.setStartDate(mStartDate.getTime());
             mConventionYear.setEndDate(mEndDate.getTime());

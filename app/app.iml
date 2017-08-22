@@ -134,6 +134,7 @@
     <orderEntry type="library" exported="" name="firebase-storage-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-storage-common-11.0.4" level="project" />
+    <orderEntry type="library" exported="" name="conductor-2.1.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-11.0.4" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="robolectric-3.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-common-11.0.4" level="project" />
