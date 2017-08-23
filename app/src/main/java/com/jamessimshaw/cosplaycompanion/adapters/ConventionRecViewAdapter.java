@@ -29,7 +29,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder viewHolder, final Convention convention, int position) {
+    protected void populateViewHolder(ViewHolder viewHolder, final Convention convention, final int position) {
         viewHolder.conventionNameTextView.setText(convention.getName());
         // TODO: Create a error and placeholder images
         Picasso.with(mActivity)
@@ -39,15 +39,19 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mActivity instanceof MainActivity)
-                    ((MainActivity) mActivity).onFragmentInteraction("show convention", convention);
+                if (mActivity instanceof MainActivity) {
+                    DatabaseReference reference = getRef(position);
+                    ((MainActivity) mActivity).onFragmentInteraction("show convention", reference);
+                }
             }
         });
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mActivity instanceof  MainActivity)
-                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", convention);
+                if (mActivity instanceof  MainActivity) {
+                    DatabaseReference reference = getRef(position);
+                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", reference);
+                }
                 return true;
             }
         });

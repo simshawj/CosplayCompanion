@@ -20,14 +20,6 @@ import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import javax.inject.Inject;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ListConventionsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ListConventionsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ListConventionsFragment extends Fragment implements ListConventionsView {
 
     @Inject ListConventionsPresenter mPresenter;
@@ -40,8 +32,7 @@ public class ListConventionsFragment extends Fragment implements ListConventions
      * @return A new instance of fragment ListConventionsFragment.
      */
     public static ListConventionsFragment newInstance() {
-        ListConventionsFragment fragment = new ListConventionsFragment();
-        return fragment;
+        return new ListConventionsFragment();
     }
 
     public ListConventionsFragment() {
@@ -100,19 +91,4 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     public void done() {
         // Nothing until a further version
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String event, Object item);
-    }
-
 }

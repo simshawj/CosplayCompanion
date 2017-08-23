@@ -33,7 +33,6 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ModifyConventionFragment.OnFragmentInteractionListener,
-        ShowConventionFragment.OnFragmentInteractionListener,
         ModifyConventionYearFragment.OnFragmentInteractionListener,
         ShowConventionYearFragment.OnFragmentInteractionListener,
         ModifyPhotoshootFragment.OnFragmentInteractionListener,
@@ -150,8 +149,8 @@ public class MainActivity extends AppCompatActivity
 
         switch(event) {
             case "show convention":
-                if (item instanceof Convention)
-                    fragment = ShowConventionFragment.newInstance((Convention) item);
+                if (item instanceof String)
+                    fragment = ShowConventionFragment.newInstance((String) item);
                 break;
             case "show conventionYear":
                 if (item instanceof ConventionYear)
