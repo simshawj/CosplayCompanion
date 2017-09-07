@@ -1,7 +1,12 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
@@ -17,15 +22,18 @@ import javax.inject.Inject;
  * Created by james on 2/19/16.
  */
 public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter {
+    private DatabaseReference mUsersRef;
     private ModifyPhotoshootView mView;
     private Photoshoot mPhotoshoot;
-    private ConventionYear mConventionYear;
+    private DatabaseReference mPhotoshootRef;
+    private DatabaseReference mConventionYearRef;
     private Calendar mStart;
     private DatabaseReference mDatabaseReference;
 
     @Inject
     public ModifyPhotoshootPresenterImpl() {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("photoshoots");
+        mUsersRef = FirebaseDatabase.getInstance().getReference("users");
     }
 
     // ModifyPhotoshootPresenter methods
@@ -36,13 +44,13 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
     }
 
     @Override
-    public void setConventionYear(ConventionYear conventionYear) {
-        mConventionYear = conventionYear;
+    public void setConventionYear(DatabaseReference conventionYearRef) {
+        mConventionYearRef = conventionYearRef;
     }
 
     @Override
-    public void setPhotoshoot(Photoshoot photoshoot) {
-        mPhotoshoot = photoshoot;
+    public void setPhotoshoot(DatabaseReference photoshootRef) {
+        mPhotoshootRef = photoshootRef;
     }
 
     @Override
@@ -53,18 +61,40 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
     @Override
     public void requestInitialData() {
         mStart = Calendar.getInstance();
-        if(mPhotoshoot != null) {
-            mStart.setTime(new Date(mPhotoshoot.getStart()));
-            mView.displayLocation(mPhotoshoot.getLocation());
-            mView.displaySeries(mPhotoshoot.getSeries());
-            mView.displayDescription(mPhotoshoot.getDescription());
+
+        if (mPhotoshootRef != null) {
+            mPhotoshootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mPhotoshoot = dataSnapshot.getValue(Photoshoot.class);
+                    if (mView != null) {
+                        mStart.setTime(new Date(mPhotoshoot.getStart()));
+                        mView.displayLocation(mPhotoshoot.getLocation());
+                        mView.displaySeries(mPhotoshoot.getSeries());
+                        mView.displayDescription(mPhotoshoot.getDescription());
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM dd", Locale.getDefault());
+                        mView.updateDate(dateFormat.format(mStart.getTime()));
+
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+                        mView.updateTime(timeFormat.format(mStart.getTime()));
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM dd", Locale.getDefault());
-        mView.updateDate(dateFormat.format(mStart.getTime()));
+        if (mView != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM dd", Locale.getDefault());
+            mView.updateDate(dateFormat.format(mStart.getTime()));
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
-        mView.updateTime(timeFormat.format(mStart.getTime()));
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+            mView.updateTime(timeFormat.format(mStart.getTime()));
+        }
     }
 
     @Override
@@ -72,18 +102,26 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
         String series = mView.getSeries();
         String location = mView.getLocation();
         String description = mView.getDescription();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (mPhotoshootRef == null) {
+            mPhotoshootRef = mDatabaseReference.push();
+            mUsersRef.child(user.getUid()).child("photoshoots").child(mPhotoshootRef.getKey()).setValue(true);
+            mConventionYearRef.child("photoshoots").child(mPhotoshootRef.getKey()).setValue(true);
+        } else {
+            // TODO: Verify we can edit
+        }
+
         if (mPhotoshoot == null) {
-            //mPhotoshoot = new Photoshoot(series, mStart.getTime(), location, description);
+            mPhotoshoot = new Photoshoot(series, mStart.getTime(), location, description, mConventionYearRef.getKey(), user.getUid());
         } else {
             mPhotoshoot.setDescription(description);
             mPhotoshoot.setLocation(location);
             mPhotoshoot.setSeries(series);
             mPhotoshoot.setStart(mStart.getTimeInMillis());
         }
-        String conYearDisplayName = mConventionYear.getDisplayName();
-        mDatabaseReference.child(conYearDisplayName.substring(0, conYearDisplayName.length() - 5))
-                .child(conYearDisplayName.substring(conYearDisplayName.length() - 4))
-                .child(mPhotoshoot.getSeries() + " " + mPhotoshoot.getStart()).setValue(mPhotoshoot);
+        mPhotoshootRef.setValue(mPhotoshoot);
         mView.done();
     }
 

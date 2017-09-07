@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
@@ -42,18 +43,30 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     @BindView(R.id.startDateButton) Button mStartButton;
     @BindView(R.id.endDateButton) Button mEndButton;
 
-    public static ModifyConventionYearFragment newInstance(Convention convention) {
-        ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("convention", convention);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static ModifyConventionYearFragment newInstance(Convention convention) {
+//        ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
+//        Bundle args = new Bundle();
+//        args.putParcelable("convention", convention);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+//
+//    public static ModifyConventionYearFragment newInstance(ConventionYear conventionYear) {
+//        ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
+//        Bundle args = new Bundle();
+//        args.putParcelable("conventionYear", conventionYear);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
-    public static ModifyConventionYearFragment newInstance(ConventionYear conventionYear) {
+    public static ModifyConventionYearFragment newInstance(DatabaseReference reference, boolean edit) {
         ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
         Bundle args = new Bundle();
-        args.putParcelable("conventionYear", conventionYear);
+        if (edit) {
+            args.putString("conventionYear", reference.toString());
+        } else {
+            args.putString("convention", reference.toString());
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,8 +78,8 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Convention convention = null;
-        ConventionYear conventionYear = null;
+        DatabaseReference convention = null;
+        DatabaseReference conventionYear = null;
         if (getArguments() != null) {
             convention = getArguments().getParcelable("convention");
             conventionYear = getArguments().getParcelable("conventionYear");

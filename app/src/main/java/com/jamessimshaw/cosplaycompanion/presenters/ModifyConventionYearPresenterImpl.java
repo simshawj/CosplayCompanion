@@ -133,7 +133,7 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
             // Create it
             mConventionYearRef = mDatabaseReference.push();
             mUsersRef.child(user.getUid()).child("events").child(mConventionYearRef.getKey()).setValue(true);
-            mConventionRef.child(mConventionYearRef.getKey()).setValue(true);
+            mConventionRef.child("events").child(mConventionYearRef.getKey()).setValue(true);
         } else {
             // TODO: Verify we can edit
         }
