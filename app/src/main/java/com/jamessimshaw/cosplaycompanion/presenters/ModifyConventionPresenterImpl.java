@@ -60,8 +60,8 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             mConventionRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    mConvention = dataSnapshot.getValue(Convention.class);
                     if(mView != null) {
-                        mConvention = dataSnapshot.getValue(Convention.class);
                         mView.displayName(mConvention.getName());
                         mView.displayDescription(mConvention.getDescription());
                         mView.displayLogo(mConvention.getLogoUriString());

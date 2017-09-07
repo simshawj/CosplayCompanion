@@ -1,7 +1,12 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionYearView;
@@ -17,9 +22,12 @@ import javax.inject.Inject;
  * Created by james on 2/18/16.
  */
 public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPresenter {
+    private DatabaseReference mUsersRef;
     private ModifyConventionYearView mView;
-    private Convention mConvention;
+    private DatabaseReference mConventionRef;
+    private DatabaseReference mConventionYearRef;
     private ConventionYear mConventionYear;
+    private Convention mConvention;
     private SimpleDateFormat mDateFormat;
     private Date mStartDate;
     private Date mEndDate;
@@ -27,7 +35,8 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
 
     @Inject
     public ModifyConventionYearPresenterImpl() {
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("convention_years");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
+        mUsersRef = FirebaseDatabase.getInstance().getReference("users");
     }
 
     @Override
@@ -36,37 +45,66 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
     }
 
     @Override
-    public void setConvention(Convention convention) {
-        mConvention = convention;
+    public void setConvention(DatabaseReference convention) {
+        mConventionRef = convention;
     }
 
     @Override
-    public void setConventionYear(ConventionYear conventionYear) {
-        mConventionYear = conventionYear;
+    public void setConventionYear(DatabaseReference conventionYear) {
+        mConventionYearRef = conventionYear;
     }
 
     @Override
     public void detachView() {
         mView = null;
-        mConvention = null;
-        mConventionYear = null;
+        mConventionRef = null;
+        mConventionYearRef = null;
     }
 
     @Override
     public void requestInitialData() {
         mDateFormat = new SimpleDateFormat("EEEE MMMM dd yyyy", Locale.getDefault());
-        if (mConventionYear == null) {
-            Calendar calendar = Calendar.getInstance();
-            mStartDate = calendar.getTime();
-            mEndDate = calendar.getTime();
-        } else {
-            mStartDate = new Date(mConventionYear.getStartDate());
-            mEndDate = new Date(mConventionYear.getEndDate());
-            mView.displayLocation(mConventionYear.getLocation());
-        }
-
+        Calendar calendar = Calendar.getInstance();
+        mStartDate = calendar.getTime();
+        mEndDate = calendar.getTime();
         mView.displayStartDate(mDateFormat.format(mStartDate));
         mView.displayFinishDate(mDateFormat.format(mEndDate));
+
+        if (mConventionYearRef != null) {
+            mConventionYearRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mConventionYear = dataSnapshot.getValue(ConventionYear.class);
+                    mStartDate = new Date(mConventionYear.getStartDate());
+                    mEndDate = new Date(mConventionYear.getEndDate());
+                    if (mView != null) {
+                        mView.displayStartDate(mDateFormat.format(mStartDate));
+                        mView.displayFinishDate(mDateFormat.format(mEndDate));
+                        mView.displayLocation(mConventionYear.getLocation());
+                        mView.displayMessage("All fields populated with current data");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        if (mConventionRef != null) {
+            mConventionRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mConvention = dataSnapshot.getValue(Convention.class);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -89,19 +127,28 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
             mView.displayMessage("End date must be after the start date");
             return;
         }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        // TODO: Do we want to change the display name?  Make it customizable?
-        String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
+        if (mConventionYearRef == null) {
+            // Create it
+            mConventionYearRef = mDatabaseReference.push();
+            mUsersRef.child(user.getUid()).child("events").child(mConventionYearRef.getKey()).setValue(true);
+            mConventionRef.child(mConventionYearRef.getKey()).setValue(true);
+        } else {
+            // TODO: Verify we can edit
+        }
+
 
         if (mConventionYear == null) {
-            //mConventionYear = new ConventionYear(mStartDate, mEndDate, location, displayName);
+            // TODO: Do we want to change the display name?  Make it customizable?
+            String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
+            mConventionYear = new ConventionYear(mStartDate, mEndDate, location, displayName, mConventionRef.getKey(), user.getUid());
         } else {
             mConventionYear.setStartDate(mStartDate.getTime());
             mConventionYear.setEndDate(mEndDate.getTime());
             mConventionYear.setLocation(location);
-            mConventionYear.setDisplayName(displayName);
         }
-        mDatabaseReference.child(mConvention.getName()).child(getYearFromDate(mStartDate)).setValue(mConventionYear);
+        mConventionYearRef.setValue(mConventionYear);
         mView.done();
     }
 
