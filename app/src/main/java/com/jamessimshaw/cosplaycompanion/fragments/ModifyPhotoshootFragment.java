@@ -100,8 +100,8 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
                 .inject(this);
 
         mPresenter.setView(this);
-        mPresenter.setConventionYear(conventionYear);
-        mPresenter.setPhotoshoot(photoshoot);
+//        mPresenter.setConventionYear(conventionYear);
+//        mPresenter.setPhotoshoot(photoshoot);
     }
 
     @Override

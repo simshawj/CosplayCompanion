@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case "create conventionYear":
                 if (item instanceof Convention)
-                    fragment = ModifyConventionYearFragment.newInstance((Convention) item);
+//                    fragment = ModifyConventionYearFragment.newInstance((Convention) item);
                 break;
             case "create photoshoot":
                 if (item instanceof ConventionYear)
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case "edit conventionYear":
                 if (item instanceof ConventionYear)
-                    fragment = ModifyConventionYearFragment.newInstance((ConventionYear) item);
+//                    fragment = ModifyConventionYearFragment.newInstance((ConventionYear) item);
                 break;
             case "edit photoshoot":
                 if (item instanceof Photoshoot)

@@ -43,22 +43,6 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     @BindView(R.id.startDateButton) Button mStartButton;
     @BindView(R.id.endDateButton) Button mEndButton;
 
-//    public static ModifyConventionYearFragment newInstance(Convention convention) {
-//        ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
-//        Bundle args = new Bundle();
-//        args.putParcelable("convention", convention);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-//
-//    public static ModifyConventionYearFragment newInstance(ConventionYear conventionYear) {
-//        ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
-//        Bundle args = new Bundle();
-//        args.putParcelable("conventionYear", conventionYear);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
     public static ModifyConventionYearFragment newInstance(DatabaseReference reference, boolean edit) {
         ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
         Bundle args = new Bundle();

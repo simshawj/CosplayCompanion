@@ -12,12 +12,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionYearsPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -52,11 +56,13 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
 
+        mConventionReference = FirebaseDatabase.getInstance().getReferenceFromUrl(getArguments().getString(ARG_PARAM1));
+
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(mConventionReference);
+                ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(mConventionReference, false);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container_main, fragment)
                         .addToBackStack(null)
@@ -64,16 +70,16 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
             }
         });
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mConvention.getName());
+        // TODO: REMEMBER TO SET TITLE
 
-        RecyclerView conventionDetailsRecyclerView = (RecyclerView)view
-                .findViewById(R.id.list_fragment_recyclerview);
+        RecyclerView conventionDetailsRecyclerView = view.findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new ConYearRecViewAdapter(ConventionYear.class, R.layout.row_convention_year,
-                ConYearRecViewAdapter.ViewHolder.class, mYearsPresenter.getFirebaseReference(mConventionReference), getActivity());
+        mAdapter = new ConYearRecViewAdapter(new ArrayList<ConventionYear>(), getActivity());
         conventionDetailsRecyclerView.setAdapter(mAdapter);
+
+        mYearsPresenter.setConventionReference(mConventionReference);
 
         return view;
     }
@@ -97,4 +103,8 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
 
     }
 
+    @Override
+    public void updateData(List<ConventionYear> conventionYears) {
+        mAdapter.updateData(conventionYears);
+    }
 }
