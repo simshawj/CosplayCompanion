@@ -41,7 +41,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
             public void onClick(View view) {
                 if (mActivity instanceof MainActivity) {
                     DatabaseReference reference = getRef(position);
-                    ((MainActivity) mActivity).onFragmentInteraction("show convention", reference);
+                    ((MainActivity) mActivity).onFragmentInteraction("show convention", reference.toString());
                 }
             }
         });
@@ -50,7 +50,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
             public boolean onLongClick(View view) {
                 if (mActivity instanceof  MainActivity) {
                     DatabaseReference reference = getRef(position);
-                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", reference);
+                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", reference.toString());
                 }
                 return true;
             }

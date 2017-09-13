@@ -57,8 +57,6 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
     @Override
     public void detachView() {
         mView = null;
-        mConventionRef = null;
-        mConventionYearRef = null;
     }
 
     @Override

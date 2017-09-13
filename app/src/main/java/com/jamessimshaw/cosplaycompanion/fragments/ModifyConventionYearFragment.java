@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
@@ -65,8 +66,18 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
         DatabaseReference convention = null;
         DatabaseReference conventionYear = null;
         if (getArguments() != null) {
-            convention = getArguments().getParcelable("convention");
-            conventionYear = getArguments().getParcelable("conventionYear");
+            String conventionRefString = getArguments().getString("convention");
+            String conventionYearRefString = getArguments().getString("conventionYear");
+            if (conventionRefString == null) {
+                convention = null;
+            } else {
+                convention = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionRefString);
+            }
+            if (conventionYearRefString == null) {
+                conventionYear = null;
+            } else {
+                conventionYear = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionYearRefString);
+            }
         }
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent()
