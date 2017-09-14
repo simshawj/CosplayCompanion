@@ -24,7 +24,7 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
 
     @Inject
     public ListConventionYearsPresenterImpl() {
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("convention_years");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
     }
 
     @Override
@@ -48,6 +48,7 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
         mConventionReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Convention convention = dataSnapshot.getValue(Convention.class);
                 if (mView != null) {
                     mView.updateData(new ArrayList<ConventionYear>());
                 }
@@ -58,5 +59,15 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
 
             }
         });
+    }
+
+    @Override
+    public DatabaseReference getEventsRef() {
+        return mConventionReference.child("events");
+    }
+
+    @Override
+    public DatabaseReference getEventsDataRef() {
+        return mDatabaseReference;
     }
 }

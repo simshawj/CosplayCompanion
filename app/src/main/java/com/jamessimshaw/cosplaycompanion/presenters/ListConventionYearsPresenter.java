@@ -10,4 +10,6 @@ import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
 public interface ListConventionYearsPresenter extends Presenter<ListConventionYearsView> {
     DatabaseReference getFirebaseReference(Convention convention);
     void setConventionReference(DatabaseReference conventionReference);
+    DatabaseReference getEventsRef();
+    DatabaseReference getEventsDataRef();
 }

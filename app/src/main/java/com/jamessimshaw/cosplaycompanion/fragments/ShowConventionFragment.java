@@ -3,7 +3,6 @@ package com.jamessimshaw.cosplaycompanion.fragments;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionYearsPresenterImpl;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -69,17 +67,18 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
                         .commit();
             }
         });
-
+        mYearsPresenter.setConventionReference(mConventionReference);
         // TODO: REMEMBER TO SET TITLE
 
         RecyclerView conventionDetailsRecyclerView = view.findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new ConYearRecViewAdapter(new ArrayList<ConventionYear>(), getActivity());
+//        mAdapter = new ConYearRecViewAdapter(new ArrayList<ConventionYear>(), getActivity());
+        mAdapter = new ConYearRecViewAdapter(ConventionYear.class, R.layout.row_convention_year, ConYearRecViewAdapter.ViewHolder.class, mYearsPresenter.getEventsRef(), mYearsPresenter.getEventsDataRef(), getActivity());
         conventionDetailsRecyclerView.setAdapter(mAdapter);
 
-        mYearsPresenter.setConventionReference(mConventionReference);
+
 
         return view;
     }
@@ -105,6 +104,6 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
 
     @Override
     public void updateData(List<ConventionYear> conventionYears) {
-        mAdapter.updateData(conventionYears);
+//        mAdapter.updateData(conventionYears);
     }
 }
