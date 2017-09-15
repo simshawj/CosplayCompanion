@@ -30,49 +30,6 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
         super(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef);
         mActivity = activity;
     }
-//    private List<ConventionYear> mConventionYears;
-
-//    public ConYearRecViewAdapter(List<ConventionYear> conventionYears, Activity activity) {
-//        mActivity = activity;
-//        mConventionYears = conventionYears;
-//    }
-
-//    public ConYearRecViewAdapter(Class<ConventionYear> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, Query query, LifecycleOwner owner, Activity activity) {
-//        super(modelClass, modelLayout, viewHolderClass, query, owner);
-//        mActivity = activity;
-//    }
-
-//    @Override
-//    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_convention_year, parent, false);
-//
-//        return new ViewHolder(view);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(ViewHolder holder, int position) {
-//        final ConventionYear conventionYear = mConventionYears.get(position);
-//        holder.mConventionYearYear.setText(conventionYear.getYearAsString());
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
-//        String dateString = dateFormat.format(new Date(conventionYear.getStartDate())) + " to " +
-//                dateFormat.format(new Date(conventionYear.getEndDate()));
-//        holder.mConventionYearDates.setText(dateString);
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (mActivity instanceof MainActivity)
-//                    ((MainActivity) mActivity).onFragmentInteraction("show conventionYear", conventionYear);
-//            }
-//        });
-//        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View view) {
-//                if (mActivity instanceof MainActivity)
-//                    ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", conventionYear);
-//                return true;
-//            }
-//        });
-//    }
 
     @Override
     protected void populateViewHolder(ViewHolder holder, ConventionYear conventionYear, int position) {
@@ -99,16 +56,6 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             }
         });
     }
-
-//    @Override
-//    public int getItemCount() {
-//        return mConventionYears.size();
-//    }
-//
-//    public void updateData(List<ConventionYear> conventionYears) {
-//        mConventionYears = conventionYears;
-//        notifyDataSetChanged();     // TODO: Setup Animations
-//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

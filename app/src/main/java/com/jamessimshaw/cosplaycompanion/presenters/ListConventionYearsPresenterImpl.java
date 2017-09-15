@@ -45,20 +45,6 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
     @Override
     public void setConventionReference(DatabaseReference conventionReference) {
         mConventionReference = conventionReference;
-        mConventionReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Convention convention = dataSnapshot.getValue(Convention.class);
-                if (mView != null) {
-                    mView.updateData(new ArrayList<ConventionYear>());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @Override
