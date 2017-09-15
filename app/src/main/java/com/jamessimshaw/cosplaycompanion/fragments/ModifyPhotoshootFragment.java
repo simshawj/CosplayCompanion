@@ -55,7 +55,11 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
     public static Fragment newInstance(String reference, boolean edit) {
         ModifyPhotoshootFragment fragment = new ModifyPhotoshootFragment();
         Bundle args = new Bundle();
-        args.putString("photoshoot", reference);
+        if (edit) {
+            args.putString("photoshoot", reference);
+        } else {
+            args.putString("event", reference);
+        }
         fragment.setArguments(args);
         return fragment;
     }
