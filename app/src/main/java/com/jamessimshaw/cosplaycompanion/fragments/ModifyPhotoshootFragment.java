@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
@@ -40,8 +42,6 @@ import butterknife.ButterKnife;
  * create an instance of this fragment.
  */
 public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotoshootView {
-    private static final String ARG_PARAM1 = "param1";
-
     @Inject ModifyPhotoshootPresenter mPresenter;
 
     @BindView(R.id.dateButton) Button mStartDateButton;
@@ -52,35 +52,14 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param conventionYear ConventionYear to add the photoshoot to
-     * @return A new instance of fragment ModifyPhotoshootFragment.
-     */
-    public static ModifyPhotoshootFragment newInstance(ConventionYear conventionYear) {
+    public static Fragment newInstance(String reference, boolean edit) {
         ModifyPhotoshootFragment fragment = new ModifyPhotoshootFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, conventionYear);
+        args.putString("photoshoot", reference);
         fragment.setArguments(args);
         return fragment;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param photoshoot Photoshoot to edit
-     * @return A new instance of fragment ModifyPhotoshootFragment.
-     */
-    public static ModifyPhotoshootFragment newInstance(Photoshoot photoshoot) {
-        ModifyPhotoshootFragment fragment = new ModifyPhotoshootFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("photoshoot", photoshoot);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public ModifyPhotoshootFragment() {
         // Required empty public constructor
@@ -88,20 +67,29 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        DatabaseReference conventionYearRef = null;
+        DatabaseReference photoshootRef = null;
         super.onCreate(savedInstanceState);
         Photoshoot photoshoot = null;
         ConventionYear conventionYear = null;
         if (getArguments() != null) {
-            conventionYear = getArguments().getParcelable(ARG_PARAM1);
-            photoshoot = getArguments().getParcelable("photoshoot");
+            String conventionYearString = getArguments().getString("event");
+            String photoshootString = getArguments().getString("photoshoot");
+
+            if (conventionYearString != null) {
+                conventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionYearString);
+            }
+            if (photoshootString != null) {
+                photoshootRef = FirebaseDatabase.getInstance().getReferenceFromUrl(photoshootString);
+            }
         }
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
                 .inject(this);
 
         mPresenter.setView(this);
-//        mPresenter.setConventionYear(conventionYear);
-//        mPresenter.setPhotoshoot(photoshoot);
+        mPresenter.setConventionYear(conventionYearRef);
+        mPresenter.setPhotoshoot(photoshootRef);
     }
 
     @Override

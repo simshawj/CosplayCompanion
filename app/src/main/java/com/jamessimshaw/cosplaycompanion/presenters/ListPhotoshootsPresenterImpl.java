@@ -12,6 +12,7 @@ public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
 
     private ListPhotoshootsView mView;
     private DatabaseReference mDatabaseReference;
+    private DatabaseReference mConventionYearRef;
 
     public ListPhotoshootsPresenterImpl() {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("photoshoots");
@@ -28,9 +29,17 @@ public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
     }
 
     @Override
-    public DatabaseReference getFirebaseReference(ConventionYear conventionYear) {
-        String displayname = conventionYear.getDisplayName();
-        return mDatabaseReference.child(displayname.substring(0, displayname.length() - 5))
-                .child(displayname.substring(displayname.length() - 4, displayname.length()));
+    public DatabaseReference getPhotoshootListRef() {
+        return mConventionYearRef.child("photoshoots");
+    }
+
+    @Override
+    public void setConventionYearRef(DatabaseReference conventionYearRef) {
+        mConventionYearRef = conventionYearRef;
+    }
+
+    @Override
+    public DatabaseReference getPhotoshootDataRef() {
+        return mDatabaseReference;
     }
 }

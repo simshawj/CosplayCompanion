@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
@@ -21,16 +23,16 @@ import butterknife.ButterKnife;
 /**
  * Created by james on 10/16/15.
  */
-public class PhotoshootRecViewAdapter extends FirebaseRecyclerAdapter<Photoshoot, PhotoshootRecViewAdapter.ViewHolder> {
+public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photoshoot, PhotoshootRecViewAdapter.ViewHolder> {
     private Activity mActivity;
 
-    public PhotoshootRecViewAdapter(Class<Photoshoot> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, DatabaseReference reference, Activity activity) {
-        super(modelClass, modelLayout, viewHolderClass, reference);
+    public PhotoshootRecViewAdapter(Class<Photoshoot> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, Query keyQuery, DatabaseReference dataRef, Activity activity) {
+        super(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef);
         mActivity = activity;
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder viewHolder, final Photoshoot photoshoot, int position) {
+    protected void populateViewHolder(ViewHolder viewHolder, final Photoshoot photoshoot, final int position) {
         viewHolder.mPhotoshootSeries.setText(photoshoot.getSeries());
         viewHolder.mPhotoshootDescription.setText(photoshoot.getDescription());
         viewHolder.mPhotoshootLocation.setText(photoshoot.getLocation());
@@ -41,7 +43,7 @@ public class PhotoshootRecViewAdapter extends FirebaseRecyclerAdapter<Photoshoot
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity)
-                    ((MainActivity) mActivity).onFragmentInteraction("edit photoshoot", photoshoot);
+                    ((MainActivity) mActivity).onFragmentInteraction("edit photoshoot", getRef(position).toString());
                 return true;
             }
         });

@@ -44,13 +44,13 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     @BindView(R.id.startDateButton) Button mStartButton;
     @BindView(R.id.endDateButton) Button mEndButton;
 
-    public static ModifyConventionYearFragment newInstance(DatabaseReference reference, boolean edit) {
+    public static ModifyConventionYearFragment newInstance(String reference, boolean edit) {
         ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
         Bundle args = new Bundle();
         if (edit) {
-            args.putString("conventionYear", reference.toString());
+            args.putString("conventionYear", reference);
         } else {
-            args.putString("convention", reference.toString());
+            args.putString("convention", reference);
         }
         fragment.setArguments(args);
         return fragment;

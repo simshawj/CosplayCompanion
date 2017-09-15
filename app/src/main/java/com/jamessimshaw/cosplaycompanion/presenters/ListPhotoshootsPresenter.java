@@ -8,5 +8,7 @@ import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
  * Created by james on 7/23/16.
  */
 public interface ListPhotoshootsPresenter extends Presenter<ListPhotoshootsView> {
-    DatabaseReference getFirebaseReference(ConventionYear conventionYear);
+    DatabaseReference getPhotoshootListRef();
+    void setConventionYearRef(DatabaseReference conventionYearRef);
+    DatabaseReference getPhotoshootDataRef();
 }

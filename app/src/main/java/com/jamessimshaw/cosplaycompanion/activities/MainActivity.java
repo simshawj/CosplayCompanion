@@ -144,38 +144,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(String event, Object item) {
+    public void onFragmentInteraction(String event, String item) {
         Fragment fragment = null;
 
         switch(event) {
             case "show convention":
-                if (item instanceof String)
-                    fragment = ShowConventionFragment.newInstance((String) item);
+                fragment = ShowConventionFragment.newInstance(item);
                 break;
             case "show conventionYear":
-                if (item instanceof ConventionYear)
-                    fragment = ShowConventionYearFragment.newInstance((ConventionYear) item);
+                fragment = ShowConventionYearFragment.newInstance(item);
                 break;
             case "create conventionYear":
-                if (item instanceof Convention)
-//                    fragment = ModifyConventionYearFragment.newInstance((Convention) item);
+                fragment = ModifyConventionYearFragment.newInstance(item, false);
                 break;
             case "create photoshoot":
-                if (item instanceof ConventionYear)
-                    fragment = ModifyPhotoshootFragment.newInstance((ConventionYear) item);
+                fragment = ModifyPhotoshootFragment.newInstance(item, false);
                 break;
             case "edit convention":
-                if (item instanceof String)
-                    fragment = ModifyConventionFragment.newInstance((String) item);
+                fragment = ModifyConventionFragment.newInstance(item);
                 break;
             case "edit conventionYear":
-                if (item instanceof ConventionYear)
-//                    fragment = ModifyConventionYearFragment.newInstance((ConventionYear) item);
+                fragment = ModifyConventionYearFragment.newInstance(item, true);
                 break;
             case "edit photoshoot":
-                if (item instanceof Photoshoot)
-                    fragment = ModifyPhotoshootFragment.newInstance((Photoshoot) item);
-                break;
+                fragment = ModifyPhotoshootFragment.newInstance(item, true);
             default: break;
         }
 

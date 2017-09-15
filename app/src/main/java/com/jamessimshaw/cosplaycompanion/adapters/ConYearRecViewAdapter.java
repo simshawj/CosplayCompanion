@@ -32,7 +32,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder holder, ConventionYear conventionYear, int position) {
+    protected void populateViewHolder(ViewHolder holder, ConventionYear conventionYear, final int position) {
         holder.mConventionYearYear.setText(conventionYear.getYearAsString());
         SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
         String dateString = dateFormat.format(new Date(conventionYear.getStartDate())) + " to " +
@@ -42,7 +42,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public void onClick(View view) {
                 if (mActivity instanceof MainActivity) {
-//                    ((MainActivity) mActivity).onFragmentInteraction("show conventionYear", conventionYear);
+                    ((MainActivity) mActivity).onFragmentInteraction("show conventionYear", getRef(position).toString());
                 }
             }
         });
@@ -50,7 +50,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-//                    ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", conventionYear);
+                    ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", getRef(position).toString());
                 }
                 return true;
             }

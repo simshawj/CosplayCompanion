@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
-import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
@@ -34,7 +34,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
     private static final String ARG_PARAM2 = "conventionYear";
 
     @Inject ListPhotoshootsPresenter mPresenter;
-    private ConventionYear mConventionYear;
+    private DatabaseReference mConventionYearRef;
     private PhotoshootRecViewAdapter mAdapter;
     private OnFragmentInteractionListener mListener;
 
@@ -42,13 +42,13 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param conventionYear ConventionYear to show.
+     * @param conventionYearRef ConventionYear to show.
      * @return A new instance of fragment ShowConventionYearFragment.
      */
-    public static ShowConventionYearFragment newInstance(ConventionYear conventionYear) {
+    public static ShowConventionYearFragment newInstance(String conventionYearRef) {
         ShowConventionYearFragment fragment = new ShowConventionYearFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM2, conventionYear);
+        args.putString(ARG_PARAM2, conventionYearRef);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,12 +60,12 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mConventionYear = getArguments().getParcelable(ARG_PARAM2);
+        if (getArguments() != null && getArguments().getString(ARG_PARAM2) != null) {
+            mConventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(getArguments().getString(ARG_PARAM2));
         }
-        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
-                .inject(this);
+        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent().inject(this);
         mPresenter.setView(this);
+        mPresenter.setConventionYearRef(mConventionYearRef);
     }
 
     @Override
@@ -78,18 +78,18 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
             @Override
             public void onClick(View view) {
                 if (mListener != null)
-                    mListener.onFragmentInteraction("create photoshoot", mConventionYear);
+                    mListener.onFragmentInteraction("create photoshoot", mConventionYearRef.toString());
             }
         });
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mConventionYear.getDisplayName());
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mConventionYearRef.getDisplayName());
 
         RecyclerView conventionYearDetailsRecyclerView = (RecyclerView)view
                 .findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getFirebaseReference(mConventionYear), getActivity());
+        mAdapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getPhotoshootListRef(), mPresenter.getPhotoshootDataRef(), getActivity());
         conventionYearDetailsRecyclerView.setAdapter(mAdapter);
 
         return view;
@@ -126,7 +126,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String event, Object item);
+        void onFragmentInteraction(String event, String item);
     }
 
     // ListPhotoshootsView Methods

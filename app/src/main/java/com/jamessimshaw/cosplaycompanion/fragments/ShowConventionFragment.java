@@ -60,7 +60,7 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(mConventionReference, false);
+                ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(mConventionReference.toString(), false);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container_main, fragment)
                         .addToBackStack(null)
