@@ -4,11 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +22,10 @@ import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -37,6 +44,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
     private DatabaseReference mConventionYearRef;
     private PhotoshootRecViewAdapter mAdapter;
     private OnFragmentInteractionListener mListener;
+    private View mLayoutView;
 
     /**
      * Use this factory method to create a new instance of
@@ -71,9 +79,9 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
+        mLayoutView = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) mLayoutView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,7 +92,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
 
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mConventionYearRef.getDisplayName());
 
-        RecyclerView conventionYearDetailsRecyclerView = (RecyclerView)view
+        RecyclerView conventionYearDetailsRecyclerView = (RecyclerView)mLayoutView
                 .findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
@@ -92,7 +100,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
         mAdapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getPhotoshootListRef(), mPresenter.getPhotoshootDataRef(), getActivity());
         conventionYearDetailsRecyclerView.setAdapter(mAdapter);
 
-        return view;
+        return mLayoutView;
     }
 
     @Override
@@ -112,6 +120,27 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
         mListener = null;
         mPresenter.detachView();
         mPresenter = null;
+    }
+
+    @Override
+    public void updateTitle(String title) {
+        ((TextView)mLayoutView.findViewById(R.id.convention_year)).setText(title);
+    }
+
+    @Override
+    public void updateDates(long start, long end) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
+        String dateString = dateFormat.format(new Date(start)) + " to " +
+                dateFormat.format(new Date(end));
+        ((TextView)mLayoutView.findViewById(R.id.convention_dates)).setText(dateString);
+    }
+
+    @Override
+    public void setTitle(String title) {
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
     }
 
 

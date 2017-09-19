@@ -6,10 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
-import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -45,6 +42,23 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
     @Override
     public void setConventionReference(DatabaseReference conventionReference) {
         mConventionReference = conventionReference;
+        mConventionReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Convention convention = dataSnapshot.getValue(Convention.class);
+                if (mView != null && convention != null) {
+                    mView.setTitle(convention.getName());
+                    mView.updateConventionName(convention.getName());
+                    mView.updateConventionLogo(convention.getLogoUriString());
+                    mView.updateConventionDescription(convention.getDescription());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

@@ -11,4 +11,9 @@ import java.util.List;
 public interface ListConventionYearsView extends MVPView {
 
     void updateData(List<ConventionYear> conventionYears);
+
+    void updateConventionLogo(String url);
+    void updateConventionName(String name);
+    void updateConventionDescription(String description);
+    void setTitle(String title);
 }
