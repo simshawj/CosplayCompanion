@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,6 +90,10 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
                     mListener.onFragmentInteraction("create photoshoot", mConventionYearRef.toString());
             }
         });
+
+        ViewStub stub = (ViewStub) mLayoutView.findViewById(R.id.list_header);
+        stub.setLayoutResource(R.layout.row_convention_year);
+        stub.inflate();
 
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mConventionYearRef.getDisplayName());
 

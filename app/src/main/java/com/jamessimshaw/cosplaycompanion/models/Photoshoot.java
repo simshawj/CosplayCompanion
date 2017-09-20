@@ -119,4 +119,20 @@ public class Photoshoot implements Parcelable {
 
         return result;
     }
+
+    public String getSubmitted() {
+        return mSubmitted;
+    }
+
+    public void setSubmitted(String mSubmitted) {
+        this.mSubmitted = mSubmitted;
+    }
+
+    public String getEventId() {
+        return mEventId;
+    }
+
+    public void setEventId(String mEventId) {
+        this.mEventId = mEventId;
+    }
 }
