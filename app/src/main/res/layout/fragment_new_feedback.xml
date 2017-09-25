@@ -13,9 +13,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/feedback_and_suggestions"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
 
     </android.support.constraint.ConstraintLayout>

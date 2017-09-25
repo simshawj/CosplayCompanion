@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+        toggle.setDrawerSlideAnimationEnabled(false);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity
         emailTextView.setText(user.getEmail());
         Picasso.with(this)
                 .load(user.getPhotoUrl()).fit().centerInside()
+                .error(R.drawable.ic_logo)
+                .placeholder(R.drawable.ic_logo)
                 .into(avatar);
 
         if (savedInstanceState != null)

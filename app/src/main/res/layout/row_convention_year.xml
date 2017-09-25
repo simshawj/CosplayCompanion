@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginTop="8dp"
-                                    app:cardUseCompatPadding="true"
-                                    app:cardElevation="2dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/convention_year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/convention_year"
-            android:gravity="center"/>
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textSize="21sp"
+            tools:text="2018"/>
 
         <TextView
+            android:id="@+id/convention_dates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/convention_dates"/>
+            tools:text="March 20, 2018 to March 30, 2018"/>
 
-        <View
-            android:id="@+id/horizontalRule"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#AA8FB2A9" />
+        <!--<View-->
+            <!--android:id="@+id/horizontalRule"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="#AA8FB2A9" />-->
 
 
     </LinearLayout>
