@@ -76,7 +76,7 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
         });
 
         ViewStub stub = (ViewStub) mLayoutView.findViewById(R.id.list_header);
-        stub.setLayoutResource(R.layout.row_convention);
+        stub.setLayoutResource(R.layout.convention_year_list_header);
         stub.inflate();
 
         mYearsPresenter.setConventionReference(mConventionReference);
@@ -92,10 +92,21 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mYearsPresenter.setView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mYearsPresenter.detachView();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
-        mYearsPresenter.detachView();
-        mYearsPresenter = null;
     }
 
     // ListConventionYearsView methods

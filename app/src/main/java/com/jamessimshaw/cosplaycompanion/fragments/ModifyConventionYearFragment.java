@@ -131,10 +131,23 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        mPresenter.detachView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mPresenter.setView(this);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.detachView();
     }
 
     // Listeners

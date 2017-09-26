@@ -24,11 +24,19 @@ public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
     @Override
     public void setView(ListPhotoshootsView view) {
         mView = view;
+
+        if (mConventionYearRef != null) {
+            mConventionYearRef.addValueEventListener(mConventionYearListener);
+        }
     }
 
     @Override
     public void detachView() {
         mView = null;
+
+        if (mConventionYearRef != null) {
+            mConventionYearRef.removeEventListener(mConventionYearListener);
+        }
     }
 
     @Override
@@ -40,26 +48,28 @@ public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
     public void setConventionYearRef(DatabaseReference conventionYearRef) {
         mConventionYearRef = conventionYearRef;
 
-        mConventionYearRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ConventionYear event = dataSnapshot.getValue(ConventionYear.class);
-                if (mView != null && event != null) {
-                    mView.setTitle(event.getDisplayName());
-                    mView.updateDates(event.getStartDate(), event.getEndDate());
-                    mView.updateTitle(event.getDisplayName());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        mConventionYearRef.addValueEventListener(mConventionYearListener);
     }
 
     @Override
     public DatabaseReference getPhotoshootDataRef() {
         return mDatabaseReference;
     }
+
+    private ValueEventListener mConventionYearListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            ConventionYear event = dataSnapshot.getValue(ConventionYear.class);
+            if (mView != null && event != null) {
+                mView.setTitle(event.getDisplayName());
+                mView.updateDates(event.getStartDate(), event.getEndDate());
+                mView.updateTitle(event.getDisplayName());
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 }

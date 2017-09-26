@@ -121,11 +121,23 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        mPresenter.setView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mPresenter.detachView();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.detachView();
-        mPresenter = null;
     }
 
     @Override

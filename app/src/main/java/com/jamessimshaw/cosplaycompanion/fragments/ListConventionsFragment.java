@@ -76,10 +76,22 @@ public class ListConventionsFragment extends Fragment implements ListConventions
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        mPresenter.setView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mPresenter.detachView();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
-        mPresenter.detachView();
-        mPresenter = null;
     }
 
     @Override

@@ -51,8 +51,6 @@ public class CreateSuggestionFragment extends Fragment implements SuggestionView
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getSuggestionsComponent()
                 .inject(this);
-
-        mPresenter.setView(this);
     }
 
     @Override
@@ -97,11 +95,21 @@ public class CreateSuggestionFragment extends Fragment implements SuggestionView
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.detachView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.setView(this);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.detachView();
-        mPresenter = null;
     }
 
     @Override

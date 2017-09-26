@@ -92,7 +92,7 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
         });
 
         ViewStub stub = (ViewStub) mLayoutView.findViewById(R.id.list_header);
-        stub.setLayoutResource(R.layout.row_convention_year);
+        stub.setLayoutResource(R.layout.photoshoot_list_header);
         stub.inflate();
 
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mConventionYearRef.getDisplayName());
@@ -120,11 +120,23 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        mPresenter.setView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mPresenter.detachView();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mPresenter.detachView();
-        mPresenter = null;
     }
 
     @Override

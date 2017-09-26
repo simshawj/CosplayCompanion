@@ -27,11 +27,17 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
     @Override
     public void setView(ListConventionYearsView view) {
         mView = view;
+        if (mConventionReference != null) {
+            mConventionReference.addValueEventListener(mConventionListenter);
+        }
     }
 
     @Override
     public void detachView() {
         mView = null;
+        if (mConventionReference != null) {
+            mConventionReference.removeEventListener(mConventionListenter);
+        }
     }
 
     @Override
@@ -42,23 +48,7 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
     @Override
     public void setConventionReference(DatabaseReference conventionReference) {
         mConventionReference = conventionReference;
-        mConventionReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Convention convention = dataSnapshot.getValue(Convention.class);
-                if (mView != null && convention != null) {
-                    mView.setTitle(convention.getName());
-                    mView.updateConventionName(convention.getName());
-                    mView.updateConventionLogo(convention.getLogoUriString());
-                    mView.updateConventionDescription(convention.getDescription());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        mConventionReference.addValueEventListener(mConventionListenter);
     }
 
     @Override
@@ -70,4 +60,22 @@ public class ListConventionYearsPresenterImpl implements ListConventionYearsPres
     public DatabaseReference getEventsDataRef() {
         return mDatabaseReference;
     }
+
+    private ValueEventListener mConventionListenter = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Convention convention = dataSnapshot.getValue(Convention.class);
+            if (mView != null && convention != null) {
+                mView.setTitle(convention.getName());
+                mView.updateConventionName(convention.getName());
+                mView.updateConventionLogo(convention.getLogoUriString());
+                mView.updateConventionDescription(convention.getDescription());
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 }
