@@ -43,6 +43,7 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     @BindView(R.id.conventionLocation) EditText mLocationEditText;
     @BindView(R.id.startDateButton) Button mStartButton;
     @BindView(R.id.endDateButton) Button mEndButton;
+    @BindView(R.id.displayNameEditText) EditText mDisplayNameEditText;
 
     public static ModifyConventionYearFragment newInstance(String reference, boolean edit) {
         ModifyConventionYearFragment fragment = new ModifyConventionYearFragment();
@@ -217,6 +218,16 @@ public class ModifyConventionYearFragment extends Fragment implements ModifyConv
     @Override
     public void displayLocation(String location) {
         mLocationEditText.setText(location);
+    }
+
+    @Override
+    public void displayDisplayName(String displayName) {
+        mDisplayNameEditText.setText(displayName);
+    }
+
+    @Override
+    public String getDisplayName() {
+        return mDisplayNameEditText.getText().toString();
     }
 
     @Override

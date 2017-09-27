@@ -56,5 +56,14 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/endDateButton"/>
 
+        <EditText
+            android:id="@+id/displayNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/event_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conventionLocation"/>
+
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

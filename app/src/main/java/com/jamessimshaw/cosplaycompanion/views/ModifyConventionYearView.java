@@ -10,4 +10,8 @@ public interface ModifyConventionYearView extends MVPView {
     void displayStartDate(String date);
     void displayFinishDate(String date);
     void displayLocation(String location);
+
+    void displayDisplayName(String displayName);
+
+    String getDisplayName();
 }

@@ -79,7 +79,7 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
                         mView.displayStartDate(mDateFormat.format(mStartDate));
                         mView.displayFinishDate(mDateFormat.format(mEndDate));
                         mView.displayLocation(mConventionYear.getLocation());
-                        mView.displayMessage("All fields populated with current data");
+                        mView.displayDisplayName(mConventionYear.getDisplayName());
                     }
                 }
 
@@ -120,6 +120,7 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
     @Override
     public void submit() {
         String location = mView.getLocation();
+        String displayName = mView.getDisplayName();
 
         if (mStartDate.after(mEndDate)) {
             mView.displayMessage("End date must be after the start date");
@@ -138,21 +139,14 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
 
 
         if (mConventionYear == null) {
-            // TODO: Do we want to change the display name?  Make it customizable?
-            String displayName = mConvention.getName() + " " + getYearFromDate(mStartDate);
             mConventionYear = new ConventionYear(mStartDate, mEndDate, location, displayName, mConventionRef.getKey(), user.getUid());
         } else {
             mConventionYear.setStartDate(mStartDate.getTime());
             mConventionYear.setEndDate(mEndDate.getTime());
             mConventionYear.setLocation(location);
+            mConventionYear.setDisplayName(displayName);
         }
         mConventionYearRef.setValue(mConventionYear);
         mView.done();
-    }
-
-    private String getYearFromDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return Integer.toString(calendar.get(Calendar.YEAR));
     }
 }
