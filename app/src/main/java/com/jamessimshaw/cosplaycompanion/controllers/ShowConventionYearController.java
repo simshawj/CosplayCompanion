@@ -1,7 +1,7 @@
-package com.jamessimshaw.cosplaycompanion.fragments;
+package com.jamessimshaw.cosplaycompanion.controllers;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -15,8 +15,8 @@ import android.view.ViewStub;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bluelinelabs.conductor.Controller;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
@@ -33,18 +33,18 @@ import javax.inject.Inject;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ShowConventionYearFragment.OnFragmentInteractionListener} interface
+ * {@link ShowConventionYearController.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ShowConventionYearFragment#newInstance} factory method to
+ * Use the {@link ShowConventionYearController#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShowConventionYearFragment extends Fragment implements ListPhotoshootsView {
+public class ShowConventionYearController extends Controller implements ListPhotoshootsView {
     private static final String ARG_PARAM2 = "conventionYear";
 
     @Inject ListPhotoshootsPresenter mPresenter;
     private DatabaseReference mConventionYearRef;
     private PhotoshootRecViewAdapter mAdapter;
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
     private View mLayoutView;
 
     /**
@@ -52,42 +52,45 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
      * this fragment using the provided parameters.
      *
      * @param conventionYearRef ConventionYear to show.
-     * @return A new instance of fragment ShowConventionYearFragment.
+     * @return A new instance of fragment ShowConventionYearController.
      */
-    public static ShowConventionYearFragment newInstance(String conventionYearRef) {
-        ShowConventionYearFragment fragment = new ShowConventionYearFragment();
+    public static ShowConventionYearController newInstance(String conventionYearRef) {
+        ShowConventionYearController fragment = new ShowConventionYearController();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM2, conventionYearRef);
-        fragment.setArguments(args);
+//        fragment.setArguments(args);
         return fragment;
     }
 
-    public ShowConventionYearFragment() {
+    public ShowConventionYearController() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null && getArguments().getString(ARG_PARAM2) != null) {
-            mConventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(getArguments().getString(ARG_PARAM2));
-        }
-        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent().inject(this);
-        mPresenter.setView(this);
-        mPresenter.setConventionYearRef(mConventionYearRef);
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        if (getArguments() != null && getArguments().getString(ARG_PARAM2) != null) {
+//            mConventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(getArguments().getString(ARG_PARAM2));
+//        }
+//        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent().inject(this);
+//        mPresenter.setView(this);
+//        mPresenter.setConventionYearRef(mConventionYearRef);
+//    }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
         mLayoutView = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
+
+        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent().inject(this);
 
         FloatingActionButton fab = (FloatingActionButton) mLayoutView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mListener != null)
-                    mListener.onFragmentInteraction("create photoshoot", mConventionYearRef.toString());
+//                if (mListener != null) {
+//                    mListener.onFragmentInteraction("create photoshoot", mConventionYearRef.toString());
+//                }
             }
         });
 
@@ -108,36 +111,36 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
         return mLayoutView;
     }
 
-    @Override
-    public void onAttach(Context contexty) {
-        super.onAttach(contexty);
-        try {
-            mListener = (OnFragmentInteractionListener) contexty;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(contexty.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        mPresenter.setView(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        mPresenter.detachView();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+//    @Override
+//    public void onAttach(Context contexty) {
+//        super.onAttach(contexty);
+//        try {
+//            mListener = (OnFragmentInteractionListener) contexty;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(contexty.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        mPresenter.setView(this);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//
+//        mPresenter.detachView();
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
 
     @Override
     public void updateTitle(String title) {
@@ -171,15 +174,15 @@ public class ShowConventionYearFragment extends Fragment implements ListPhotosho
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String event, String item);
-    }
+//    public interface OnFragmentInteractionListener {
+//        void onFragmentInteraction(String event, String item);
+//    }
 
     // ListPhotoshootsView Methods
 
     @Override
     public void displayMessage(String warning) {
-        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
     }
 
     @Override

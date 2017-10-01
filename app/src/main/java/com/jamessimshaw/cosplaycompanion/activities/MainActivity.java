@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 //                        .commit();
 //                break;
 //            case R.id.nav_feedback:
-//                fragment = CreateSuggestionFragment.newInstance();
+//                fragment = CreateSuggestionController.newInstance();
 //                getSupportFragmentManager().beginTransaction()
 //                        .replace(R.id.fragment_container_main, fragment)
 //                        .commit();
@@ -146,25 +146,25 @@ public class MainActivity extends AppCompatActivity {
 //
 //        switch(event) {
 //            case "show convention":
-//                fragment = ShowConventionFragment.newInstance(item);
+//                fragment = ShowConventionController.newInstance(item);
 //                break;
 //            case "show conventionYear":
-//                fragment = ShowConventionYearFragment.newInstance(item);
+//                fragment = ShowConventionYearController.newInstance(item);
 //                break;
 //            case "create conventionYear":
-//                fragment = ModifyConventionYearFragment.newInstance(item, false);
+//                fragment = ModifyConventionYearController.newInstance(item, false);
 //                break;
 //            case "create photoshoot":
-//                fragment = ModifyPhotoshootFragment.newInstance(item, false);
+//                fragment = ModifyPhotoshootController.newInstance(item, false);
 //                break;
 //            case "edit convention":
 //                fragment = ModifyConventionController.newInstance(item);
 //                break;
 //            case "edit conventionYear":
-//                fragment = ModifyConventionYearFragment.newInstance(item, true);
+//                fragment = ModifyConventionYearController.newInstance(item, true);
 //                break;
 //            case "edit photoshoot":
-//                fragment = ModifyPhotoshootFragment.newInstance(item, true);
+//                fragment = ModifyPhotoshootController.newInstance(item, true);
 //            default: break;
 //        }
 //

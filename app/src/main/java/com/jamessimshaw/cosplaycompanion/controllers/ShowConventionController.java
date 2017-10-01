@@ -1,8 +1,8 @@
-package com.jamessimshaw.cosplaycompanion.fragments;
+package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,8 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bluelinelabs.conductor.Controller;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
@@ -29,7 +29,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class ShowConventionFragment extends Fragment implements ListConventionYearsView {
+public class ShowConventionController extends Controller implements ListConventionYearsView {
     private static final String ARG_PARAM1 = "param1";
 
     @Inject ListConventionYearsPresenterImpl mYearsPresenter;
@@ -37,41 +37,41 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
     private DatabaseReference mConventionReference;
     private View mLayoutView;
 
-    public static ShowConventionFragment newInstance(String reference) {
-        ShowConventionFragment fragment = new ShowConventionFragment();
+    public static ShowConventionController newInstance(String reference) {
+        ShowConventionController fragment = new ShowConventionController();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, reference);
-        fragment.setArguments(args);
+//        fragment.setArguments(args);
         return fragment;
     }
 
-    public ShowConventionFragment() {
+    public ShowConventionController() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent().inject(this);
-        mYearsPresenter.setView(this);
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent().inject(this);
+//        mYearsPresenter.setView(this);
+//    }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
         mLayoutView = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
 
-        mConventionReference = FirebaseDatabase.getInstance().getReferenceFromUrl(getArguments().getString(ARG_PARAM1));
-
+//        mConventionReference = FirebaseDatabase.getInstance().getReferenceFromUrl(getArguments().getString(ARG_PARAM1));
+        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent().inject(this);
         FloatingActionButton fab = (FloatingActionButton) mLayoutView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModifyConventionYearFragment fragment = ModifyConventionYearFragment.newInstance(mConventionReference.toString(), false);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container_main, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                ModifyConventionYearController fragment = ModifyConventionYearController.newInstance(mConventionReference.toString(), false);
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.fragment_container_main, fragment)
+//                        .addToBackStack(null)
+//                        .commit();
             }
         });
 
@@ -91,29 +91,29 @@ public class ShowConventionFragment extends Fragment implements ListConventionYe
         return mLayoutView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mYearsPresenter.setView(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        mYearsPresenter.detachView();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mYearsPresenter.setView(this);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//
+//        mYearsPresenter.detachView();
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//    }
 
     // ListConventionYearsView methods
 
     @Override
     public void displayMessage(String warning) {
-        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
     }
 
     @Override

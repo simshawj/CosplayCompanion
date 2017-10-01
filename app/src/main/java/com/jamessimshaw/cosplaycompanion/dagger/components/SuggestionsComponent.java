@@ -1,7 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
+import com.jamessimshaw.cosplaycompanion.controllers.CreateSuggestionController;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.SuggestionModule;
-import com.jamessimshaw.cosplaycompanion.fragments.CreateSuggestionFragment;
 
 import javax.inject.Singleton;
 
@@ -16,5 +16,5 @@ import dagger.Component;
 @Singleton
 @Component(modules = {SuggestionModule.class})
 public interface SuggestionsComponent {
-    void inject(CreateSuggestionFragment fragment);
+    void inject(CreateSuggestionController fragment);
 }

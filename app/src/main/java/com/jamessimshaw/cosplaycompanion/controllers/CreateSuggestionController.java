@@ -1,8 +1,6 @@
-package com.jamessimshaw.cosplaycompanion.fragments;
+package com.jamessimshaw.cosplaycompanion.controllers;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bluelinelabs.conductor.Controller;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
@@ -30,33 +29,36 @@ import butterknife.ButterKnife;
  * @author James Simshaw
  */
 
-public class CreateSuggestionFragment extends Fragment implements SuggestionView {
+public class CreateSuggestionController extends Controller implements SuggestionView {
 
     @BindView(R.id.suggestionEditText) EditText mSuggestionEditText;
 
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
     @Inject SuggestionPresenter mPresenter;
 
-    public static CreateSuggestionFragment newInstance() {
-        return new CreateSuggestionFragment();
+    public static CreateSuggestionController newInstance() {
+        return new CreateSuggestionController();
     }
 
-    public CreateSuggestionFragment() {
+    public CreateSuggestionController() {
 
     }
 
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//        ((CosplayCompanionApplication)getActivity().getApplication()).getSuggestionsComponent()
+//                .inject(this);
+//    }
+
+    @NonNull
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fragment_new_feedback, container, false);
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getSuggestionsComponent()
                 .inject(this);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_feedback, container, false);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Feedback and Suggestions");
         setHasOptionsMenu(true);
@@ -65,16 +67,16 @@ public class CreateSuggestionFragment extends Fragment implements SuggestionView
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (CreateSuggestionFragment.OnFragmentInteractionListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        try {
+//            mListener = (CreateSuggestionController.OnFragmentInteractionListener) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(getActivity().toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -94,33 +96,33 @@ public class CreateSuggestionFragment extends Fragment implements SuggestionView
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mPresenter.detachView();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.setView(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mPresenter.detachView();
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mPresenter.setView(this);
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
 
     @Override
     public void displayMessage(String warning) {
-        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-        mListener.onModifyFragmentInteraction();
+//        mListener.onModifyFragmentInteraction();
     }
 
     @Override
@@ -128,7 +130,7 @@ public class CreateSuggestionFragment extends Fragment implements SuggestionView
         return mSuggestionEditText.getText().toString();
     }
 
-    public interface OnFragmentInteractionListener {
-        void onModifyFragmentInteraction();
-    }
+//    public interface OnFragmentInteractionListener {
+//        void onModifyFragmentInteraction();
+//    }
 }

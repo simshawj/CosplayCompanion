@@ -7,10 +7,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bluelinelabs.conductor.Router;
+import com.bluelinelabs.conductor.RouterTransaction;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
+import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionController;
+import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionController;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.squareup.picasso.Picasso;
 
@@ -22,10 +26,12 @@ import butterknife.ButterKnife;
  */
 public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention, ConventionRecViewAdapter.ViewHolder> {
     private Activity mActivity;
+    private Router mRouter;
 
-    public ConventionRecViewAdapter(Class<Convention> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, DatabaseReference reference, Activity activity) {
+    public ConventionRecViewAdapter(Class<Convention> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, DatabaseReference reference, Activity activity, Router router) {
         super(modelClass, modelLayout, viewHolderClass, reference);
         mActivity = activity;
+        mRouter = router;
     }
 
     @Override
@@ -42,6 +48,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
                 if (mActivity instanceof MainActivity) {
                     DatabaseReference reference = getRef(position);
 //                    ((MainActivity) mActivity).onFragmentInteraction("show convention", reference.toString());
+                    mRouter.pushController(RouterTransaction.with(ShowConventionController.newInstance(reference.toString())));
                 }
             }
         });
@@ -51,6 +58,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
                 if (mActivity instanceof  MainActivity) {
                     DatabaseReference reference = getRef(position);
 //                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", reference.toString());
+                    mRouter.pushController(RouterTransaction.with(ModifyConventionController.newInstance(reference.toString())));
                 }
                 return true;
             }

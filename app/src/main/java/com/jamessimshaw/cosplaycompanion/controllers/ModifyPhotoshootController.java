@@ -1,11 +1,9 @@
-package com.jamessimshaw.cosplaycompanion.fragments;
+package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,13 +16,10 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.bluelinelabs.conductor.Controller;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
-import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
-import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
 
@@ -36,12 +31,12 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ModifyPhotoshootFragment.OnFragmentInteractionListener} interface
+ * {@link ModifyPhotoshootController.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ModifyPhotoshootFragment#newInstance} factory method to
+ * Use the {@link ModifyPhotoshootController#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotoshootView {
+public class ModifyPhotoshootController extends Controller implements ModifyPhotoshootView {
     @Inject ModifyPhotoshootPresenter mPresenter;
 
     @BindView(R.id.dateButton) Button mStartDateButton;
@@ -50,57 +45,60 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
     @BindView(R.id.seriesEditText) EditText mSeriesEditText;
     @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
 
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
+//
+//    public static Fragment newInstance(String reference, boolean edit) {
+//        ModifyPhotoshootController fragment = new ModifyPhotoshootController();
+//        Bundle args = new Bundle();
+//        if (edit) {
+//            args.putString("photoshoot", reference);
+//        } else {
+//            args.putString("event", reference);
+//        }
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
-    public static Fragment newInstance(String reference, boolean edit) {
-        ModifyPhotoshootFragment fragment = new ModifyPhotoshootFragment();
-        Bundle args = new Bundle();
-        if (edit) {
-            args.putString("photoshoot", reference);
-        } else {
-            args.putString("event", reference);
-        }
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-
-    public ModifyPhotoshootFragment() {
+    public ModifyPhotoshootController() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        DatabaseReference conventionYearRef = null;
-        DatabaseReference photoshootRef = null;
-        super.onCreate(savedInstanceState);
-        Photoshoot photoshoot = null;
-        ConventionYear conventionYear = null;
-        if (getArguments() != null) {
-            String conventionYearString = getArguments().getString("event");
-            String photoshootString = getArguments().getString("photoshoot");
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        DatabaseReference conventionYearRef = null;
+//        DatabaseReference photoshootRef = null;
+//        super.onCreate(savedInstanceState);
+//        Photoshoot photoshoot = null;
+//        ConventionYear conventionYear = null;
+//        if (getArguments() != null) {
+//            String conventionYearString = getArguments().getString("event");
+//            String photoshootString = getArguments().getString("photoshoot");
+//
+//            if (conventionYearString != null) {
+//                conventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionYearString);
+//            }
+//            if (photoshootString != null) {
+//                photoshootRef = FirebaseDatabase.getInstance().getReferenceFromUrl(photoshootString);
+//            }
+//        }
+//
+//        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
+//                .inject(this);
+//
+//        mPresenter.setView(this);
+//        mPresenter.setConventionYear(conventionYearRef);
+//        mPresenter.setPhotoshoot(photoshootRef);
+//    }
 
-            if (conventionYearString != null) {
-                conventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionYearString);
-            }
-            if (photoshootString != null) {
-                photoshootRef = FirebaseDatabase.getInstance().getReferenceFromUrl(photoshootString);
-            }
-        }
+    @NonNull
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fragment_new_photoshoot, container, false);
+        setHasOptionsMenu(true);
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
                 .inject(this);
-
-        mPresenter.setView(this);
-        mPresenter.setConventionYear(conventionYearRef);
-        mPresenter.setPhotoshoot(photoshootRef);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_photoshoot, container, false);
-        setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
         mPresenter.requestInitialData();
         mStartDateButton.setOnClickListener(mDateOnClickListener);
@@ -109,36 +107,36 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (OnFragmentInteractionListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        mPresenter.setView(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        mPresenter.detachView();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        try {
+//            mListener = (OnFragmentInteractionListener) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        mPresenter.setView(this);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//
+//        mPresenter.detachView();
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -160,20 +158,20 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
     private View.OnClickListener mDateOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DatePickerDialogFragment fragment = new DatePickerDialogFragment();
-            fragment.setListener(mDateListener);
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            fragment.show(transaction, "Start Date");
+//            DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+//            fragment.setListener(mDateListener);
+//            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//            fragment.show(transaction, "Start Date");
         }
     };
 
     private View.OnClickListener mTimeOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            TimePickerDialogFragment fragment = new TimePickerDialogFragment();
-            fragment.setListener(mTimeListener);
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            fragment.show(transaction, "Start Time");
+//            TimePickerDialogFragment fragment = new TimePickerDialogFragment();
+//            fragment.setListener(mTimeListener);
+//            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//            fragment.show(transaction, "Start Time");
         }
     };
 
@@ -191,15 +189,15 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
         }
     };
 
-    public interface OnFragmentInteractionListener {
-        void onModifyFragmentInteraction();
-    }
+//    public interface OnFragmentInteractionListener {
+//        void onModifyFragmentInteraction();
+//    }
 
     // ModifyPhotoshootView methods
 
     @Override
     public void displayMessage(String warning) {
-        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -215,7 +213,7 @@ public class ModifyPhotoshootFragment extends Fragment implements ModifyPhotosho
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-        mListener.onModifyFragmentInteraction();
+//        mListener.onModifyFragmentInteraction();
     }
 
     @Override
