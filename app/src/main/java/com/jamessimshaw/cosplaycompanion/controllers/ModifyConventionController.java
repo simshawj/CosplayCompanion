@@ -1,14 +1,11 @@
-package com.jamessimshaw.cosplaycompanion.fragments;
+package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,12 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.bluelinelabs.conductor.Controller;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
-import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 import com.squareup.picasso.Picasso;
@@ -41,7 +36,7 @@ import butterknife.ButterKnife;
 /**
  * Created by james on 10/4/15.
  */
-public class ModifyConventionFragment extends Fragment implements ModifyConventionView, View.OnClickListener {
+public class ModifyConventionController extends Controller implements ModifyConventionView, View.OnClickListener {
     public static final int LOGO = 0;
 
     @BindView(R.id.conventionNameEditText) EditText mNameEditText;
@@ -50,56 +45,57 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     //@BindView(R.id.conventionLogoChangeButton) Button mLogoButton;
 
     @Inject ModifyConventionPresenter mPresenter;
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
     private Uri mLogoUri;
 
-    public static ModifyConventionFragment newInstance() {
-        ModifyConventionFragment fragment = new ModifyConventionFragment();
-        return fragment;
-    }
+//    public static ModifyConventionController newInstance() {
+//        ModifyConventionController fragment = new ModifyConventionController();
+//        return fragment;
+//    }
 
-    public static ModifyConventionFragment newInstance(String conventionRef) {
-        ModifyConventionFragment fragment = new ModifyConventionFragment();
+    public static ModifyConventionController newInstance(String conventionRef) {
+        ModifyConventionController fragment = new ModifyConventionController();
         Bundle params = new Bundle();
         params.putString("convention", conventionRef);
-        fragment.setArguments(params);
+//        fragment.setArguments(params);
         return fragment;
     }
 
-    public ModifyConventionFragment() {
+//    public ModifyConventionController() {
+//
+//    }
 
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//        DatabaseReference convention = null;
+//
+//        if (getArguments() != null) {
+//            String reference = getArguments().getString("convention");
+//            convention = FirebaseDatabase.getInstance().getReferenceFromUrl(reference);
+//        }
+//
+//        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent().inject(this);
+//
+//        mPresenter.setConvention(convention);
+//
+//    }
 
+    @NonNull
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fragment_new_convention, container, false);
 
-        DatabaseReference convention = null;
-
-        if (getArguments() != null) {
-            String reference = getArguments().getString("convention");
-            convention = FirebaseDatabase.getInstance().getReferenceFromUrl(reference);
-        }
+//        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+//        if (mPresenter.isEditMode()) {
+//            actionBar.setTitle("Edit Convention");
+//        } else {
+//            actionBar.setTitle("New Convention");
+//        }
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent().inject(this);
 
-        mPresenter.setConvention(convention);
-        mPresenter.setView(this);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_convention, container, false);
-
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        if (mPresenter.isEditMode()) {
-            actionBar.setTitle("Edit Convention");
-        } else {
-            actionBar.setTitle("New Convention");
-        }
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
         setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
 
@@ -118,15 +114,27 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (OnFragmentInteractionListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+        mPresenter.setView(this);
     }
+
+    @Override
+    protected void onDetach(@NonNull View view) {
+        super.onDetach(view);
+        mPresenter.detachView();
+    }
+
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        try {
+//            mListener = (OnFragmentInteractionListener) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(getActivity().toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -148,29 +156,29 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
 
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        mPresenter.detachView();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        mPresenter.setView(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onModifyFragmentInteraction();
-    }
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//
+//        mPresenter.detachView();
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        mPresenter.setView(this);
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
+//
+//    public interface OnFragmentInteractionListener {
+//        void onModifyFragmentInteraction();
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -178,7 +186,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
         if (resultCode == Activity.RESULT_OK) {
             mLogoUri = data.getData();
             if (Build.VERSION.SDK_INT >= 19)
-                getContext().getApplicationContext().getContentResolver().takePersistableUriPermission(
+                getActivity().getApplicationContext().getContentResolver().takePersistableUriPermission(
                         mLogoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 );
             displayLogo(mLogoUri.toString());
@@ -213,7 +221,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     @Override
     public InputStream getLogo() {
         try {
-            return getContext().getContentResolver().openInputStream(mLogoUri);
+            return getActivity().getContentResolver().openInputStream(mLogoUri);
         } catch (IOException e) {
             return null;     // Should never happen since we just got the Uri, but send place
         } catch (NullPointerException e) {
@@ -223,7 +231,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
 
     @Override
     public void displayMessage(String warning) {
-        Toast.makeText(getContext(), warning, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -238,7 +246,7 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
 
     @Override
     public void displayLogo(String logoUri) {
-        Picasso.with(getContext()).load(logoUri)
+        Picasso.with(getActivity()).load(logoUri)
                 .placeholder(android.R.drawable.ic_dialog_alert)
                 .error(android.R.drawable.ic_dialog_alert)
                 .resize(mLogoImageView.getWidth(),0)
@@ -248,6 +256,6 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-        mListener.onModifyFragmentInteraction();
+//        mListener.onModifyFragmentInteraction();
     }
 }

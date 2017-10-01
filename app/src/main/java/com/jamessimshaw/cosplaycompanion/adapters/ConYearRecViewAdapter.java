@@ -42,7 +42,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public void onClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    ((MainActivity) mActivity).onFragmentInteraction("show conventionYear", getRef(position).toString());
+//                    ((MainActivity) mActivity).onFragmentInteraction("show conventionYear", getRef(position).toString());
                 }
             }
         });
@@ -50,7 +50,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", getRef(position).toString());
+//                    ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", getRef(position).toString());
                 }
                 return true;
             }

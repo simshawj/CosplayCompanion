@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
@@ -42,8 +41,9 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mActivity instanceof MainActivity)
-                    ((MainActivity) mActivity).onFragmentInteraction("edit photoshoot", getRef(position).toString());
+                if (mActivity instanceof MainActivity) {
+//                    ((MainActivity) mActivity).onFragmentInteraction("edit photoshoot", getRef(position).toString());
+                }
                 return true;
             }
         });
