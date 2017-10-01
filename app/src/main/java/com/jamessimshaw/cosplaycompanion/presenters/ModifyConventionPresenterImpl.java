@@ -107,6 +107,11 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
         }
     }
 
+    @Override
+    public boolean isEditMode() {
+        return mConventionRef != null;
+    }
+
     private void storeConvention(String name, String description, Uri logo) {
         String logoUriString;
         if (name == null || name.equals("")) {

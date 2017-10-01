@@ -67,8 +67,6 @@ public class MainActivity extends AppCompatActivity
         emailTextView.setText(user.getEmail());
         Picasso.with(this)
                 .load(user.getPhotoUrl()).fit().centerInside()
-                .error(R.drawable.ic_logo)
-                .placeholder(R.drawable.ic_logo)
                 .into(avatar);
 
         if (savedInstanceState != null)

@@ -10,4 +10,6 @@ public interface ModifyConventionPresenter extends Presenter<ModifyConventionVie
     void requestInitialData();
     void setConvention(DatabaseReference convention);
     void submit();
+
+    boolean isEditMode();
 }

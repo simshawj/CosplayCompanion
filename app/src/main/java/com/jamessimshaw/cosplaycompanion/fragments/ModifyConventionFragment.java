@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -91,7 +92,14 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_convention, container, false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("New Convention");
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (mPresenter.isEditMode()) {
+            actionBar.setTitle("Edit Convention");
+        } else {
+            actionBar.setTitle("New Convention");
+        }
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
         setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
 
@@ -130,12 +138,14 @@ public class ModifyConventionFragment extends Fragment implements ModifyConventi
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_submit) {
-            mPresenter.submit();
-
-            return true;
+        switch(id) {
+            case R.id.action_submit:
+                mPresenter.submit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+
     }
 
     @Override
