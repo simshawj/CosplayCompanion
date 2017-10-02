@@ -52,12 +52,7 @@ public class ListConventionsController extends Controller implements ListConvent
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ModifyConventionController fragment = ModifyConventionController.newInstance();
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fragment_container_main, fragment)
-//                        .addToBackStack(null)
-//                        .commit();
-                getRouter().pushController(RouterTransaction.with(ModifyConventionController.newInstance(null)));
+                getRouter().pushController(RouterTransaction.with(ModifyConventionController.newInstance()));
             }
         });
 

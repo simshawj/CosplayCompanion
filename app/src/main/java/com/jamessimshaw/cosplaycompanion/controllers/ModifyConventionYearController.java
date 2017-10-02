@@ -3,6 +3,7 @@ package com.jamessimshaw.cosplaycompanion.controllers;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Controller;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
@@ -40,6 +43,10 @@ public class ModifyConventionYearController extends Controller implements Modify
     @BindView(R.id.endDateButton) Button mEndButton;
     @BindView(R.id.displayNameEditText) EditText mDisplayNameEditText;
 
+    protected ModifyConventionYearController(@Nullable Bundle args) {
+        super(args);
+    }
+
     public static ModifyConventionYearController newInstance(String reference, boolean edit) {
         ModifyConventionYearController fragment = new ModifyConventionYearController();
         Bundle args = new Bundle();
@@ -49,40 +56,13 @@ public class ModifyConventionYearController extends Controller implements Modify
             args.putString("convention", reference);
         }
 //        fragment.setArguments(args);
-        return fragment;
+        return new ModifyConventionYearController(args);
     }
 
     public ModifyConventionYearController() {
         // Required Default constructor
     }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        DatabaseReference convention = null;
-//        DatabaseReference conventionYear = null;
-//        if (getArguments() != null) {
-//            String conventionRefString = getArguments().getString("convention");
-//            String conventionYearRefString = getArguments().getString("conventionYear");
-//            if (conventionRefString == null) {
-//                convention = null;
-//            } else {
-//                convention = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionRefString);
-//            }
-//            if (conventionYearRefString == null) {
-//                conventionYear = null;
-//            } else {
-//                conventionYear = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionYearRefString);
-//            }
-//        }
-//
-//        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent()
-//                .inject(this);
-//
-//        mPresenter.setView(this);
-//        mPresenter.setConvention(convention);
-//        mPresenter.setConventionYear(conventionYear);
-//    }
 
     @NonNull
     @Override
@@ -92,8 +72,28 @@ public class ModifyConventionYearController extends Controller implements Modify
         setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
 
+        DatabaseReference convention = null;
+        DatabaseReference conventionYear = null;
+        String conventionRefString = getArgs().getString("convention");
+        String conventionYearRefString = getArgs().getString("conventionYear");
+        if (conventionRefString == null) {
+            convention = null;
+        } else {
+            convention = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionRefString);
+        }
+        if (conventionYearRefString == null) {
+            conventionYear = null;
+        } else {
+            conventionYear = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionYearRefString);
+        }
+
+
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent()
                 .inject(this);
+
+        mPresenter.setView(this);
+        mPresenter.setConvention(convention);
+        mPresenter.setConventionYear(conventionYear);
 
         mStartButton.setOnClickListener(mStartButtonListener);
         mEndButton.setOnClickListener(mEndButtonListener);
@@ -101,17 +101,6 @@ public class ModifyConventionYearController extends Controller implements Modify
 
         return view;
     }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        try {
-//            mListener = (OnFragmentInteractionListener) getActivity();
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(getActivity().toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -130,25 +119,17 @@ public class ModifyConventionYearController extends Controller implements Modify
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//
-//        mPresenter.detachView();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        mPresenter.setView(this);
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
+    @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+        mPresenter.setView(this);
+    }
+
+    @Override
+    protected void onDetach(@NonNull View view) {
+        super.onDetach(view);
+        mPresenter.detachView();
+    }
 
     // Listeners
 

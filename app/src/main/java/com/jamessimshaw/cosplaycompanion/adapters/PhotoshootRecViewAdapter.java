@@ -6,11 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bluelinelabs.conductor.Router;
+import com.bluelinelabs.conductor.RouterTransaction;
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
+import com.jamessimshaw.cosplaycompanion.controllers.ModifyPhotoshootController;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.text.SimpleDateFormat;
@@ -24,10 +27,12 @@ import butterknife.ButterKnife;
  */
 public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photoshoot, PhotoshootRecViewAdapter.ViewHolder> {
     private Activity mActivity;
+    private Router mRouter;
 
-    public PhotoshootRecViewAdapter(Class<Photoshoot> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, Query keyQuery, DatabaseReference dataRef, Activity activity) {
+    public PhotoshootRecViewAdapter(Class<Photoshoot> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, Query keyQuery, DatabaseReference dataRef, Activity activity, Router router) {
         super(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef);
         mActivity = activity;
+        mRouter = router;
     }
 
     @Override
@@ -42,7 +47,7 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-//                    ((MainActivity) mActivity).onFragmentInteraction("edit photoshoot", getRef(position).toString());
+                    mRouter.pushController(RouterTransaction.with(ModifyPhotoshootController.newInstance(getRef(position).toString(), true)));
                 }
                 return true;
             }

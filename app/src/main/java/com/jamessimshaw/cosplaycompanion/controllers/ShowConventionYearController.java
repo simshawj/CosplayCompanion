@@ -2,6 +2,7 @@ package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Controller;
+import com.bluelinelabs.conductor.RouterTransaction;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
@@ -47,6 +50,10 @@ public class ShowConventionYearController extends Controller implements ListPhot
 //    private OnFragmentInteractionListener mListener;
     private View mLayoutView;
 
+    protected ShowConventionYearController(@Nullable Bundle args) {
+        super(args);
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -55,11 +62,9 @@ public class ShowConventionYearController extends Controller implements ListPhot
      * @return A new instance of fragment ShowConventionYearController.
      */
     public static ShowConventionYearController newInstance(String conventionYearRef) {
-        ShowConventionYearController fragment = new ShowConventionYearController();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM2, conventionYearRef);
-//        fragment.setArguments(args);
-        return fragment;
+        return new ShowConventionYearController(args);
     }
 
     public ShowConventionYearController() {
@@ -82,15 +87,18 @@ public class ShowConventionYearController extends Controller implements ListPhot
     public View onCreateView(LayoutInflater inflater, ViewGroup container) {
         mLayoutView = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
 
+        if (getArgs().getString(ARG_PARAM2) != null) {
+            mConventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(getArgs().getString(ARG_PARAM2));
+        }
         ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent().inject(this);
+        mPresenter.setView(this);
+        mPresenter.setConventionYearRef(mConventionYearRef);
 
         FloatingActionButton fab = (FloatingActionButton) mLayoutView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (mListener != null) {
-//                    mListener.onFragmentInteraction("create photoshoot", mConventionYearRef.toString());
-//                }
+                getRouter().pushController(RouterTransaction.with(ModifyPhotoshootController.newInstance(mConventionYearRef.toString(), false)));
             }
         });
 
@@ -105,42 +113,25 @@ public class ShowConventionYearController extends Controller implements ListPhot
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getPhotoshootListRef(), mPresenter.getPhotoshootDataRef(), getActivity());
+        mAdapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getPhotoshootListRef(), mPresenter.getPhotoshootDataRef(), getActivity(), getRouter());
         conventionYearDetailsRecyclerView.setAdapter(mAdapter);
 
         return mLayoutView;
     }
 
-//    @Override
-//    public void onAttach(Context contexty) {
-//        super.onAttach(contexty);
-//        try {
-//            mListener = (OnFragmentInteractionListener) contexty;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(contexty.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        mPresenter.setView(this);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//
-//        mPresenter.detachView();
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
+    @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+
+        mPresenter.setView(this);
+    }
+
+    @Override
+    protected void onDetach(@NonNull View view) {
+        super.onDetach(view);
+
+        mPresenter.detachView();
+    }
 
     @Override
     public void updateTitle(String title) {
@@ -174,9 +165,6 @@ public class ShowConventionYearController extends Controller implements ListPhot
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-//    public interface OnFragmentInteractionListener {
-//        void onFragmentInteraction(String event, String item);
-//    }
 
     // ListPhotoshootsView Methods
 

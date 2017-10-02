@@ -2,7 +2,9 @@ package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,9 +19,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Controller;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
+import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
+import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
 
@@ -45,19 +51,22 @@ public class ModifyPhotoshootController extends Controller implements ModifyPhot
     @BindView(R.id.seriesEditText) EditText mSeriesEditText;
     @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
 
-//    private OnFragmentInteractionListener mListener;
+    protected ModifyPhotoshootController(@Nullable Bundle args) {
+        super(args);
+    }
+
+    //    private OnFragmentInteractionListener mListener;
 //
-//    public static Fragment newInstance(String reference, boolean edit) {
-//        ModifyPhotoshootController fragment = new ModifyPhotoshootController();
-//        Bundle args = new Bundle();
-//        if (edit) {
-//            args.putString("photoshoot", reference);
-//        } else {
-//            args.putString("event", reference);
-//        }
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    public static ModifyPhotoshootController newInstance(String reference, boolean edit) {
+        ModifyPhotoshootController fragment = new ModifyPhotoshootController();
+        Bundle args = new Bundle();
+        if (edit) {
+            args.putString("photoshoot", reference);
+        } else {
+            args.putString("event", reference);
+        }
+        return new ModifyPhotoshootController(args);
+    }
 
 
     public ModifyPhotoshootController() {
@@ -100,6 +109,27 @@ public class ModifyPhotoshootController extends Controller implements ModifyPhot
         ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
                 .inject(this);
         ButterKnife.bind(this, view);
+
+        DatabaseReference conventionYearRef = null;
+        DatabaseReference photoshootRef = null;
+        Photoshoot photoshoot = null;
+        ConventionYear conventionYear = null;
+        String conventionYearString = getArgs().getString("event");
+        String photoshootString = getArgs().getString("photoshoot");
+
+        if (conventionYearString != null) {
+            conventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionYearString);
+        }
+        if (photoshootString != null) {
+            photoshootRef = FirebaseDatabase.getInstance().getReferenceFromUrl(photoshootString);
+        }
+
+        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()
+                .inject(this);
+
+        mPresenter.setView(this);
+        mPresenter.setConventionYear(conventionYearRef);
+        mPresenter.setPhotoshoot(photoshootRef);
         mPresenter.requestInitialData();
         mStartDateButton.setOnClickListener(mDateOnClickListener);
         mStartTimeButton.setOnClickListener(mTimeOnClickListener);
@@ -107,36 +137,17 @@ public class ModifyPhotoshootController extends Controller implements ModifyPhot
         return view;
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        try {
-//            mListener = (OnFragmentInteractionListener) getActivity();
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        mPresenter.setView(this);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//
-//        mPresenter.detachView();
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
+    @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+        mPresenter.setView(this);
+    }
+
+    @Override
+    protected void onDetach(@NonNull View view) {
+        super.onDetach(view);
+        mPresenter.detachView();
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -189,9 +200,6 @@ public class ModifyPhotoshootController extends Controller implements ModifyPhot
         }
     };
 
-//    public interface OnFragmentInteractionListener {
-//        void onModifyFragmentInteraction();
-//    }
 
     // ModifyPhotoshootView methods
 

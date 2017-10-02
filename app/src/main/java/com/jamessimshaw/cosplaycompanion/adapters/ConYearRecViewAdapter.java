@@ -6,11 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bluelinelabs.conductor.Router;
+import com.bluelinelabs.conductor.RouterTransaction;
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
+import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionYearController;
+import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionYearController;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
 import java.text.SimpleDateFormat;
@@ -25,10 +29,12 @@ import butterknife.ButterKnife;
  */
 public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<ConventionYear, ConYearRecViewAdapter.ViewHolder> {
     private Activity mActivity;
+    private Router mRouter;
 
-    public ConYearRecViewAdapter(Class<ConventionYear> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, Query keyQuery, DatabaseReference dataRef, Activity activity) {
+    public ConYearRecViewAdapter(Class<ConventionYear> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, Query keyQuery, DatabaseReference dataRef, Activity activity, Router router) {
         super(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef);
         mActivity = activity;
+        mRouter = router;
     }
 
     @Override
@@ -42,7 +48,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public void onClick(View view) {
                 if (mActivity instanceof MainActivity) {
-//                    ((MainActivity) mActivity).onFragmentInteraction("show conventionYear", getRef(position).toString());
+                    mRouter.pushController(RouterTransaction.with(ShowConventionYearController.newInstance(getRef(position).toString())));
                 }
             }
         });
@@ -50,7 +56,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-//                    ((MainActivity) mActivity).onFragmentInteraction("edit conventionYear", getRef(position).toString());
+                    mRouter.pushController(RouterTransaction.with(ModifyConventionYearController.newInstance(getRef(position).toString(), true)));
                 }
                 return true;
             }

@@ -2,6 +2,7 @@ package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Controller;
+import com.bluelinelabs.conductor.RouterTransaction;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConYearRecViewAdapter;
@@ -38,40 +41,34 @@ public class ShowConventionController extends Controller implements ListConventi
     private View mLayoutView;
 
     public static ShowConventionController newInstance(String reference) {
-        ShowConventionController fragment = new ShowConventionController();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, reference);
-//        fragment.setArguments(args);
-        return fragment;
+        return new ShowConventionController(args);
     }
 
     public ShowConventionController() {
         // Required empty public constructor
     }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent().inject(this);
-//        mYearsPresenter.setView(this);
-//    }
+    private ShowConventionController(@Nullable Bundle args) {
+        super(args);
+    }
+
+
 
     @NonNull
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container) {
         mLayoutView = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
 
-//        mConventionReference = FirebaseDatabase.getInstance().getReferenceFromUrl(getArguments().getString(ARG_PARAM1));
+        mConventionReference = FirebaseDatabase.getInstance().getReferenceFromUrl(getArgs().getString(ARG_PARAM1));
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent().inject(this);
         FloatingActionButton fab = (FloatingActionButton) mLayoutView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModifyConventionYearController fragment = ModifyConventionYearController.newInstance(mConventionReference.toString(), false);
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fragment_container_main, fragment)
-//                        .addToBackStack(null)
-//                        .commit();
+                ModifyConventionYearController controller = ModifyConventionYearController.newInstance(mConventionReference.toString(), false);
+                getRouter().pushController(RouterTransaction.with(controller));
             }
         });
 
@@ -85,29 +82,23 @@ public class ShowConventionController extends Controller implements ListConventi
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new ConYearRecViewAdapter(ConventionYear.class, R.layout.row_convention_year, ConYearRecViewAdapter.ViewHolder.class, mYearsPresenter.getEventsRef(), mYearsPresenter.getEventsDataRef(), getActivity());
+        mAdapter = new ConYearRecViewAdapter(ConventionYear.class, R.layout.row_convention_year, ConYearRecViewAdapter.ViewHolder.class, mYearsPresenter.getEventsRef(), mYearsPresenter.getEventsDataRef(), getActivity(), getRouter());
         conventionDetailsRecyclerView.setAdapter(mAdapter);
 
         return mLayoutView;
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mYearsPresenter.setView(this);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//
-//        mYearsPresenter.detachView();
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//    }
+    @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+        mYearsPresenter.setView(this);
+    }
+
+    @Override
+    protected void onDetach(@NonNull View view) {
+        super.onDetach(view);
+        mYearsPresenter.detachView();
+    }
 
     // ListConventionYearsView methods
 
@@ -123,7 +114,7 @@ public class ShowConventionController extends Controller implements ListConventi
 
     @Override
     public void updateData(List<ConventionYear> conventionYears) {
-//        mAdapter.updateData(conventionYears);
+        // Not necessary with Firebase
     }
 
     @Override

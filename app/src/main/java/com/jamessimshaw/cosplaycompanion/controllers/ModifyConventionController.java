@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Controller;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
@@ -48,39 +51,23 @@ public class ModifyConventionController extends Controller implements ModifyConv
 //    private OnFragmentInteractionListener mListener;
     private Uri mLogoUri;
 
-//    public static ModifyConventionController newInstance() {
-//        ModifyConventionController fragment = new ModifyConventionController();
-//        return fragment;
-//    }
-
-    public static ModifyConventionController newInstance(String conventionRef) {
-        ModifyConventionController fragment = new ModifyConventionController();
-        Bundle params = new Bundle();
-        params.putString("convention", conventionRef);
-//        fragment.setArguments(params);
-        return fragment;
+    public ModifyConventionController() {
+//        super();
     }
 
-//    public ModifyConventionController() {
-//
-//    }
+    protected ModifyConventionController(@Nullable Bundle args) {
+        super(args);
+    }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        DatabaseReference convention = null;
-//
-//        if (getArguments() != null) {
-//            String reference = getArguments().getString("convention");
-//            convention = FirebaseDatabase.getInstance().getReferenceFromUrl(reference);
-//        }
-//
-//        ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent().inject(this);
-//
-//        mPresenter.setConvention(convention);
-//
-//    }
+    public static ModifyConventionController newInstance() {
+        return new ModifyConventionController();
+    }
+
+    public static ModifyConventionController newInstance(String conventionRef) {
+        Bundle params = new Bundle();
+        params.putString("convention", conventionRef);
+        return new ModifyConventionController(params);
+    }
 
     @NonNull
     @Override
@@ -94,7 +81,19 @@ public class ModifyConventionController extends Controller implements ModifyConv
 //            actionBar.setTitle("New Convention");
 //        }
 
+
+        DatabaseReference convention = null;
+
+        String reference = getArgs().getString("convention");
+        if (reference != null) {
+            convention = FirebaseDatabase.getInstance().getReferenceFromUrl(reference);
+        } else {
+            convention = null;
+        }
+
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent().inject(this);
+
+        mPresenter.setConvention(convention);
 
         setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
@@ -125,17 +124,6 @@ public class ModifyConventionController extends Controller implements ModifyConv
         mPresenter.detachView();
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        try {
-//            mListener = (OnFragmentInteractionListener) getActivity();
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(getActivity().toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.new_item_menu, menu);
@@ -155,30 +143,6 @@ public class ModifyConventionController extends Controller implements ModifyConv
         }
 
     }
-
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//
-//        mPresenter.detachView();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        mPresenter.setView(this);
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    public interface OnFragmentInteractionListener {
-//        void onModifyFragmentInteraction();
-//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
