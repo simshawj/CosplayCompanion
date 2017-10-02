@@ -2,8 +2,10 @@ package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
@@ -44,8 +47,8 @@ public class ListConventionsController extends Controller implements ListConvent
     public View onCreateView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
 
-//        Toolbar toolbar = view.findViewById(R.id.toolbar);
-//        ((MainActivity)getActivity()).setSupportActionBar(toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((MainActivity)getActivity()).setSupportActionBar(toolbar);
         ((CosplayCompanionApplication)(getActivity().getApplication())).getConventionsComponent().inject(this);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -56,7 +59,7 @@ public class ListConventionsController extends Controller implements ListConvent
             }
         });
 
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Conventions");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Conventions");
 
         RecyclerView conventionRecyclerView = (RecyclerView)view.findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
