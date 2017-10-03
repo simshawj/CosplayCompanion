@@ -143,9 +143,6 @@ public class ModifyConventionController extends BaseInnerController implements M
             case R.id.action_submit:
                 mPresenter.submit();
                 return true;
-            case android.R.id.home:
-                handleBack();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

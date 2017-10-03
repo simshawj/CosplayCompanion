@@ -37,6 +37,7 @@ public abstract class BaseLandingController extends Controller implements Naviga
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
 
         ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
+
         DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 getActivity(), drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

@@ -16,7 +16,6 @@ import android.view.ViewStub;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,7 +40,7 @@ import javax.inject.Inject;
  * Use the {@link ShowConventionYearController#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShowConventionYearController extends Controller implements ListPhotoshootsView {
+public class ShowConventionYearController extends BaseInnerController implements ListPhotoshootsView {
     private static final String ARG_PARAM2 = "conventionYear";
 
     @Inject ListPhotoshootsPresenter mPresenter;
@@ -84,7 +83,7 @@ public class ShowConventionYearController extends Controller implements ListPhot
 
     @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
+    public View inflateView(LayoutInflater inflater, ViewGroup container) {
         mLayoutView = inflater.inflate(R.layout.controller_base, container, false);
 
         ViewStub stub = mLayoutView.findViewById(R.id.contentHolder);
