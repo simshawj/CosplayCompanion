@@ -12,13 +12,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.Controller;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
  * Use the {@link ModifyPhotoshootController#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModifyPhotoshootController extends Controller implements ModifyPhotoshootView {
+public class ModifyPhotoshootController extends BaseInnerController implements ModifyPhotoshootView {
     @Inject ModifyPhotoshootPresenter mPresenter;
 
     @BindView(R.id.dateButton) Button mStartDateButton;
@@ -102,8 +102,15 @@ public class ModifyPhotoshootController extends Controller implements ModifyPhot
 
     @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.fragment_new_photoshoot, container, false);
+    public View inflateView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.controller_base, container, false);
+
+        ViewStub stub = view.findViewById(R.id.contentHolder);
+        stub.setLayoutResource(R.layout.fragment_new_photoshoot);
+        stub.inflate();
+
+        view.findViewById(R.id.fab).setVisibility(View.GONE);
+
         setHasOptionsMenu(true);
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent()

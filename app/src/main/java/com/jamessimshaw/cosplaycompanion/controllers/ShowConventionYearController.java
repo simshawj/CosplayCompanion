@@ -85,7 +85,11 @@ public class ShowConventionYearController extends Controller implements ListPhot
     @NonNull
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container) {
-        mLayoutView = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
+        mLayoutView = inflater.inflate(R.layout.controller_base, container, false);
+
+        ViewStub stub = mLayoutView.findViewById(R.id.contentHolder);
+        stub.setLayoutResource(R.layout.lists_content);
+        stub.inflate();
 
         if (getArgs().getString(ARG_PARAM2) != null) {
             mConventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(getArgs().getString(ARG_PARAM2));
@@ -102,7 +106,7 @@ public class ShowConventionYearController extends Controller implements ListPhot
             }
         });
 
-        ViewStub stub = (ViewStub) mLayoutView.findViewById(R.id.list_header);
+        stub = (ViewStub) mLayoutView.findViewById(R.id.list_header);
         stub.setLayoutResource(R.layout.photoshoot_list_header);
         stub.inflate();
 

@@ -10,12 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.Controller;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
@@ -34,8 +34,7 @@ import butterknife.ButterKnife;
 /**
  * Created by james on 10/11/15.
  */
-public class ModifyConventionYearController extends Controller implements ModifyConventionYearView {
-//    private OnFragmentInteractionListener mListener;
+public class ModifyConventionYearController extends BaseInnerController implements ModifyConventionYearView {
     @Inject ModifyConventionYearPresenter mPresenter;
 
     @BindView(R.id.conventionLocation) EditText mLocationEditText;
@@ -48,14 +47,12 @@ public class ModifyConventionYearController extends Controller implements Modify
     }
 
     public static ModifyConventionYearController newInstance(String reference, boolean edit) {
-        ModifyConventionYearController fragment = new ModifyConventionYearController();
         Bundle args = new Bundle();
         if (edit) {
             args.putString("conventionYear", reference);
         } else {
             args.putString("convention", reference);
         }
-//        fragment.setArguments(args);
         return new ModifyConventionYearController(args);
     }
 
@@ -66,9 +63,15 @@ public class ModifyConventionYearController extends Controller implements Modify
 
     @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container) {
-        View view = inflater.inflate(R.layout.fragment_new_convention_year, container, false);
+    public View inflateView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.controller_base, container, false);
+
+        ViewStub stub = view.findViewById(R.id.contentHolder);
+        stub.setLayoutResource(R.layout.fragment_new_convention_year);
+        stub.inflate();
+
+        view.findViewById(R.id.fab).setVisibility(View.GONE);
+
         setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
 

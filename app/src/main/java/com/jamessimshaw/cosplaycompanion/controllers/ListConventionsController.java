@@ -2,20 +2,17 @@ package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
-import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
@@ -23,7 +20,7 @@ import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import javax.inject.Inject;
 
-public class ListConventionsController extends Controller implements ListConventionsView {
+public class ListConventionsController extends BaseLandingController implements ListConventionsView {
 
     @Inject ListConventionsPresenter mPresenter;
     private ConventionRecViewAdapter mAdapter;
@@ -44,11 +41,13 @@ public class ListConventionsController extends Controller implements ListConvent
 
     @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
+    public View inflateView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.controller_base, container, false);
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        ((MainActivity)getActivity()).setSupportActionBar(toolbar);
+        ViewStub stub = view.findViewById(R.id.contentHolder);
+        stub.setLayoutResource(R.layout.lists_content);
+        stub.inflate();
+
         ((CosplayCompanionApplication)(getActivity().getApplication())).getConventionsComponent().inject(this);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -58,8 +57,6 @@ public class ListConventionsController extends Controller implements ListConvent
                 getRouter().pushController(RouterTransaction.with(ModifyConventionController.newInstance()));
             }
         });
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Conventions");
 
         RecyclerView conventionRecyclerView = (RecyclerView)view.findViewById(R.id.list_fragment_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -80,6 +77,7 @@ public class ListConventionsController extends Controller implements ListConvent
     @Override
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
+        setTitle("Conventions");
         mPresenter.setView(this);
     }
 

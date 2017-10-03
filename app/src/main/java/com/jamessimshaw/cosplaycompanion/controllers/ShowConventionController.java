@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,7 +31,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class ShowConventionController extends Controller implements ListConventionYearsView {
+public class ShowConventionController extends BaseInnerController implements ListConventionYearsView {
     private static final String ARG_PARAM1 = "param1";
 
     @Inject ListConventionYearsPresenterImpl mYearsPresenter;
@@ -58,8 +57,12 @@ public class ShowConventionController extends Controller implements ListConventi
 
     @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
-        mLayoutView = inflater.inflate(R.layout.fragment_lists_with_fab, container, false);
+    public View inflateView(LayoutInflater inflater, ViewGroup container) {
+        mLayoutView = inflater.inflate(R.layout.controller_base, container, false);
+
+        ViewStub stub = mLayoutView.findViewById(R.id.contentHolder);
+        stub.setLayoutResource(R.layout.lists_content);
+        stub.inflate();
 
         mConventionReference = FirebaseDatabase.getInstance().getReferenceFromUrl(getArgs().getString(ARG_PARAM1));
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent().inject(this);
@@ -72,7 +75,7 @@ public class ShowConventionController extends Controller implements ListConventi
             }
         });
 
-        ViewStub stub = (ViewStub) mLayoutView.findViewById(R.id.list_header);
+        stub = (ViewStub) mLayoutView.findViewById(R.id.list_header);
         stub.setLayoutResource(R.layout.convention_year_list_header);
         stub.inflate();
 
