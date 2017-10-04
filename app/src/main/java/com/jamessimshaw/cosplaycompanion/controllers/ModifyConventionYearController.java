@@ -125,7 +125,13 @@ public class ModifyConventionYearController extends BaseInnerController implemen
     @Override
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
+
         mPresenter.setView(this);
+        if (mPresenter.isEditMode()) {
+            setTitle("Edit Event");
+        } else {
+            setTitle("New Event");
+        }
     }
 
     @Override

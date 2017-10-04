@@ -1,8 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
 import com.google.firebase.database.DatabaseReference;
-import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
-import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
 
 /**
@@ -15,4 +13,6 @@ public interface ModifyPhotoshootPresenter extends Presenter<ModifyPhotoshootVie
     void submit();
     void dateChanged(int year, int month, int day);
     void timeChanged(int hour, int minute);
+
+    boolean isEditMode();
 }

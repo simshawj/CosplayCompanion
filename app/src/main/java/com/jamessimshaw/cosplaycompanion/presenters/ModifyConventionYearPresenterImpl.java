@@ -149,4 +149,9 @@ public class ModifyConventionYearPresenterImpl implements ModifyConventionYearPr
         mConventionYearRef.setValue(mConventionYear);
         mView.done();
     }
+
+    @Override
+    public boolean isEditMode() {
+        return mConventionYearRef != null;
+    }
 }

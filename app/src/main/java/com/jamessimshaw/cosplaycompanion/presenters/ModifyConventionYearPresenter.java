@@ -1,8 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
 import com.google.firebase.database.DatabaseReference;
-import com.jamessimshaw.cosplaycompanion.models.Convention;
-import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionYearView;
 
 import java.util.Date;
@@ -17,4 +15,6 @@ public interface ModifyConventionYearPresenter extends Presenter<ModifyConventio
     void setStartDate(Date date);
     void setFinishDate(Date date);
     void submit();
+
+    boolean isEditMode();
 }

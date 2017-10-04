@@ -7,7 +7,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
 
@@ -138,5 +137,10 @@ public class ModifyPhotoshootPresenterImpl implements ModifyPhotoshootPresenter 
         mStart.set(Calendar.MINUTE, minute);
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
         mView.updateTime(timeFormat.format(mStart.getTime()));
+    }
+
+    @Override
+    public boolean isEditMode() {
+        return mPhotoshootRef != null;
     }
 }

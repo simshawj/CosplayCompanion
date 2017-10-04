@@ -147,7 +147,13 @@ public class ModifyPhotoshootController extends BaseInnerController implements M
     @Override
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
+
         mPresenter.setView(this);
+        if (mPresenter.isEditMode()) {
+            setTitle("Edit Photoshoot");
+        } else {
+            setTitle("New Photoshoot");
+        }
     }
 
     @Override
