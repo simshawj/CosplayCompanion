@@ -11,6 +11,7 @@ import android.view.ViewStub;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
@@ -48,7 +49,7 @@ public class ListConventionsController extends BaseLandingController implements 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRouter().pushController(RouterTransaction.with(ModifyConventionController.newInstance()));
+                getRouter().pushController(RouterTransaction.with(ModifyConventionController.newInstance()).pushChangeHandler(new HorizontalChangeHandler()));
             }
         });
 

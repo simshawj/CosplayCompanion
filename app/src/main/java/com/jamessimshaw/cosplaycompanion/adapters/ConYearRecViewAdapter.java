@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
@@ -48,7 +49,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public void onClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    mRouter.pushController(RouterTransaction.with(ShowConventionYearController.newInstance(getRef(position).toString())));
+                    mRouter.pushController(RouterTransaction.with(ShowConventionYearController.newInstance(getRef(position).toString())).pushChangeHandler(new HorizontalChangeHandler()));
                 }
             }
         });
@@ -56,7 +57,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    mRouter.pushController(RouterTransaction.with(ModifyConventionYearController.newInstance(getRef(position).toString(), true)));
+                    mRouter.pushController(RouterTransaction.with(ModifyConventionYearController.newInstance(getRef(position).toString(), true)).pushChangeHandler(new HorizontalChangeHandler()));
                 }
                 return true;
             }

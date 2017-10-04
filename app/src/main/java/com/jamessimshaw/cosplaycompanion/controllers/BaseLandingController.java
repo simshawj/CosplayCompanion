@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.jamessimshaw.cosplaycompanion.R;
@@ -77,7 +78,7 @@ public abstract class BaseLandingController extends Controller implements Naviga
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
 
-        ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
+//        ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
     }
 
     @NonNull
@@ -98,11 +99,11 @@ public abstract class BaseLandingController extends Controller implements Naviga
         switch (item.getItemId()) {
             case R.id.nav_conventions:
                 controller = ListConventionsController.newInstance();
-                getRouter().pushController(RouterTransaction.with(controller));
+                getRouter().setRoot(RouterTransaction.with(controller).pushChangeHandler(new FadeChangeHandler()));
                 break;
             case R.id.nav_feedback:
                 controller = CreateSuggestionController.newInstance();
-                getRouter().pushController(RouterTransaction.with(controller));
+                getRouter().setRoot(RouterTransaction.with(controller).pushChangeHandler(new FadeChangeHandler()));
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();

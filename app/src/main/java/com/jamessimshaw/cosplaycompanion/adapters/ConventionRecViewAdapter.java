@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.AutoTransitionChangeHandler;
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.jamessimshaw.cosplaycompanion.R;
@@ -48,7 +50,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
                 if (mActivity instanceof MainActivity) {
                     DatabaseReference reference = getRef(position);
 //                    ((MainActivity) mActivity).onFragmentInteraction("show convention", reference.toString());
-                    mRouter.pushController(RouterTransaction.with(ShowConventionController.newInstance(reference.toString())));
+                    mRouter.pushController(RouterTransaction.with(ShowConventionController.newInstance(reference.toString())).pushChangeHandler(new HorizontalChangeHandler()));
                 }
             }
         });
@@ -58,7 +60,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
                 if (mActivity instanceof  MainActivity) {
                     DatabaseReference reference = getRef(position);
 //                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", reference.toString());
-                    mRouter.pushController(RouterTransaction.with(ModifyConventionController.newInstance(reference.toString())));
+                    mRouter.pushController(RouterTransaction.with(ModifyConventionController.newInstance(reference.toString())).pushChangeHandler(new AutoTransitionChangeHandler()));
                 }
                 return true;
             }

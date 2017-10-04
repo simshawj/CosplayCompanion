@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
@@ -71,7 +72,7 @@ public class ShowConventionYearController extends BaseInnerController implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRouter().pushController(RouterTransaction.with(ModifyPhotoshootController.newInstance(mConventionYearRef.toString(), false)));
+                getRouter().pushController(RouterTransaction.with(ModifyPhotoshootController.newInstance(mConventionYearRef.toString(), false)).pushChangeHandler(new HorizontalChangeHandler()));
             }
         });
 
