@@ -36,7 +36,7 @@ public class ListConventionsController extends BaseLandingController implements 
     @NonNull
     @Override
     public View inflateView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.controller_base, container, false);
+        View view = inflater.inflate(R.layout.controller_landing_base, container, false);
 
         ViewStub stub = view.findViewById(R.id.contentHolder);
         stub.setLayoutResource(R.layout.lists_content);

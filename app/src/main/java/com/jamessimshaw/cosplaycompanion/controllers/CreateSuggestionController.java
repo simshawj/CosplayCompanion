@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,7 +39,11 @@ public class CreateSuggestionController extends BaseLandingController implements
     @NonNull
     @Override
     public View inflateView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.fragment_new_feedback, container, false);
+        View view = inflater.inflate(R.layout.controller_landing_base, container, false);
+
+        ViewStub stub = view.findViewById(R.id.contentHolder);
+        stub.setLayoutResource(R.layout.fragment_new_feedback);
+        stub.inflate();
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getSuggestionsComponent()
                 .inject(this);

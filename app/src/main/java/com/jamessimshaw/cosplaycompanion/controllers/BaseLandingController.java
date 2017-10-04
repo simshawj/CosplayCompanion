@@ -1,6 +1,8 @@
 package com.jamessimshaw.cosplaycompanion.controllers;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,6 +32,14 @@ public abstract class BaseLandingController extends Controller implements Naviga
 
     protected Toolbar mToolbar;
 
+    protected BaseLandingController() {
+        super();
+    }
+
+    protected BaseLandingController(@Nullable Bundle args) {
+        super(args);
+    }
+
     @NonNull
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
@@ -38,14 +48,14 @@ public abstract class BaseLandingController extends Controller implements Naviga
 
         ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
 
-        DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 getActivity(), drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.setDrawerSlideAnimationEnabled(false);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) drawer.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
