@@ -1,7 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.views;
 
-import java.util.Date;
-
 /**
  * Created by james on 2/18/16.
  */
@@ -14,4 +12,5 @@ public interface ModifyConventionYearView extends MVPView {
     void displayDisplayName(String displayName);
 
     String getDisplayName();
+    void done();
 }

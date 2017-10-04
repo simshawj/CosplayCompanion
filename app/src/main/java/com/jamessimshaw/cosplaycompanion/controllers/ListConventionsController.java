@@ -25,12 +25,6 @@ public class ListConventionsController extends BaseLandingController implements 
     @Inject ListConventionsPresenter mPresenter;
     private ConventionRecViewAdapter mAdapter;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ListConventionsController.
-     */
     public static ListConventionsController newInstance() {
         return new ListConventionsController();
     }
@@ -84,10 +78,5 @@ public class ListConventionsController extends BaseLandingController implements 
     @Override
     public void displayMessage(String warning) {
         Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void done() {
-        // Nothing until a further version
     }
 }

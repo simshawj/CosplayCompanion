@@ -6,4 +6,5 @@ package com.jamessimshaw.cosplaycompanion.views;
 
 public interface SuggestionView extends MVPView {
     String getText();
+    void done();
 }

@@ -182,11 +182,6 @@ public class ModifyConventionYearController extends BaseInnerController implemen
                 }
             };
 
-
-//    public interface OnFragmentInteractionListener {
-//        void onModifyFragmentInteraction();
-//    }
-
     // ModifyConventionYearView methods
 
     @Override
@@ -227,7 +222,7 @@ public class ModifyConventionYearController extends BaseInnerController implemen
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-//        mListener.onModifyFragmentInteraction();
+        getRouter().popCurrentController();
     }
 
 }

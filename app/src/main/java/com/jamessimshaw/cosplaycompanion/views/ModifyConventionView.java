@@ -12,4 +12,5 @@ public interface ModifyConventionView extends MVPView {
     void displayName(String name);
     void displayDescription(String description);
     void displayLogo(String logoUri);
+    void done();
 }

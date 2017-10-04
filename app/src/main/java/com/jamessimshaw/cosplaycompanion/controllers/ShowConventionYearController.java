@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,34 +29,18 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ShowConventionYearController.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ShowConventionYearController#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ShowConventionYearController extends BaseInnerController implements ListPhotoshootsView {
     private static final String ARG_PARAM2 = "conventionYear";
 
     @Inject ListPhotoshootsPresenter mPresenter;
     private DatabaseReference mConventionYearRef;
     private PhotoshootRecViewAdapter mAdapter;
-//    private OnFragmentInteractionListener mListener;
     private View mLayoutView;
 
     protected ShowConventionYearController(@Nullable Bundle args) {
         super(args);
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param conventionYearRef ConventionYear to show.
-     * @return A new instance of fragment ShowConventionYearController.
-     */
     public static ShowConventionYearController newInstance(String conventionYearRef) {
         Bundle args = new Bundle();
         args.putString(ARG_PARAM2, conventionYearRef);
@@ -67,17 +50,6 @@ public class ShowConventionYearController extends BaseInnerController implements
     public ShowConventionYearController() {
         // Required empty public constructor
     }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null && getArguments().getString(ARG_PARAM2) != null) {
-//            mConventionYearRef = FirebaseDatabase.getInstance().getReferenceFromUrl(getArguments().getString(ARG_PARAM2));
-//        }
-//        ((CosplayCompanionApplication)getActivity().getApplication()).getPhotoshootsComponent().inject(this);
-//        mPresenter.setView(this);
-//        mPresenter.setConventionYearRef(mConventionYearRef);
-//    }
 
     @NonNull
     @Override
@@ -106,8 +78,6 @@ public class ShowConventionYearController extends BaseInnerController implements
         stub = (ViewStub) mLayoutView.findViewById(R.id.list_header);
         stub.setLayoutResource(R.layout.photoshoot_list_header);
         stub.inflate();
-
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mConventionYearRef.getDisplayName());
 
         RecyclerView conventionYearDetailsRecyclerView = (RecyclerView)mLayoutView
                 .findViewById(R.id.list_fragment_recyclerview);
@@ -152,28 +122,9 @@ public class ShowConventionYearController extends BaseInnerController implements
         super.setTitle(title);
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-
-    // ListPhotoshootsView Methods
-
     @Override
     public void displayMessage(String warning) {
         Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void done() {
-
     }
 
 }

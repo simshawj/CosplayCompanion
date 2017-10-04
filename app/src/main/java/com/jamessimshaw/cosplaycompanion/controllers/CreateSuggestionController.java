@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.Controller;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
@@ -23,17 +22,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Fragment for creating a suggestion.
- *
- * @author James Simshaw
- */
-
-public class CreateSuggestionController extends Controller implements SuggestionView {
+public class CreateSuggestionController extends BaseLandingController implements SuggestionView {
 
     @BindView(R.id.suggestionEditText) EditText mSuggestionEditText;
-
-//    private OnFragmentInteractionListener mListener;
     @Inject SuggestionPresenter mPresenter;
 
     public static CreateSuggestionController newInstance() {
@@ -44,17 +35,9 @@ public class CreateSuggestionController extends Controller implements Suggestion
 
     }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        ((CosplayCompanionApplication)getActivity().getApplication()).getSuggestionsComponent()
-//                .inject(this);
-//    }
-
     @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container) {
+    public View inflateView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_new_feedback, container, false);
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getSuggestionsComponent()
@@ -67,21 +50,24 @@ public class CreateSuggestionController extends Controller implements Suggestion
         return view;
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        try {
-//            mListener = (CreateSuggestionController.OnFragmentInteractionListener) getActivity();
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(getActivity().toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.new_item_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+
+        mPresenter.setView(this);
+        setTitle("New Suggestion");
+    }
+
+    @Override
+    protected void onDetach(@NonNull View view) {
+        super.onDetach(view);
+        mPresenter.detachView();
     }
 
     @Override
@@ -96,24 +82,6 @@ public class CreateSuggestionController extends Controller implements Suggestion
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        mPresenter.detachView();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mPresenter.setView(this);
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-
     @Override
     public void displayMessage(String warning) {
         Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
@@ -122,7 +90,7 @@ public class CreateSuggestionController extends Controller implements Suggestion
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-//        mListener.onModifyFragmentInteraction();
+        getRouter().popCurrentController();
     }
 
     @Override
@@ -130,7 +98,4 @@ public class CreateSuggestionController extends Controller implements Suggestion
         return mSuggestionEditText.getText().toString();
     }
 
-//    public interface OnFragmentInteractionListener {
-//        void onModifyFragmentInteraction();
-//    }
 }

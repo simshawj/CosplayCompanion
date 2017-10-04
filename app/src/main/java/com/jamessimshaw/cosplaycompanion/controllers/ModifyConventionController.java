@@ -45,14 +45,12 @@ public class ModifyConventionController extends BaseInnerController implements M
     @BindView(R.id.conventionNameEditText) EditText mNameEditText;
     @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
     @BindView(R.id.logoImageView) ImageView mLogoImageView;
-    //@BindView(R.id.conventionLogoChangeButton) Button mLogoButton;
 
     @Inject ModifyConventionPresenter mPresenter;
-//    private OnFragmentInteractionListener mListener;
     private Uri mLogoUri;
 
     public ModifyConventionController() {
-//        super();
+        super();
     }
 
     protected ModifyConventionController(@Nullable Bundle args) {
@@ -225,6 +223,6 @@ public class ModifyConventionController extends BaseInnerController implements M
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-//        mListener.onModifyFragmentInteraction();
+        getRouter().popCurrentController();
     }
 }

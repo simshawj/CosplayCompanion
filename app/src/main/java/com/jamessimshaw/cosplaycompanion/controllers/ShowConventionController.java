@@ -25,8 +25,6 @@ import com.jamessimshaw.cosplaycompanion.presenters.ListConventionYearsPresenter
 import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 public class ShowConventionController extends BaseInnerController implements ListConventionYearsView {
@@ -106,16 +104,6 @@ public class ShowConventionController extends BaseInnerController implements Lis
     @Override
     public void displayMessage(String warning) {
         Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void done() {
-
-    }
-
-    @Override
-    public void updateData(List<ConventionYear> conventionYears) {
-        // Not necessary with Firebase
     }
 
     @Override

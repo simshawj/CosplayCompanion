@@ -234,7 +234,7 @@ public class ModifyPhotoshootController extends BaseInnerController implements M
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-//        mListener.onModifyFragmentInteraction();
+        getRouter().popCurrentController();
     }
 
     @Override

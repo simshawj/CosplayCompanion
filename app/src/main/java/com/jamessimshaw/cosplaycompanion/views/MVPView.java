@@ -5,5 +5,4 @@ package com.jamessimshaw.cosplaycompanion.views;
  */
 public interface MVPView {
     void displayMessage(String warning);
-    void done();
 }
