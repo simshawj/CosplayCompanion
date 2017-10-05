@@ -50,7 +50,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
                 if (mActivity instanceof MainActivity) {
                     DatabaseReference reference = getRef(position);
 //                    ((MainActivity) mActivity).onFragmentInteraction("show convention", reference.toString());
-                    mRouter.pushController(RouterTransaction.with(ShowConventionController.newInstance(reference.toString())).pushChangeHandler(new HorizontalChangeHandler()));
+                    mRouter.pushController(RouterTransaction.with(ShowConventionController.newInstance(reference.toString())).pushChangeHandler(new HorizontalChangeHandler()).popChangeHandler(new HorizontalChangeHandler()));
                 }
             }
         });

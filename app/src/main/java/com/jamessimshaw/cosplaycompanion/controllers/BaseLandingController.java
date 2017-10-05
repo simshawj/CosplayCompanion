@@ -1,5 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.activities.LoginActivity;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
 import com.squareup.picasso.Picasso;
 
@@ -107,6 +109,7 @@ public abstract class BaseLandingController extends Controller implements Naviga
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
                 return true;
         }

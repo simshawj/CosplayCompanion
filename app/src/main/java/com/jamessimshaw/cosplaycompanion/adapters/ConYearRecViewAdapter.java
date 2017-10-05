@@ -49,7 +49,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public void onClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    mRouter.pushController(RouterTransaction.with(ShowConventionYearController.newInstance(getRef(position).toString())).pushChangeHandler(new HorizontalChangeHandler()));
+                    mRouter.pushController(RouterTransaction.with(ShowConventionYearController.newInstance(getRef(position).toString())).pushChangeHandler(new HorizontalChangeHandler()).popChangeHandler(new HorizontalChangeHandler()));
                 }
             }
         });
