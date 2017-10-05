@@ -72,7 +72,7 @@ public class ShowConventionYearController extends BaseInnerController implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRouter().pushController(RouterTransaction.with(ModifyPhotoshootController.newInstance(mConventionYearRef.toString(), false)).pushChangeHandler(new HorizontalChangeHandler()));
+                getRouter().pushController(RouterTransaction.with(ModifyPhotoshootFragment.newInstance(mConventionYearRef.toString(), false)).pushChangeHandler(new HorizontalChangeHandler()));
             }
         });
 

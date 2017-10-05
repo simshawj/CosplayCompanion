@@ -1,8 +1,8 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionYearDialogFragment;
 import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionController;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.ConventionYearsModule;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionYearDialogFragment;
 
 import javax.inject.Singleton;
 

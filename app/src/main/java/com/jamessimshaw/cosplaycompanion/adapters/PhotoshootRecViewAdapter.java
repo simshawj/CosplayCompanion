@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyPhotoshootController;
+import com.jamessimshaw.cosplaycompanion.controllers.ModifyPhotoshootFragment;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.text.SimpleDateFormat;
@@ -48,7 +48,7 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    mRouter.pushController(RouterTransaction.with(ModifyPhotoshootController.newInstance(getRef(position).toString(), true)).pushChangeHandler(new HorizontalChangeHandler()));
+                    mRouter.pushController(RouterTransaction.with(ModifyPhotoshootFragment.newInstance(getRef(position).toString(), true)).pushChangeHandler(new HorizontalChangeHandler()));
                 }
                 return true;
             }

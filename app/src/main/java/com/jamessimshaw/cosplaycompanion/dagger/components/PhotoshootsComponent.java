@@ -1,6 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyPhotoshootController;
+import com.jamessimshaw.cosplaycompanion.controllers.ModifyPhotoshootFragment;
 import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionYearController;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.PhotoshootsModule;
 
@@ -18,5 +18,5 @@ import dagger.Component;
 @Component(modules = {PhotoshootsModule.class})
 public interface PhotoshootsComponent {
     void inject(ShowConventionYearController fragment);
-    void inject(ModifyPhotoshootController fragment);
+    void inject(ModifyPhotoshootFragment fragment);
 }

@@ -1,4 +1,4 @@
-package com.jamessimshaw.cosplaycompanion.controllers;
+package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
-import com.jamessimshaw.cosplaycompanion.fragments.DatePickerDialogFragment;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionYearView;
@@ -108,23 +104,6 @@ public class ModifyConventionYearDialogFragment extends DialogFragment implement
         mPresenter.requestInitialData();
 
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.new_item_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_submit) {
-            mPresenter.submit();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

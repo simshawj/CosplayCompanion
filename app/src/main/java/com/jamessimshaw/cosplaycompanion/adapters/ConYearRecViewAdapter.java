@@ -14,8 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionYearDialogFragment;
 import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionYearController;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionYearDialogFragment;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
 import java.text.SimpleDateFormat;
