@@ -13,13 +13,12 @@ import android.view.ViewStub;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.RouterTransaction;
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionYearDialogFragment;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
@@ -72,7 +71,8 @@ public class ShowConventionYearController extends BaseInnerController implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRouter().pushController(RouterTransaction.with(ModifyPhotoshootFragment.newInstance(mConventionYearRef.toString(), false)).pushChangeHandler(new HorizontalChangeHandler()));
+                ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(mConventionYearRef.toString(), true);
+                modifyConventionYearDialogFragment.show(getActivity().getFragmentManager(), "Modify Convention Year");
             }
         });
 

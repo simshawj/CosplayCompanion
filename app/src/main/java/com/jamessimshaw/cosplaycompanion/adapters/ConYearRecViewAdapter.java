@@ -58,7 +58,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
                     ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(getRef(position).toString(), true);
-                    modifyConventionYearDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention");
+                    modifyConventionYearDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention Year");
                 }
                 return true;
             }

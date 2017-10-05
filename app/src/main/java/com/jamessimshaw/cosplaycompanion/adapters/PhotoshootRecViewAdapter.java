@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bluelinelabs.conductor.Router;
-import com.bluelinelabs.conductor.RouterTransaction;
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
@@ -48,7 +46,8 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    mRouter.pushController(RouterTransaction.with(ModifyPhotoshootFragment.newInstance(getRef(position).toString(), true)).pushChangeHandler(new HorizontalChangeHandler()));
+                    ModifyPhotoshootFragment modifyPhotoshootDialogFragment = ModifyPhotoshootFragment.newInstance(getRef(position).toString(), true);
+                    modifyPhotoshootDialogFragment.show(mActivity.getFragmentManager(), "Modify Photoshoot");
                 }
                 return true;
             }
