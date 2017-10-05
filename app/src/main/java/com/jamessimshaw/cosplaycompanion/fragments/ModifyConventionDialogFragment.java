@@ -1,22 +1,19 @@
-package com.jamessimshaw.cosplaycompanion.controllers;
+package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -39,63 +36,65 @@ import butterknife.ButterKnife;
 /**
  * Created by james on 10/4/15.
  */
-public class ModifyConventionController extends BaseInnerController implements ModifyConventionView, View.OnClickListener {
+public class ModifyConventionDialogFragment extends DialogFragment implements ModifyConventionView, View.OnClickListener {
     public static final int LOGO = 0;
 
     @BindView(R.id.conventionNameEditText) EditText mNameEditText;
     @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
     @BindView(R.id.logoImageView) ImageView mLogoImageView;
+    @BindView(R.id.dialogSubmitTextView) TextView mSubmitTextView;
 
     @Inject ModifyConventionPresenter mPresenter;
     private Uri mLogoUri;
 
-    public ModifyConventionController() {
+    public ModifyConventionDialogFragment() {
         super();
     }
 
-    protected ModifyConventionController(@Nullable Bundle args) {
-        super(args);
+    public static ModifyConventionDialogFragment newInstance() {
+        return new ModifyConventionDialogFragment();
     }
 
-    public static ModifyConventionController newInstance() {
-        return new ModifyConventionController();
-    }
-
-    public static ModifyConventionController newInstance(String conventionRef) {
+    public static ModifyConventionDialogFragment newInstance(String conventionRef) {
+        ModifyConventionDialogFragment fragment = new ModifyConventionDialogFragment();
         Bundle params = new Bundle();
         params.putString("convention", conventionRef);
-        return new ModifyConventionController(params);
+        fragment.setArguments(params);
+        return fragment;
     }
 
-    @NonNull
     @Override
-    public View inflateView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.controller_base, container, false);
-
-        ViewStub stub = view.findViewById(R.id.contentHolder);
-        stub.setLayoutResource(R.layout.fragment_new_convention);
-        stub.inflate();
-
-        view.findViewById(R.id.fab).setVisibility(View.GONE);
-
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         DatabaseReference convention = null;
 
-        String reference = getArgs().getString("convention");
-        if (reference != null) {
-            convention = FirebaseDatabase.getInstance().getReferenceFromUrl(reference);
-        } else {
-            convention = null;
+        if (getArguments() != null) {
+            String reference = getArguments().getString("convention");
+            if (reference != null) {
+                convention = FirebaseDatabase.getInstance().getReferenceFromUrl(reference);
+            }
         }
 
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent().inject(this);
 
         mPresenter.setConvention(convention);
+    }
 
-        setHasOptionsMenu(true);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_new_convention, container, false);
+
         ButterKnife.bind(this, view);
 
         mLogoImageView.setOnClickListener(this);
+        mSubmitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.submit();
+            }
+        });
         ViewTreeObserver observer = mLogoImageView.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -110,41 +109,15 @@ public class ModifyConventionController extends BaseInnerController implements M
     }
 
     @Override
-    protected void onAttach(@NonNull View view) {
-        super.onAttach(view);
+    public void onResume() {
+        super.onResume();
         mPresenter.setView(this);
-        if (mPresenter.isEditMode()) {
-            setTitle("Edit Convention");
-        } else {
-            setTitle("New Convention");
-        }
-
     }
 
     @Override
-    protected void onDetach(@NonNull View view) {
-        super.onDetach(view);
+    public void onPause() {
+        super.onPause();
         mPresenter.detachView();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.new_item_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch(id) {
-            case R.id.action_submit:
-                mPresenter.submit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
     }
 
     @Override
@@ -223,6 +196,6 @@ public class ModifyConventionController extends BaseInnerController implements M
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-        getRouter().popCurrentController();
+        dismiss();
     }
 }

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
+import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
+import com.jamessimshaw.cosplaycompanion.fragments.DatePickerDialogFragment;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyConventionYearPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionYearView;
@@ -155,10 +158,10 @@ public class ModifyConventionYearController extends BaseInnerController implemen
     private View.OnClickListener mEndButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
-//            datePickerDialogFragment.setListener(mEndDateListener);
-//            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//            datePickerDialogFragment.show(transaction, "End Date");
+            DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
+            datePickerDialogFragment.setListener(mEndDateListener);
+            FragmentTransaction transaction = ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction();
+            datePickerDialogFragment.show(transaction, "End Date");
         }
     };
 

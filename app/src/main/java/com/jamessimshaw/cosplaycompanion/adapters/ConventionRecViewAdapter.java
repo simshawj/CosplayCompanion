@@ -9,14 +9,13 @@ import android.widget.TextView;
 
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
-import com.bluelinelabs.conductor.changehandler.AutoTransitionChangeHandler;
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionController;
 import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionController;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionDialogFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.squareup.picasso.Picasso;
 
@@ -49,7 +48,6 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
             public void onClick(View view) {
                 if (mActivity instanceof MainActivity) {
                     DatabaseReference reference = getRef(position);
-//                    ((MainActivity) mActivity).onFragmentInteraction("show convention", reference.toString());
                     mRouter.pushController(RouterTransaction.with(ShowConventionController.newInstance(reference.toString())).pushChangeHandler(new HorizontalChangeHandler()).popChangeHandler(new HorizontalChangeHandler()));
                 }
             }
@@ -59,8 +57,8 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
             public boolean onLongClick(View view) {
                 if (mActivity instanceof  MainActivity) {
                     DatabaseReference reference = getRef(position);
-//                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", reference.toString());
-                    mRouter.pushController(RouterTransaction.with(ModifyConventionController.newInstance(reference.toString())).pushChangeHandler(new AutoTransitionChangeHandler()));
+                    ModifyConventionDialogFragment modifyConventionDialogFragment = ModifyConventionDialogFragment.newInstance(reference.toString());
+                    modifyConventionDialogFragment.show(mActivity.getFragmentManager(), "End Date");
                 }
                 return true;
             }

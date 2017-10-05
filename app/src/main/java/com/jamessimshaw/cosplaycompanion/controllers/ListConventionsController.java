@@ -1,5 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.controllers;
 
+import android.app.FragmentTransaction;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,11 +11,10 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.RouterTransaction;
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionDialogFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
@@ -49,7 +49,9 @@ public class ListConventionsController extends BaseLandingController implements 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRouter().pushController(RouterTransaction.with(ModifyConventionController.newInstance()).pushChangeHandler(new HorizontalChangeHandler()));
+                ModifyConventionDialogFragment modifyConventionDialogFragment = new ModifyConventionDialogFragment();
+                FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+                modifyConventionDialogFragment.show(getActivity().getFragmentManager(), "End Date");
             }
         });
 
