@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bluelinelabs.conductor.RouterTransaction;
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
@@ -67,8 +65,8 @@ public class ShowConventionController extends BaseInnerController implements Lis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModifyConventionYearController controller = ModifyConventionYearController.newInstance(mConventionReference.toString(), false);
-                getRouter().pushController(RouterTransaction.with(controller).pushChangeHandler(new HorizontalChangeHandler()));
+                ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(mConventionReference.toString(), false);
+                modifyConventionYearDialogFragment.show(getActivity().getFragmentManager(), "Modify Convention");
             }
         });
 

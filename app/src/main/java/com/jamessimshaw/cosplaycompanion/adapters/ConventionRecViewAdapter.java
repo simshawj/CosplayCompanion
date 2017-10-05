@@ -58,7 +58,7 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
                 if (mActivity instanceof  MainActivity) {
                     DatabaseReference reference = getRef(position);
                     ModifyConventionDialogFragment modifyConventionDialogFragment = ModifyConventionDialogFragment.newInstance(reference.toString());
-                    modifyConventionDialogFragment.show(mActivity.getFragmentManager(), "End Date");
+                    modifyConventionDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention");
                 }
                 return true;
             }

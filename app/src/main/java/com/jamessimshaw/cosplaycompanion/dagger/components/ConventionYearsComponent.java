@@ -1,6 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionYearController;
+import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionYearDialogFragment;
 import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionController;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.ConventionYearsModule;
 
@@ -17,5 +17,5 @@ import dagger.Component;
 @Component(modules = {ConventionYearsModule.class})
 public interface ConventionYearsComponent {
     void inject(ShowConventionController fragment);
-    void inject(ModifyConventionYearController fragment);
+    void inject(ModifyConventionYearDialogFragment fragment);
 }

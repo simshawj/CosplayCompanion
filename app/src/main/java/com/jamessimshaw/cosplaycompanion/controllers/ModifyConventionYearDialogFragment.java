@@ -1,8 +1,8 @@
 package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -11,10 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -37,51 +37,39 @@ import butterknife.ButterKnife;
 /**
  * Created by james on 10/11/15.
  */
-public class ModifyConventionYearController extends BaseInnerController implements ModifyConventionYearView {
+public class ModifyConventionYearDialogFragment extends DialogFragment implements ModifyConventionYearView {
     @Inject ModifyConventionYearPresenter mPresenter;
 
     @BindView(R.id.conventionLocation) EditText mLocationEditText;
     @BindView(R.id.startDateButton) Button mStartButton;
     @BindView(R.id.endDateButton) Button mEndButton;
     @BindView(R.id.displayNameEditText) EditText mDisplayNameEditText;
+    @BindView(R.id.dialogSubmitTextView) TextView mSubmitTextView;
 
-    protected ModifyConventionYearController(@Nullable Bundle args) {
-        super(args);
-    }
-
-    public static ModifyConventionYearController newInstance(String reference, boolean edit) {
+    public static ModifyConventionYearDialogFragment newInstance(String reference, boolean edit) {
+        ModifyConventionYearDialogFragment fragment = new ModifyConventionYearDialogFragment();
         Bundle args = new Bundle();
         if (edit) {
             args.putString("conventionYear", reference);
         } else {
             args.putString("convention", reference);
         }
-        return new ModifyConventionYearController(args);
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    public ModifyConventionYearController() {
+    public ModifyConventionYearDialogFragment() {
         // Required Default constructor
     }
 
-
-    @NonNull
     @Override
-    public View inflateView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.controller_base, container, false);
-
-        ViewStub stub = view.findViewById(R.id.contentHolder);
-        stub.setLayoutResource(R.layout.fragment_new_convention_year);
-        stub.inflate();
-
-        view.findViewById(R.id.fab).setVisibility(View.GONE);
-
-        setHasOptionsMenu(true);
-        ButterKnife.bind(this, view);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         DatabaseReference convention = null;
         DatabaseReference conventionYear = null;
-        String conventionRefString = getArgs().getString("convention");
-        String conventionYearRefString = getArgs().getString("conventionYear");
+        String conventionRefString = getArguments().getString("convention");
+        String conventionYearRefString = getArguments().getString("conventionYear");
         if (conventionRefString == null) {
             convention = null;
         } else {
@@ -93,16 +81,30 @@ public class ModifyConventionYearController extends BaseInnerController implemen
             conventionYear = FirebaseDatabase.getInstance().getReferenceFromUrl(conventionYearRefString);
         }
 
-
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionYearsComponent()
                 .inject(this);
 
         mPresenter.setView(this);
         mPresenter.setConvention(convention);
         mPresenter.setConventionYear(conventionYear);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_new_convention_year, container, false);
+
+        ButterKnife.bind(this, view);
 
         mStartButton.setOnClickListener(mStartButtonListener);
         mEndButton.setOnClickListener(mEndButtonListener);
+        mSubmitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.submit();
+            }
+        });
+
         mPresenter.requestInitialData();
 
         return view;
@@ -126,20 +128,14 @@ public class ModifyConventionYearController extends BaseInnerController implemen
     }
 
     @Override
-    protected void onAttach(@NonNull View view) {
-        super.onAttach(view);
-
+    public void onResume() {
+        super.onResume();
         mPresenter.setView(this);
-        if (mPresenter.isEditMode()) {
-            setTitle("Edit Event");
-        } else {
-            setTitle("New Event");
-        }
     }
 
     @Override
-    protected void onDetach(@NonNull View view) {
-        super.onDetach(view);
+    public void onPause() {
+        super.onPause();
         mPresenter.detachView();
     }
 
@@ -148,10 +144,10 @@ public class ModifyConventionYearController extends BaseInnerController implemen
     private View.OnClickListener mStartButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
-//            datePickerDialogFragment.setListener(mStartDateListener);
-//            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//            datePickerDialogFragment.show(transaction, "Start Date");
+            DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
+            datePickerDialogFragment.setListener(mStartDateListener);
+            FragmentTransaction transaction = ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction();
+            datePickerDialogFragment.show(transaction, "Start Date");
         }
     };
 
@@ -225,7 +221,7 @@ public class ModifyConventionYearController extends BaseInnerController implemen
     @Override
     public void done() {
         KeyboardHelper.hideKeyboard(getActivity());
-        getRouter().popCurrentController();
+        dismiss();
     }
 
 }

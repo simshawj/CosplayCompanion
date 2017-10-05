@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionYearController;
+import com.jamessimshaw.cosplaycompanion.controllers.ModifyConventionYearDialogFragment;
 import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionYearController;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 
@@ -57,7 +57,8 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    mRouter.pushController(RouterTransaction.with(ModifyConventionYearController.newInstance(getRef(position).toString(), true)).pushChangeHandler(new HorizontalChangeHandler()));
+                    ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(getRef(position).toString(), true);
+                    modifyConventionYearDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention");
                 }
                 return true;
             }
