@@ -46,6 +46,8 @@ dependencies {
     // Picasso
     compile "com.squareup.picasso:picasso:$picassoVersion"
 
+    compile "de.hdodenhof:circleimageview:$circleImageViewVersion"
+
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
