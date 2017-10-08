@@ -1,6 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,6 +81,13 @@ public class ModifyConventionDialogFragment extends DialogFragment implements Mo
         ((CosplayCompanionApplication)getActivity().getApplication()).getConventionsComponent().inject(this);
 
         mPresenter.setConvention(convention);
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Nullable

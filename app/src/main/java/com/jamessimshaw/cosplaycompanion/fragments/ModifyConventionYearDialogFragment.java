@@ -1,6 +1,7 @@
 package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -83,6 +85,13 @@ public class ModifyConventionYearDialogFragment extends DialogFragment implement
         mPresenter.setView(this);
         mPresenter.setConvention(convention);
         mPresenter.setConventionYear(conventionYear);
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Nullable

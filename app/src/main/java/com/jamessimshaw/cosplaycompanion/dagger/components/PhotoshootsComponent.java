@@ -1,8 +1,8 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyPhotoshootFragment;
 import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionYearController;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.PhotoshootsModule;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootFragment;
 
 import javax.inject.Singleton;
 

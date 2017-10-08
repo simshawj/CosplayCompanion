@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
-import com.jamessimshaw.cosplaycompanion.controllers.ModifyPhotoshootFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootFragment;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.text.SimpleDateFormat;

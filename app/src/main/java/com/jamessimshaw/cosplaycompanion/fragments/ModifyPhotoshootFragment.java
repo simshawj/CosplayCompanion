@@ -1,6 +1,7 @@
-package com.jamessimshaw.cosplaycompanion.controllers;
+package com.jamessimshaw.cosplaycompanion.fragments;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,8 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
-import com.jamessimshaw.cosplaycompanion.fragments.DatePickerDialogFragment;
-import com.jamessimshaw.cosplaycompanion.fragments.TimePickerDialogFragment;
 import com.jamessimshaw.cosplaycompanion.helpers.KeyboardHelper;
 import com.jamessimshaw.cosplaycompanion.presenters.ModifyPhotoshootPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ModifyPhotoshootView;
@@ -88,6 +88,13 @@ public class ModifyPhotoshootFragment extends DialogFragment implements ModifyPh
         mPresenter.setView(this);
         mPresenter.setConventionYear(conventionYearRef);
         mPresenter.setPhotoshoot(photoshootRef);
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Nullable
