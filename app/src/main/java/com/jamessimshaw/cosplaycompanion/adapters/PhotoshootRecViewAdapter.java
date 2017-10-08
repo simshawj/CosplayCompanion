@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
-import com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootDialogFragment;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 
 import java.text.SimpleDateFormat;
@@ -46,7 +46,7 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
             @Override
             public boolean onLongClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    ModifyPhotoshootFragment modifyPhotoshootDialogFragment = ModifyPhotoshootFragment.newInstance(getRef(position).toString(), true);
+                    ModifyPhotoshootDialogFragment modifyPhotoshootDialogFragment = ModifyPhotoshootDialogFragment.newInstance(getRef(position).toString(), true);
                     modifyPhotoshootDialogFragment.show(mActivity.getFragmentManager(), "Modify Photoshoot");
                 }
                 return true;

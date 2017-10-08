@@ -1,14 +1,11 @@
 package com.jamessimshaw.cosplaycompanion.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.Date;
 
 /**
  * Created by james on 9/25/15.
  */
-public class Photoshoot implements Parcelable {
+public class Photoshoot {
     private String mSeries;
     private long mStart;
     private String mLocation;
@@ -27,13 +24,6 @@ public class Photoshoot implements Parcelable {
         mDescription = description;
         mEventId = eventId;
         mSubmitted = user;
-    }
-
-    public Photoshoot(Parcel in) {
-        mSeries = in.readString();
-        mStart = in.readLong();
-        mLocation = in.readString();
-        mDescription = in.readString();
     }
 
     public String getSeries() {
@@ -66,58 +56,6 @@ public class Photoshoot implements Parcelable {
 
     public void setDescription(String description) {
         mDescription = description;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mSeries);
-        dest.writeLong(mStart);
-        dest.writeString(mLocation);
-        dest.writeString(mDescription);
-    }
-
-    public static final Parcelable.Creator<Photoshoot> CREATOR = new Creator<Photoshoot>() {
-        @Override
-        public Photoshoot createFromParcel(Parcel source) {
-            return new Photoshoot(source);
-        }
-
-        @Override
-        public Photoshoot[] newArray(int size) {
-            return new Photoshoot[size];
-        }
-    };
-
-    // TODO: Verify
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Photoshoot))
-            return false;
-
-        Photoshoot otherPhotoshoot = (Photoshoot) o;
-
-        return mSeries.equals(otherPhotoshoot.mSeries) &&
-                mLocation.equals(otherPhotoshoot.mLocation) &&
-                mDescription.equals(otherPhotoshoot.mDescription);
-    }
-
-    // TODO: Verify
-    @Override
-    public int hashCode() {
-        int result = 17;
-
-        result = 37 * result + mSeries.hashCode();
-        result = 37 * result + mLocation.hashCode();
-        result = 37 * result + mDescription.hashCode();
-
-        return result;
     }
 
     public String getSubmitted() {

@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.PhotoshootRecViewAdapter;
-import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionYearDialogFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootDialogFragment;
 import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.presenters.ListPhotoshootsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
@@ -71,8 +71,8 @@ public class ShowConventionYearController extends BaseInnerController implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(mConventionYearRef.toString(), true);
-                modifyConventionYearDialogFragment.show(getActivity().getFragmentManager(), "Modify Convention Year");
+                ModifyPhotoshootDialogFragment modifyPhotoshootDialogFragment = ModifyPhotoshootDialogFragment.newInstance(mConventionYearRef.toString(), false);
+                modifyPhotoshootDialogFragment.show(getActivity().getFragmentManager(), "Create Photoshoot");
             }
         });
 

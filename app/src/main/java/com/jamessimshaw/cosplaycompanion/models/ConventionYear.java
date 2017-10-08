@@ -1,8 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.database.Exclude;
 
 import java.util.Calendar;
@@ -13,7 +10,7 @@ import java.util.Map;
 /**
  * Created by james on 9/25/15.
  */
-public class ConventionYear implements Parcelable {
+public class ConventionYear {
     private long mStart;
     private long mEnd;
     private String mLocation;
@@ -34,13 +31,6 @@ public class ConventionYear implements Parcelable {
         mConventionId = conventionId;
         mSubmitted = user;
         mPhotoshoots = new HashMap<>();
-    }
-
-    public ConventionYear(Parcel in) {
-        mStart = in.readLong();
-        mEnd = in.readLong();
-        mLocation = in.readString();
-        mDisplayName = in.readString();
     }
 
     public long getStartDate() {
@@ -84,12 +74,24 @@ public class ConventionYear implements Parcelable {
         return mConventionId;
     }
 
+    public void setConventionId(String conventionId) {
+        mConventionId = conventionId;
+    }
+
     public String getSubmitted() {
         return mSubmitted;
     }
 
+    public void setSubmitted(String submitted) {
+        mSubmitted = submitted;
+    }
+
     public Map<String, Boolean> getPhotoshoots() {
         return mPhotoshoots;
+    }
+
+    public void setPhotoshoots(Map<String, Boolean> photoshoots) {
+        mPhotoshoots = photoshoots;
     }
 
     public void addPhotoshoot(String id) {
@@ -101,59 +103,5 @@ public class ConventionYear implements Parcelable {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(mStart));
         return calendar.get(Calendar.YEAR);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(mStart);
-        dest.writeLong(mEnd);
-        dest.writeString(mLocation);
-        dest.writeString(mDisplayName);
-    }
-
-    public static final Parcelable.Creator<ConventionYear> CREATOR
-            = new Parcelable.Creator<ConventionYear>() {
-
-        @Override
-        public ConventionYear createFromParcel(Parcel source) {
-            return new ConventionYear(source);
-        }
-
-        @Override
-        public ConventionYear[] newArray(int size) {
-            return new ConventionYear[size];
-        }
-    };
-
-    //TODO: Double Check
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof ConventionYear))
-            return false;
-
-        ConventionYear otherYear = (ConventionYear) o;
-
-        return mStart == otherYear.mStart &&
-                mEnd == otherYear.mEnd &&
-                mLocation.equals(otherYear.mLocation);
-    }
-
-    //TODO: Double Check
-    @Override
-    public int hashCode() {
-        int result = 17;
-
-//        result = 37 * result + mStart;
-//        result = 37 * result + mEnd;
-        result = 37 * result + mLocation.hashCode();
-
-        return result;
     }
 }

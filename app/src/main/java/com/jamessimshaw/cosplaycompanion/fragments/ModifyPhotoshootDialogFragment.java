@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -33,7 +32,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ModifyPhotoshootFragment extends DialogFragment implements ModifyPhotoshootView {
+public class ModifyPhotoshootDialogFragment extends DialogFragment implements ModifyPhotoshootView {
     @Inject ModifyPhotoshootPresenter mPresenter;
 
     @BindView(R.id.dateButton) Button mStartDateButton;
@@ -41,11 +40,10 @@ public class ModifyPhotoshootFragment extends DialogFragment implements ModifyPh
     @BindView(R.id.locationEditText) EditText mLocationEditText;
     @BindView(R.id.seriesEditText) EditText mSeriesEditText;
     @BindView(R.id.descriptionEditText) EditText mDescriptionEditText;
-    @BindView(R.id.dialogSubmitTextView)
-    TextView mSubmitTextView;
+    @BindView(R.id.dialogSubmitTextView) TextView mSubmitTextView;
 
-    public static ModifyPhotoshootFragment newInstance(String reference, boolean edit) {
-        ModifyPhotoshootFragment fragment = new ModifyPhotoshootFragment();
+    public static ModifyPhotoshootDialogFragment newInstance(String reference, boolean edit) {
+        ModifyPhotoshootDialogFragment fragment = new ModifyPhotoshootDialogFragment();
         Bundle args = new Bundle();
         if (edit) {
             args.putString("photoshoot", reference);
@@ -57,7 +55,7 @@ public class ModifyPhotoshootFragment extends DialogFragment implements ModifyPh
     }
 
 
-    public ModifyPhotoshootFragment() {
+    public ModifyPhotoshootDialogFragment() {
         // Required empty public constructor
     }
 
@@ -100,16 +98,7 @@ public class ModifyPhotoshootFragment extends DialogFragment implements ModifyPh
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.controller_base, container, false);
-
-        ViewStub stub = view.findViewById(R.id.contentHolder);
-        stub.setLayoutResource(R.layout.fragment_new_photoshoot);
-        stub.inflate();
-
-        view.findViewById(R.id.fab).setVisibility(View.GONE);
-
-        setHasOptionsMenu(true);
-
+        View view = inflater.inflate(R.layout.fragment_new_photoshoot, container, false);
 
         ButterKnife.bind(this, view);
 
