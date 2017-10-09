@@ -5,9 +5,11 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Router;
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
@@ -45,9 +47,14 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mActivity instanceof MainActivity) {
-                    ModifyPhotoshootDialogFragment modifyPhotoshootDialogFragment = ModifyPhotoshootDialogFragment.newInstance(getRef(position).toString(), true);
-                    modifyPhotoshootDialogFragment.show(mActivity.getFragmentManager(), "Modify Photoshoot");
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if (uid.equals(photoshoot.getSubmitted())) {
+                    if (mActivity instanceof MainActivity) {
+                        ModifyPhotoshootDialogFragment modifyPhotoshootDialogFragment = ModifyPhotoshootDialogFragment.newInstance(getRef(position).toString(), true);
+                        modifyPhotoshootDialogFragment.show(mActivity.getFragmentManager(), "Modify Photoshoot");
+                    }
+                } else {
+                    Toast.makeText(mActivity, "Only user who created the photoshoot can edit.", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }

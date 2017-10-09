@@ -65,7 +65,6 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
                         mView.displayName(mConvention.getName());
                         mView.displayDescription(mConvention.getDescription());
                         mView.displayLogo(mConvention.getLogoUriString());
-                        mView.displayMessage("All fields populated with current data");
                     }
                 }
 

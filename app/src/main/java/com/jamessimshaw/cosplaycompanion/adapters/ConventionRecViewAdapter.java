@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
@@ -55,10 +57,15 @@ public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mActivity instanceof  MainActivity) {
-                    DatabaseReference reference = getRef(position);
-                    ModifyConventionDialogFragment modifyConventionDialogFragment = ModifyConventionDialogFragment.newInstance(reference.toString());
-                    modifyConventionDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention");
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if (uid.equals(convention.getSubmitted())) {
+                    if (mActivity instanceof MainActivity) {
+                        DatabaseReference reference = getRef(position);
+                        ModifyConventionDialogFragment modifyConventionDialogFragment = ModifyConventionDialogFragment.newInstance(reference.toString());
+                        modifyConventionDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention");
+                    }
+                } else {
+                    Toast.makeText(mActivity, "Only user who created the convention can edit.", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }

@@ -5,11 +5,13 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.jamessimshaw.cosplaycompanion.R;
@@ -39,7 +41,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder holder, ConventionYear conventionYear, final int position) {
+    protected void populateViewHolder(ViewHolder holder, final ConventionYear conventionYear, final int position) {
         holder.mConventionYearDisplayName.setText(conventionYear.getDisplayName());
         SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
         String dateString = dateFormat.format(new Date(conventionYear.getStartDate())) + " to " +
@@ -56,9 +58,14 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mActivity instanceof MainActivity) {
-                    ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(getRef(position).toString(), true);
-                    modifyConventionYearDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention Year");
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if (uid.equals(conventionYear.getSubmitted())) {
+                    if (mActivity instanceof MainActivity) {
+                        ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(getRef(position).toString(), true);
+                        modifyConventionYearDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention Year");
+                    }
+                } else {
+                    Toast.makeText(mActivity, "Only user who created the event can edit.", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
