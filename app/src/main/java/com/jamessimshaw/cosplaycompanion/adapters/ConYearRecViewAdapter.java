@@ -40,7 +40,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
 
     @Override
     protected void populateViewHolder(ViewHolder holder, ConventionYear conventionYear, final int position) {
-        holder.mConventionYearYear.setText(conventionYear.getYearAsString());
+        holder.mConventionYearDisplayName.setText(conventionYear.getDisplayName());
         SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
         String dateString = dateFormat.format(new Date(conventionYear.getStartDate())) + " to " +
                 dateFormat.format(new Date(conventionYear.getEndDate()));
@@ -67,7 +67,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.convention_year) TextView mConventionYearYear;
+        @BindView(R.id.convention_year) TextView mConventionYearDisplayName;
         @BindView(R.id.convention_dates) TextView mConventionYearDates;
 
         public ViewHolder(View itemView) {
