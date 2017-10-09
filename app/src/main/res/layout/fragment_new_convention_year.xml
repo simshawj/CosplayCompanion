@@ -73,10 +73,11 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:textColor="@color/primary_purple"
             app:layout_constraintTop_toBottomOf="@id/displayNameEditText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Submit"/>
+            android:text="@string/submit"/>
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
