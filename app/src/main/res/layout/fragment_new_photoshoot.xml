@@ -6,7 +6,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootDialogFragment">
 
-    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+    <android.support.constraint.ConstraintLayout android:layout_width="300dp"
                                                  android:layout_height="wrap_content">
 
 

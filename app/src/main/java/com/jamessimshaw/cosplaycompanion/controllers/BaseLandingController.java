@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.LoginActivity;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
+import com.jamessimshaw.cosplaycompanion.fragments.CreateSuggestionDialogFragment;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -76,13 +77,6 @@ public abstract class BaseLandingController extends Controller implements Naviga
         return view;
     }
 
-    @Override
-    protected void onAttach(@NonNull View view) {
-        super.onAttach(view);
-
-//        ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
-    }
-
     @NonNull
     protected abstract View inflateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container);
 
@@ -104,8 +98,8 @@ public abstract class BaseLandingController extends Controller implements Naviga
                 getRouter().setRoot(RouterTransaction.with(controller).pushChangeHandler(new FadeChangeHandler()));
                 break;
             case R.id.nav_feedback:
-                controller = CreateSuggestionController.newInstance();
-                getRouter().setRoot(RouterTransaction.with(controller).pushChangeHandler(new FadeChangeHandler()));
+                CreateSuggestionDialogFragment modifyConventionYearDialogFragment = CreateSuggestionDialogFragment.newInstance();
+                modifyConventionYearDialogFragment.show(getActivity().getFragmentManager(), "Modify Convention");
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
