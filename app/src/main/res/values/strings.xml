@@ -6,7 +6,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="terms_privacy_agreement"><![CDATA[By signing in you agree to the <a href=\'http://www.cosplaycompendium.com/terms.html\'>Terms of Use</a> and the <a href=\'http://www.cosplaycompendium.com/privacy.html\'>Privacy Policy</a>]]></string>
+    <string name="terms_privacy_agreement"><![CDATA[By signing in you agree to the <a href=\'http://cosplaycompendium.com/terms.html\'>Terms of Use</a> and the <a href=\'http://cosplaycompendium.com/privacy.html\'>Privacy Policy</a>]]></string>
     <string name="convention_logo">Convention Logo</string>
     <string name="name">Name</string>
     <string name="change_logo">Change logo…</string>
