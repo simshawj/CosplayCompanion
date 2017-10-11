@@ -1,10 +1,13 @@
 package com.jamessimshaw.cosplaycompanion.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -34,6 +37,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mFirebaseAuth;
 
+    @BindView(R.id.termsTextView) TextView mTermsTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
 
         ButterKnife.bind(this);
+
+        String htmlString = getString(R.string.terms_privacy_agreement);
+
+        if (Build.VERSION.SDK_INT > 23)
+            mTermsTextView.setText(Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY));
+        else
+            mTermsTextView.setText(Html.fromHtml(htmlString));
+
+        mTermsTextView.setClickable(true);
+        mTermsTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
