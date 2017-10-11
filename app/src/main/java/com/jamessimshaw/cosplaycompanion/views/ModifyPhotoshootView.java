@@ -12,4 +12,5 @@ public interface ModifyPhotoshootView extends MVPView {
     void displayLocation(String location);
     void displaySeries(String series);
     void displayDescription(String description);
+    void done();
 }

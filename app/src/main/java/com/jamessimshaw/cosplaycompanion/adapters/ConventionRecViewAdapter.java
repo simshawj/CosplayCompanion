@@ -1,21 +1,25 @@
 package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
+import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bluelinelabs.conductor.Router;
+import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.activities.MainActivity;
+import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionController;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyConventionDialogFragment;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,63 +27,56 @@ import butterknife.ButterKnife;
 /**
  * Created by james on 10/4/15.
  */
-public class ConventionRecViewAdapter extends RecyclerView.Adapter<ConventionRecViewAdapter.ViewHolder> {
-    private ArrayList<Convention> mConventions;
+public class ConventionRecViewAdapter extends FirebaseRecyclerAdapter<Convention, ConventionRecViewAdapter.ViewHolder> {
     private Activity mActivity;
+    private Router mRouter;
 
-    public ConventionRecViewAdapter(ArrayList<Convention> conventions, Activity activity) {
+    public ConventionRecViewAdapter(Class<Convention> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, DatabaseReference reference, Activity activity, Router router) {
+        super(modelClass, modelLayout, viewHolderClass, reference);
         mActivity = activity;
-        mConventions = conventions;
+        mRouter = router;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_convention,
-                parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final Convention convention = mConventions.get(position);
-        holder.mConventionNameTextView.setText(convention.getName());
+    protected void populateViewHolder(ViewHolder viewHolder, final Convention convention, final int position) {
+        viewHolder.conventionNameTextView.setText(convention.getName());
+        // TODO: Create a error and placeholder images
         Picasso.with(mActivity)
-                .load(convention.getLogoUri()).fit().centerInside()
-                .into(holder.mConventionLogoImageView);
-        holder.mConventionDescriptionTextView.setText(mConventions.get(position).getDescription());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                .load(convention.getLogoUriString()).fit().centerInside()
+                .into(viewHolder.conventionLogoImageView);
+        viewHolder.conventionDescriptionTextView.setText(convention.getDescription());
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mActivity instanceof MainActivity)
-                    ((MainActivity) mActivity).onFragmentInteraction("show convention", convention);
+                if (mActivity instanceof MainActivity) {
+                    DatabaseReference reference = getRef(position);
+                    mRouter.pushController(RouterTransaction.with(ShowConventionController.newInstance(reference.toString())).pushChangeHandler(new HorizontalChangeHandler()).popChangeHandler(new HorizontalChangeHandler()));
+                }
             }
         });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mActivity instanceof  MainActivity)
-                    ((MainActivity) mActivity).onFragmentInteraction("edit convention", convention);
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if (uid.equals(convention.getSubmitted())) {
+                    if (mActivity instanceof MainActivity) {
+                        DatabaseReference reference = getRef(position);
+                        ModifyConventionDialogFragment modifyConventionDialogFragment = ModifyConventionDialogFragment.newInstance(reference.toString());
+                        modifyConventionDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention");
+                    }
+                } else {
+                    Toast.makeText(mActivity, "Only user who created the convention can edit.", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return mConventions.size();
-    }
-
-    public void addNewConventions(List<Convention> conventionList) {
-        mConventions.addAll(conventionList);
-        notifyDataSetChanged();
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.convention_name) TextView mConventionNameTextView;
-        @BindView(R.id.convention_logo) ImageView mConventionLogoImageView;
-        @BindView(R.id.conDescriptionTextView) TextView mConventionDescriptionTextView;
+        @BindView(R.id.convention_name) TextView conventionNameTextView;
+        @BindView(R.id.convention_logo) ImageView conventionLogoImageView;
+        @BindView(R.id.conDescriptionTextView) TextView conventionDescriptionTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);

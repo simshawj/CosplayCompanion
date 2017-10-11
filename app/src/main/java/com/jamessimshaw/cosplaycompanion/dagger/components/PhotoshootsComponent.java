@@ -1,9 +1,8 @@
 package com.jamessimshaw.cosplaycompanion.dagger.components;
 
-import com.jamessimshaw.cosplaycompanion.dagger.modules.CosplayCompanionAPIModule;
+import com.jamessimshaw.cosplaycompanion.controllers.ShowConventionYearController;
 import com.jamessimshaw.cosplaycompanion.dagger.modules.PhotoshootsModule;
-import com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootFragment;
-import com.jamessimshaw.cosplaycompanion.fragments.ShowConventionYearFragment;
+import com.jamessimshaw.cosplaycompanion.fragments.ModifyPhotoshootDialogFragment;
 
 import javax.inject.Singleton;
 
@@ -16,8 +15,8 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {PhotoshootsModule.class, CosplayCompanionAPIModule.class})
+@Component(modules = {PhotoshootsModule.class})
 public interface PhotoshootsComponent {
-    void inject(ShowConventionYearFragment fragment);
-    void inject(ModifyPhotoshootFragment fragment);
+    void inject(ShowConventionYearController fragment);
+    void inject(ModifyPhotoshootDialogFragment fragment);
 }

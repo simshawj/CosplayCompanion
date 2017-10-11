@@ -3,15 +3,12 @@
 
     <item
         android:id="@+id/nav_conventions"
-        android:icon="@android:drawable/btn_radio"
         android:title="@string/conventions"/>
     <item
         android:id="@+id/nav_feedback"
-        android:icon="@android:drawable/btn_radio"
         android:title="@string/feedback" />
     <item
         android:id="@+id/nav_logout"
-        android:icon="@android:drawable/btn_radio"
         android:title="@string/logout"/>
 
 </menu>

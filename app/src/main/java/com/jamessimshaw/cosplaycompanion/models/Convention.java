@@ -1,49 +1,29 @@
 package com.jamessimshaw.cosplaycompanion.models;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by james on 9/25/15.
  */
-public class Convention implements Parcelable {
-    @SerializedName("name")
-    @Expose
+public class Convention {
+
     private String mName;
-    @SerializedName("description")
-    @Expose
     private String mDescription;
-    @SerializedName("logo.url")
-    private Uri mLogoUri;
-    @SerializedName("id")
-    private long mId;
-    @SerializedName("logo64")
-    @Expose
-    private String mBase64Logo;
+    private String mLogoUriString;
+    private String mSubmitted;
+    private Map<String, Boolean> mEvents;
 
-    public Convention(long id, String name, String description, Uri logoUri) {
-        mId = id;
-        mName = name;
-        mDescription = description;
-        mLogoUri = logoUri;
+    public Convention() {
+        // Required empty constructor
     }
 
-    public Convention(String name, String description, Uri logoUri) {
+    public Convention(String name, String description, String logoUriString, String submitted) {
         mName = name;
         mDescription = description;
-        mLogoUri = logoUri;
-    }
-
-    public Convention (Parcel in) {
-        mName = in.readString();
-        mLogoUri = in.readParcelable(Bitmap.class.getClassLoader());
-        mDescription = in.readString();
-        mId = in.readLong();
+        mLogoUriString = logoUriString;
+        mSubmitted = submitted;
+        mEvents = new HashMap<>();
     }
 
     public String getDescription() {
@@ -62,81 +42,31 @@ public class Convention implements Parcelable {
         mName = name;
     }
 
-    public Uri getLogoUri() {
-        return mLogoUri;
+    public String getLogoUriString() {
+        return mLogoUriString;
     }
 
-    public void setLogoUri(Uri logoUri) {
-        mLogoUri = logoUri;
+    public void setLogoUriString(String logoUriString) {
+        mLogoUriString = logoUriString;
     }
 
-    public long getId() {
-        return mId;
+    public String getSubmitted() {
+        return mSubmitted;
     }
 
-    public void setId(long id) {
-        mId = id;
+    public void setSubmitted(String submitted) {
+        mSubmitted = submitted;
     }
 
-    public String getBase64Logo() {
-        return mBase64Logo;
+    public Map<String, Boolean> getEvents() {
+        return mEvents;
     }
 
-    public void setBase64Logo(String base64Logo) {
-        mBase64Logo = base64Logo;
+    public void setEvents(Map<String, Boolean> events) {
+        mEvents = events;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mName);
-        dest.writeParcelable(mLogoUri, 0);
-        dest.writeString(mDescription);
-        dest.writeLong(mId);
-    }
-
-    public static final Parcelable.Creator<Convention> CREATOR
-            = new Parcelable.Creator<Convention>() {
-
-        @Override
-        public Convention createFromParcel(Parcel source) {
-            return new Convention(source);
-        }
-
-        @Override
-        public Convention[] newArray(int size) {
-            return new Convention[size];
-        }
-    };
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Convention))
-            return false;
-
-        Convention otherConvention = (Convention) o;
-
-        return mName.equals(otherConvention.mName) &&
-                mDescription.equals(otherConvention.mDescription) &&
-                mLogoUri.equals(otherConvention.mLogoUri) &&
-                (mId == otherConvention.mId);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-
-        result = 37 * result + mName.hashCode();
-        result = 37 * result + mDescription.hashCode();
-        result = 37 * result + mLogoUri.hashCode();
-        result = 37 * result + (int) (mId ^ (mId >>> 32));
-
-        return result;
+    public void addEvent(String eventId) {
+        mEvents.put(eventId, true);
     }
 }

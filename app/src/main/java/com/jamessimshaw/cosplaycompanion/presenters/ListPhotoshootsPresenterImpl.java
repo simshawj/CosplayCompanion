@@ -1,68 +1,75 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
-import com.jamessimshaw.cosplaycompanion.models.Photoshoot;
 import com.jamessimshaw.cosplaycompanion.views.ListPhotoshootsView;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by james on 7/23/16.
  */
 public class ListPhotoshootsPresenterImpl implements ListPhotoshootsPresenter {
 
-
-    private Retrofit mRetrofit;
-
     private ListPhotoshootsView mView;
-    private ConventionYear mConventionYear;
+    private DatabaseReference mDatabaseReference;
+    private DatabaseReference mConventionYearRef;
 
-    public ListPhotoshootsPresenterImpl(Retrofit retrofit) {
-        mRetrofit = retrofit;
-    }
-
-    @Override
-    public void requestPhotoshoots() {
-        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.getPhotoShoots(mConventionYear.getId()).enqueue(new Callback<List<Photoshoot>>() {
-            @Override
-            public void onResponse(Call<List<Photoshoot>> call, Response<List<Photoshoot>> response) {
-                mView.addConventionYears(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Photoshoot>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
-
-    @Override
-    public void requestNewPhotoshoots() {
-
-    }
-
-    @Override
-    public void setConventionYear(ConventionYear conventionYear) {
-        mConventionYear = conventionYear;
+    public ListPhotoshootsPresenterImpl() {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("photoshoots");
     }
 
     @Override
     public void setView(ListPhotoshootsView view) {
         mView = view;
+
+        if (mConventionYearRef != null) {
+            mConventionYearRef.addValueEventListener(mConventionYearListener);
+        }
     }
 
     @Override
-    public void removeView(ListPhotoshootsView view) {
-        if(mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
+
+        if (mConventionYearRef != null) {
+            mConventionYearRef.removeEventListener(mConventionYearListener);
+        }
     }
+
+    @Override
+    public DatabaseReference getPhotoshootListRef() {
+        return mConventionYearRef.child("photoshoots");
+    }
+
+    @Override
+    public void setConventionYearRef(DatabaseReference conventionYearRef) {
+        mConventionYearRef = conventionYearRef;
+
+        mConventionYearRef.addValueEventListener(mConventionYearListener);
+    }
+
+    @Override
+    public DatabaseReference getPhotoshootDataRef() {
+        return mDatabaseReference;
+    }
+
+    private ValueEventListener mConventionYearListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            ConventionYear event = dataSnapshot.getValue(ConventionYear.class);
+            if (mView != null && event != null) {
+                mView.setTitle(event.getDisplayName());
+                mView.updateDates(event.getStartDate(), event.getEndDate());
+                mView.updateTitle(event.getDisplayName());
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 }

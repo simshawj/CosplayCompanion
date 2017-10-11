@@ -7,7 +7,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.Retrofit;
 
 /**
  * Suggestions Dagger Module
@@ -24,7 +23,7 @@ public class SuggestionModule {
 
     @Provides
     @Singleton
-    public SuggestionPresenter provideSuggestionPresenter(Retrofit retrofit) {
-        return new SuggestionPresenterImpl(retrofit);
+    public SuggestionPresenter provideSuggestionPresenter() {
+        return new SuggestionPresenterImpl();
     }
 }

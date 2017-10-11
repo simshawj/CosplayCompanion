@@ -9,7 +9,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.Retrofit;
 
 /**
  * Dagger module to provide the ListConventionYearsPresenter.
@@ -26,13 +25,13 @@ public class ConventionYearsModule {
 
     @Provides
     @Singleton
-    public ListConventionYearsPresenter providePresenter(Retrofit retrofit) {
-        return new ListConventionYearsPresenterImpl(retrofit);
+    public ListConventionYearsPresenter providePresenter() {
+        return new ListConventionYearsPresenterImpl();
     }
 
     @Provides
     @Singleton
-    public ModifyConventionYearPresenter providesModifyPresenter(Retrofit retrofit) {
-        return  new ModifyConventionYearPresenterImpl(retrofit);
+    public ModifyConventionYearPresenter providesModifyPresenter() {
+        return  new ModifyConventionYearPresenterImpl();
     }
 }

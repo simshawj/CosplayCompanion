@@ -1,6 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.models.Convention;
+import com.google.firebase.database.DatabaseReference;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 
 /**
@@ -8,6 +8,8 @@ import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
  */
 public interface ModifyConventionPresenter extends Presenter<ModifyConventionView> {
     void requestInitialData();
+    void setConvention(DatabaseReference convention);
     void submit();
-    void setConvention(Convention convention);
+
+    boolean isEditMode();
 }

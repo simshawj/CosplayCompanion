@@ -1,15 +1,26 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
 import com.jamessimshaw.cosplaycompanion.views.ModifyConventionView;
 
-import javax.inject.Inject;
+import java.io.InputStream;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import javax.inject.Inject;
 
 /**
  * Prensenter for creating or editing a convention.
@@ -17,14 +28,18 @@ import retrofit2.Retrofit;
  * @author James Simshaw
  */
 public class ModifyConventionPresenterImpl implements ModifyConventionPresenter {
-    private Retrofit mRetrofit;
-
     private Convention mConvention;
     private ModifyConventionView mView;
+    private DatabaseReference mConventionsRef;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mConventionRef;
+    private StorageReference mStorageReference;
 
     @Inject
-    public ModifyConventionPresenterImpl(Retrofit retrofit) {
-        mRetrofit = retrofit;
+    public ModifyConventionPresenterImpl() {
+        mConventionsRef = FirebaseDatabase.getInstance().getReference("conventions");
+        mUsersRef = FirebaseDatabase.getInstance().getReference("users");
+        mStorageReference = FirebaseStorage.getInstance().getReference("logos");
     }
 
     // ModifyConventionPresenter methods
@@ -35,61 +50,93 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
     }
 
     @Override
-    public void removeView(ModifyConventionView view) {
-        if (mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
     }
 
     @Override
     public void requestInitialData() {
-        if (mConvention != null) {
-            mView.displayName(mConvention.getName());
-            mView.displayDescription(mConvention.getDescription());
-            mView.displayLogo(mConvention.getLogoUri());
+        if (mConventionRef != null) {
+            mConventionRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mConvention = dataSnapshot.getValue(Convention.class);
+                    if(mView != null) {
+                        mView.displayName(mConvention.getName());
+                        mView.displayDescription(mConvention.getDescription());
+                        mView.displayLogo(mConvention.getLogoUriString());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
     }
 
     @Override
-    public void setConvention(Convention convention) {
-        mConvention = convention;
+    public void setConvention(DatabaseReference convention) {
+        mConventionRef = convention;
     }
 
     @Override
     public void submit() {
-        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        String name = mView.getName();
-        String description = mView.getDescription();
-        String logoString = mView.getLogo();
+        final String name = mView.getName();
+        final String description = mView.getDescription();
+        InputStream logoStream = mView.getLogo();
 
-
-        if (mConvention == null) {
-            Convention convention = new Convention(name, description, null);
-            convention.setBase64Logo(logoString);
-            internalAPI.createConvention(convention).enqueue(mConventionCallback);
+        if (logoStream == null) {
+            storeConvention(name, description, null);
         } else {
-            mConvention.setDescription(description);
-            mConvention.setName(name);
-            mConvention.setBase64Logo(logoString);
-            //mConvention.setLogoUri(mLogoUri);
-            internalAPI.updateConvention(mConvention.getId(), mConvention).enqueue(mConventionCallback);
+            UploadTask uploadTask = mStorageReference.child(name).putStream(logoStream);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    mView.displayMessage("Failed to upload image");
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    storeConvention(name, description, taskSnapshot.getDownloadUrl());
+                }
+            });
         }
     }
 
-    // Callbacks
+    @Override
+    public boolean isEditMode() {
+        return mConventionRef != null;
+    }
 
-    private Callback<Convention> mConventionCallback = new Callback<Convention>() {
-        @Override
-        public void onResponse(Call<Convention> call, Response<Convention> response) {
-            if (response.code() == 200 || response.code() == 201)
-                mView.done();
-            else {
-                mView.displayWarning("Failed to modify convention.");
+    private void storeConvention(String name, String description, Uri logo) {
+        String logoUriString;
+        if (name == null || name.equals("")) {
+            if (mView != null) {
+                mView.displayMessage("Name must be set");
             }
+            return;
         }
-
-        @Override
-        public void onFailure(Call<Convention> call, Throwable t) {
-            mView.displayWarning("Failed to modify convention, please check your connection and try again.");
+        if (logo != null) {
+           logoUriString = logo.toString();
+        } else if (mConvention != null) {
+            logoUriString = mConvention.getLogoUriString();
+        } else {
+            logoUriString = null;
         }
-    };
+        if (mConvention == null) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            mConvention = new Convention(name, description, logoUriString, user.getUid());
+            mConventionRef = mConventionsRef.push();
+            mUsersRef.child(user.getUid()).child("conventions").child(mConventionRef.getKey()).setValue(true);
+        } else {
+            mConvention.setDescription(description);
+            mConvention.setLogoUriString(logoUriString);
+            mConvention.setName(name);
+        }
+        mConventionRef.setValue(mConvention);
+        mView.done();
+    }
 }

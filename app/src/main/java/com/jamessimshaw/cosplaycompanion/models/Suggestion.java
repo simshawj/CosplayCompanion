@@ -1,7 +1,5 @@
 package com.jamessimshaw.cosplaycompanion.models;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Suggestion model
  *
@@ -10,8 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Suggestion {
 
-    @SerializedName("text")
-    String mText;
+    private String mText;
 
     public String getText() {
         return mText;

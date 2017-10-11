@@ -3,75 +3,42 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context=".activities.LoginActivity">
 
 
-
-    <EditText
-        android:id="@+id/login_edit_username"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/login_edit_password"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:hint="@string/username_hint"
-        android:inputType="textEmailAddress"/>
-
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/fullLogoImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/login_edit_username"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="700:577"
         android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/ic_full_logo"
-        app:layout_constraintVertical_bias="0.0"/>
-
-    <EditText
-        android:id="@+id/login_edit_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/login_btn_sign_in"
+        app:layout_constraintDimensionRatio="700:577"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_full_logo"/>
 
-    <android.support.v7.widget.AppCompatButton
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/login_btn_google"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/login_btn_sign_in"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/register_button_text"
-        android:id="@+id/login_btn_register"/>
+        app:layout_constraintRight_toRightOf="parent"/>
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/login_btn_sign_in"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/termsTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in_button_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/login_btn_register"
+        android:layout_marginBottom="8dp"
+        android:text="@string/terms_privacy_agreement"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
-
-    <!-- TODO:NYI
-    <android.support.v7.widget.AppCompatButton
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/login_btn_register"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/forgot_password_button_text"
-        android:id="@+id/login_btn_forgot_password"/>
-        -->
+        app:layout_constraintBottom_toTopOf="@id/login_btn_google"/>
 
 </android.support.constraint.ConstraintLayout>

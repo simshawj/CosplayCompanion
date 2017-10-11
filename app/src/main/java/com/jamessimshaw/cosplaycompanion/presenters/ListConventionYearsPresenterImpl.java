@@ -1,68 +1,81 @@
 package com.jamessimshaw.cosplaycompanion.presenters;
 
-import com.jamessimshaw.cosplaycompanion.datasources.InternalAPI;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jamessimshaw.cosplaycompanion.models.Convention;
-import com.jamessimshaw.cosplaycompanion.models.ConventionYear;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
 
-import java.util.List;
-
 import javax.inject.Inject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by james on 2/23/16.
  */
 public class ListConventionYearsPresenterImpl implements ListConventionYearsPresenter {
 
-    private Retrofit mRetrofit;
-
     private ListConventionYearsView mView;
-    private Convention mConvention;
+    private DatabaseReference mDatabaseReference;
+    private DatabaseReference mConventionReference;
 
     @Inject
-    public ListConventionYearsPresenterImpl(Retrofit retrofit) {
-        mRetrofit = retrofit;
-    }
-
-    @Override
-    public void requestConventionYears() {
-        InternalAPI internalAPI = mRetrofit.create(InternalAPI.class);
-        internalAPI.getConventionYears(mConvention.getId()).enqueue(new Callback<List<ConventionYear>>() {
-            @Override
-            public void onResponse(Call<List<ConventionYear>> call, Response<List<ConventionYear>> response) {
-                mView.addConventionYears(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<ConventionYear>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
-
-    @Override
-    public void requestNewConventionYears() {
-
-    }
-
-    @Override
-    public void setConvention(Convention convention) {
-        mConvention = convention;
+    public ListConventionYearsPresenterImpl() {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
     }
 
     @Override
     public void setView(ListConventionYearsView view) {
         mView = view;
+        if (mConventionReference != null) {
+            mConventionReference.addValueEventListener(mConventionListenter);
+        }
     }
 
     @Override
-    public void removeView(ListConventionYearsView view) {
-        if(mView.equals(view))
-            mView = null;
+    public void detachView() {
+        mView = null;
+        if (mConventionReference != null) {
+            mConventionReference.removeEventListener(mConventionListenter);
+        }
     }
+
+    @Override
+    public DatabaseReference getFirebaseReference(Convention convention) {
+        return mDatabaseReference.child(convention.getName());
+    }
+
+    @Override
+    public void setConventionReference(DatabaseReference conventionReference) {
+        mConventionReference = conventionReference;
+        mConventionReference.addValueEventListener(mConventionListenter);
+    }
+
+    @Override
+    public DatabaseReference getEventsRef() {
+        return mConventionReference.child("events");
+    }
+
+    @Override
+    public DatabaseReference getEventsDataRef() {
+        return mDatabaseReference;
+    }
+
+    private ValueEventListener mConventionListenter = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Convention convention = dataSnapshot.getValue(Convention.class);
+            if (mView != null && convention != null) {
+                mView.setTitle(convention.getName());
+                mView.updateConventionName(convention.getName());
+                mView.updateConventionLogo(convention.getLogoUriString());
+                mView.updateConventionDescription(convention.getDescription());
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 }
