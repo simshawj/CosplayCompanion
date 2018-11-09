@@ -4,8 +4,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <android.support.constraint.ConstraintLayout android:layout_width="300dp"
-                                                 android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="300dp"
+                                                       android:layout_height="wrap_content">
 
 
         <EditText
@@ -32,5 +32,5 @@
             android:text="@string/submit"/>
 
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
