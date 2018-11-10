@@ -2,13 +2,18 @@ package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Router;
-import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
@@ -26,18 +31,22 @@ import butterknife.ButterKnife;
 /**
  * Created by james on 10/16/15.
  */
-public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photoshoot, PhotoshootRecViewAdapter.ViewHolder> {
+public class PhotoshootRecViewAdapter extends FirebaseRecyclerAdapter<Photoshoot, PhotoshootRecViewAdapter.ViewHolder> {
     private Activity mActivity;
     private Router mRouter;
+    private @LayoutRes int mModelLayout;
 
     public PhotoshootRecViewAdapter(Class<Photoshoot> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, Query keyQuery, DatabaseReference dataRef, Activity activity, Router router) {
-        super(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef);
+        super(new FirebaseRecyclerOptions.Builder<Photoshoot>()
+                .setIndexedQuery(keyQuery, dataRef, modelClass)
+                .build());
+        mModelLayout = modelLayout;
         mActivity = activity;
         mRouter = router;
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder viewHolder, final Photoshoot photoshoot, final int position) {
+    protected void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i, @NonNull final Photoshoot photoshoot) {
         viewHolder.mPhotoshootSeries.setText(photoshoot.getSeries());
         viewHolder.mPhotoshootDescription.setText(photoshoot.getDescription());
         viewHolder.mPhotoshootLocation.setText(photoshoot.getLocation());
@@ -50,7 +59,7 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 if (uid.equals(photoshoot.getSubmitted())) {
                     if (mActivity instanceof MainActivity) {
-                        ModifyPhotoshootDialogFragment modifyPhotoshootDialogFragment = ModifyPhotoshootDialogFragment.newInstance(getRef(position).toString(), true);
+                        ModifyPhotoshootDialogFragment modifyPhotoshootDialogFragment = ModifyPhotoshootDialogFragment.newInstance(getRef(viewHolder.getAdapterPosition()).toString(), true);
                         modifyPhotoshootDialogFragment.show(mActivity.getFragmentManager(), "Modify Photoshoot");
                     }
                 } else {
@@ -61,6 +70,12 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
         });
     }
 
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(mActivity).inflate(mModelLayout, parent));
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.seriesTextView) TextView mPhotoshootSeries;
@@ -68,7 +83,7 @@ public class PhotoshootRecViewAdapter extends FirebaseIndexRecyclerAdapter<Photo
         @BindView(R.id.locationTextView) TextView mPhotoshootLocation;
         @BindView(R.id.descriptionTextView) TextView mPhotoshootDescription;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);

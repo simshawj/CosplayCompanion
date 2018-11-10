@@ -71,7 +71,7 @@ public abstract class BaseLandingController extends Controller implements Naviga
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         usernameTextView.setText(user.getDisplayName());
         emailTextView.setText(user.getEmail());
-        Picasso.with(getActivity())
+        Picasso.get()
                 .load(user.getPhotoUrl()).fit().centerInside()
                 .into(avatar);
         return view;

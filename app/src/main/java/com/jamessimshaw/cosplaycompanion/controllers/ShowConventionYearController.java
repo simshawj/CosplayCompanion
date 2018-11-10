@@ -34,7 +34,6 @@ public class ShowConventionYearController extends BaseInnerController implements
 
     @Inject ListPhotoshootsPresenter mPresenter;
     private DatabaseReference mConventionYearRef;
-    private PhotoshootRecViewAdapter mAdapter;
     private View mLayoutView;
 
     protected ShowConventionYearController(@Nullable Bundle args) {
@@ -85,8 +84,8 @@ public class ShowConventionYearController extends BaseInnerController implements
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getPhotoshootListRef(), mPresenter.getPhotoshootDataRef(), getActivity(), getRouter());
-        conventionYearDetailsRecyclerView.setAdapter(mAdapter);
+        PhotoshootRecViewAdapter adapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getPhotoshootListRef(), mPresenter.getPhotoshootDataRef(), getActivity(), getRouter());
+        conventionYearDetailsRecyclerView.setAdapter(adapter);
 
         return mLayoutView;
     }

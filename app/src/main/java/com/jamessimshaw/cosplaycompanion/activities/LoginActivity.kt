@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     @BindView(R.id.termsTextView)
-    internal var termsTextView: TextView? = null
+    @JvmField internal var termsTextView: TextView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

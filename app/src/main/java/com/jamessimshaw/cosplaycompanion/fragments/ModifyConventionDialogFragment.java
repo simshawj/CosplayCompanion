@@ -134,10 +134,8 @@ public class ModifyConventionDialogFragment extends DialogFragment implements Mo
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             mLogoUri = data.getData();
-            if (Build.VERSION.SDK_INT >= 19)
-                getActivity().getApplicationContext().getContentResolver().takePersistableUriPermission(
-                        mLogoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
-                );
+            getActivity().getApplicationContext().getContentResolver().takePersistableUriPermission(
+                    mLogoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             displayLogo(mLogoUri.toString());
         }
     }
@@ -146,10 +144,7 @@ public class ModifyConventionDialogFragment extends DialogFragment implements Mo
     @Override
     public void onClick(View v) {
         Intent intent;
-        if (Build.VERSION.SDK_INT < 19)
-            intent = new Intent(Intent.ACTION_GET_CONTENT);
-        else
-            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(intent, LOGO);
@@ -195,7 +190,7 @@ public class ModifyConventionDialogFragment extends DialogFragment implements Mo
 
     @Override
     public void displayLogo(String logoUri) {
-        Picasso.with(getActivity()).load(logoUri)
+        Picasso.get().load(logoUri)
                 .placeholder(android.R.drawable.ic_dialog_alert)
                 .error(android.R.drawable.ic_dialog_alert)
                 .resize(mLogoImageView.getWidth(),0)

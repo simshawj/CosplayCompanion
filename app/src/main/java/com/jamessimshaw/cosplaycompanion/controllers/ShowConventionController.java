@@ -108,7 +108,7 @@ public class ShowConventionController extends BaseInnerController implements Lis
 
     @Override
     public void updateConventionLogo(String url) {
-        Picasso.with(getActivity())
+        Picasso.get()
                 .load(url).fit().centerInside()
                 .into((ImageView)mLayoutView.findViewById(R.id.convention_logo));
     }

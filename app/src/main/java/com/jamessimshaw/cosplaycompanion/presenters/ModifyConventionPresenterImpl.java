@@ -100,7 +100,7 @@ public class ModifyConventionPresenterImpl implements ModifyConventionPresenter 
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    storeConvention(name, description, taskSnapshot.getDownloadUrl());
+                    storeConvention(name, description, Uri.parse(taskSnapshot.getMetadata().getPath()));
                 }
             });
         }
