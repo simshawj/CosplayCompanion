@@ -2,15 +2,20 @@ package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler;
-import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
@@ -30,20 +35,24 @@ import butterknife.ButterKnife;
 /**
  * Created by james on 10/11/15.
  */
-public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<ConventionYear, ConYearRecViewAdapter.ViewHolder> {
+public class ConYearRecViewAdapter extends FirebaseRecyclerAdapter<ConventionYear, ConYearRecViewAdapter.ViewHolder> {
     private Activity mActivity;
     private Router mRouter;
+    private @LayoutRes int mModelLayout;
 
     public ConYearRecViewAdapter(Class<ConventionYear> modelClass, @LayoutRes int modelLayout, Class<ViewHolder> viewHolderClass, Query keyQuery, DatabaseReference dataRef, Activity activity, Router router) {
-        super(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef);
+        super( new FirebaseRecyclerOptions.Builder<ConventionYear>()
+                .setIndexedQuery(keyQuery, dataRef, modelClass)
+                .build());
+        mModelLayout = modelLayout;
         mActivity = activity;
         mRouter = router;
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder holder, final ConventionYear conventionYear, final int position) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, final int i, @NonNull final ConventionYear conventionYear) {
         holder.mConventionYearDisplayName.setText(conventionYear.getDisplayName());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("cccc MMMM dd", Locale.getDefault());
         String dateString = dateFormat.format(new Date(conventionYear.getStartDate())) + " to " +
                 dateFormat.format(new Date(conventionYear.getEndDate()));
         holder.mConventionYearDates.setText(dateString);
@@ -51,7 +60,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
             @Override
             public void onClick(View view) {
                 if (mActivity instanceof MainActivity) {
-                    mRouter.pushController(RouterTransaction.with(ShowConventionYearController.newInstance(getRef(position).toString())).pushChangeHandler(new HorizontalChangeHandler()).popChangeHandler(new HorizontalChangeHandler()));
+                    mRouter.pushController(RouterTransaction.with(ShowConventionYearController.newInstance(getRef(holder.getAdapterPosition()).toString())).pushChangeHandler(new HorizontalChangeHandler()).popChangeHandler(new HorizontalChangeHandler()));
                 }
             }
         });
@@ -61,7 +70,7 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 if (uid.equals(conventionYear.getSubmitted())) {
                     if (mActivity instanceof MainActivity) {
-                        ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(getRef(position).toString(), true);
+                        ModifyConventionYearDialogFragment modifyConventionYearDialogFragment = ModifyConventionYearDialogFragment.newInstance(getRef(holder.getAdapterPosition()).toString(), true);
                         modifyConventionYearDialogFragment.show(mActivity.getFragmentManager(), "Modify Convention Year");
                     }
                 } else {
@@ -72,12 +81,18 @@ public class ConYearRecViewAdapter extends FirebaseIndexRecyclerAdapter<Conventi
         });
     }
 
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(mActivity).inflate(mModelLayout, parent));
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.convention_year) TextView mConventionYearDisplayName;
         @BindView(R.id.convention_dates) TextView mConventionYearDates;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
