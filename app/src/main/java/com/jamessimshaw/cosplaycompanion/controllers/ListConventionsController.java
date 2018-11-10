@@ -1,16 +1,13 @@
 package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.app.FragmentTransaction;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
 import com.jamessimshaw.cosplaycompanion.R;
 import com.jamessimshaw.cosplaycompanion.adapters.ConventionRecViewAdapter;
@@ -20,6 +17,10 @@ import com.jamessimshaw.cosplaycompanion.presenters.ListConventionsPresenter;
 import com.jamessimshaw.cosplaycompanion.views.ListConventionsView;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ListConventionsController extends BaseLandingController implements ListConventionsView {
 
@@ -68,6 +69,7 @@ public class ListConventionsController extends BaseLandingController implements 
     @Override
     protected void onDetach(@NonNull View view) {
         super.onDetach(view);
+        mAdapter.stopListening();
         mPresenter.detachView();
     }
 
@@ -75,6 +77,7 @@ public class ListConventionsController extends BaseLandingController implements 
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
         setTitle("Conventions");
+        mAdapter.startListening();
         mPresenter.setView(this);
     }
 

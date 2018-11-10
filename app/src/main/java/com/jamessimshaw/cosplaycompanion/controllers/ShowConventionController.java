@@ -1,11 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
@@ -26,6 +22,11 @@ import com.jamessimshaw.cosplaycompanion.views.ListConventionYearsView;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ShowConventionController extends BaseInnerController implements ListConventionYearsView {
     private static final String ARG_PARAM1 = "param1";
@@ -91,11 +92,13 @@ public class ShowConventionController extends BaseInnerController implements Lis
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
         mYearsPresenter.setView(this);
+        mAdapter.startListening();
     }
 
     @Override
     protected void onDetach(@NonNull View view) {
         super.onDetach(view);
+        mAdapter.stopListening();
         mYearsPresenter.detachView();
     }
 

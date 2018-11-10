@@ -1,11 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.controllers;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +8,7 @@ import android.view.ViewStub;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jamessimshaw.cosplaycompanion.CosplayCompanionApplication;
@@ -29,12 +25,18 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class ShowConventionYearController extends BaseInnerController implements ListPhotoshootsView {
     private static final String ARG_PARAM2 = "conventionYear";
 
     @Inject ListPhotoshootsPresenter mPresenter;
     private DatabaseReference mConventionYearRef;
     private View mLayoutView;
+    private PhotoshootRecViewAdapter mAdapter;
 
     protected ShowConventionYearController(@Nullable Bundle args) {
         super(args);
@@ -84,8 +86,8 @@ public class ShowConventionYearController extends BaseInnerController implements
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         conventionYearDetailsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        PhotoshootRecViewAdapter adapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getPhotoshootListRef(), mPresenter.getPhotoshootDataRef(), getActivity(), getRouter());
-        conventionYearDetailsRecyclerView.setAdapter(adapter);
+        mAdapter = new PhotoshootRecViewAdapter(Photoshoot.class, R.layout.row_photoshoot, PhotoshootRecViewAdapter.ViewHolder.class, mPresenter.getPhotoshootListRef(), mPresenter.getPhotoshootDataRef(), getActivity(), getRouter());
+        conventionYearDetailsRecyclerView.setAdapter(mAdapter);
 
         return mLayoutView;
     }
@@ -95,12 +97,14 @@ public class ShowConventionYearController extends BaseInnerController implements
         super.onAttach(view);
 
         mPresenter.setView(this);
+        mAdapter.startListening();
     }
 
     @Override
     protected void onDetach(@NonNull View view) {
         super.onDetach(view);
 
+        mAdapter.stopListening();
         mPresenter.detachView();
     }
 

@@ -1,10 +1,6 @@
 package com.jamessimshaw.cosplaycompanion.adapters;
 
 import android.app.Activity;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -84,7 +83,7 @@ public class ConYearRecViewAdapter extends FirebaseRecyclerAdapter<ConventionYea
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(mActivity).inflate(mModelLayout, parent));
+        return new ViewHolder(LayoutInflater.from(mActivity).inflate(mModelLayout, parent, false));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
