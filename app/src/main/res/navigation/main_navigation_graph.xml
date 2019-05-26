@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/navigation_login">
+
+    <fragment android:id="@+id/navigation_login" >
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_conventions"
+            app:destination="@id/navigation_conventions" />
+    </fragment>
+    <fragment android:id="@+id/navigation_conventions" >
+        <action
+            android:id="@+id/action_navigation_conventions_to_navigation_convention_years"
+            app:destination="@id/navigation_convention_years" />
+        <action
+            android:id="@+id/action_navigation_conventions_to_navigation_new_convention"
+            app:destination="@id/navigation_new_convention" />
+    </fragment>
+    <fragment android:id="@+id/navigation_convention_years" >
+        <action
+            android:id="@+id/action_navigation_convention_years_to_navigation_photoshoots"
+            app:destination="@id/navigation_photoshoots" />
+        <action
+            android:id="@+id/action_navigation_convention_years_to_navigation_new_convention_year"
+            app:destination="@id/navigation_new_convention_year" />
+    </fragment>
+    <fragment android:id="@+id/navigation_photoshoots" >
+        <action
+            android:id="@+id/action_navigation_photoshoots_to_navigation_new_photoshoot"
+            app:destination="@id/navigation_new_photoshoot" />
+    </fragment>
+
+    <fragment android:id="@+id/navigation_new_convention" />
+    <fragment android:id="@+id/navigation_new_convention_year" />
+    <fragment android:id="@+id/navigation_new_photoshoot" />
+</navigation>
